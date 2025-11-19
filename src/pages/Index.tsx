@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ReviewsSection } from "@/components/ReviewsSection";
 import heroImage from "@/assets/hero-breakroom.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
@@ -129,23 +130,6 @@ const Index = () => {
     },
   ];
 
-  const testimonials = [
-    {
-      name: "Rizky A.",
-      role: "Pekerja Kantoran",
-      text: "Setelah seminggu kerja yang melelahkan, tempat ini adalah pelarian yang sempurna. Rasanya lega banget!",
-    },
-    {
-      name: "Sarah M.",
-      role: "Mahasiswa",
-      text: "Pengalaman yang unik dan menyenangkan! Staff sangat membantu dan safety-nya terjaga dengan baik.",
-    },
-    {
-      name: "Dimas P.",
-      role: "Entrepreneur",
-      text: "Cara yang efektif untuk melepas stress. Pasti akan kembali lagi!",
-    },
-  ];
 
   const roomDetails = [
     {
@@ -523,30 +507,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="py-20 px-4">
-          <div className="container mx-auto max-w-6xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Apa Kata <span className="text-gradient">Mereka?</span>
-            </h2>
-            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-              Pengalaman nyata dari pelanggan yang sudah merasakan Breakroom
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="bg-card border-border">
-                  <CardContent className="p-6">
-                    <p className="text-muted-foreground mb-4 italic">"{testimonial.text}"</p>
-                    <div>
-                      <div className="font-bold">{testimonial.name}</div>
-                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Reviews Section */}
+        <ReviewsSection />
 
         {/* Contact Section */}
         <section className="py-20 px-4">
