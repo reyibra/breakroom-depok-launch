@@ -6,7 +6,6 @@ import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ReviewsSection } from "@/components/ReviewsSection";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
 import heroImage from "@/assets/hero-breakroom.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
@@ -620,7 +619,6 @@ const Index = () => {
       </main>
 
       <Footer />
-      <WhatsAppWidget />
     </div>
   );
 };
