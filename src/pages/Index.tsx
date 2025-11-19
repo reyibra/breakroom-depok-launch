@@ -287,6 +287,7 @@ const Index = () => {
                   videoSrc="/videos/breakroom-horizontal.mp4"
                   aspectRatio="landscape"
                   title="Breakroom Experience"
+                  autoplayOnView={true}
                 />
               </div>
               
@@ -297,6 +298,7 @@ const Index = () => {
                     videoSrc="/videos/tiktok-vertical.mp4"
                     aspectRatio="portrait"
                     title="Stress Release Session"
+                    autoplayOnView={true}
                   />
                 </div>
               </div>
@@ -308,6 +310,7 @@ const Index = () => {
                     videoSrc="/videos/tiktok-vertical-2.mp4"
                     aspectRatio="portrait"
                     title="Behind The Scenes"
+                    autoplayOnView={true}
                   />
                 </div>
               </div>

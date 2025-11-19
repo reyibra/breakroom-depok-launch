@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 interface VideoPlayerProps {
@@ -7,6 +7,7 @@ interface VideoPlayerProps {
   className?: string;
   aspectRatio?: "portrait" | "landscape" | "square";
   title?: string;
+  autoplayOnView?: boolean;
 }
 
 const VideoPlayer = ({ 
@@ -14,12 +15,44 @@ const VideoPlayer = ({
   posterSrc, 
   className = "",
   aspectRatio = "landscape",
-  title 
+  title,
+  autoplayOnView = false
 }: VideoPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer for autoplay on view
+  useEffect(() => {
+    if (!autoplayOnView || !containerRef.current || !videoRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Video is in view
+            videoRef.current?.play().catch(() => {
+              // Autoplay failed, likely due to browser policy
+            });
+          } else {
+            // Video is out of view
+            videoRef.current?.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Trigger when 50% of video is visible
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [autoplayOnView]);
 
   const aspectClasses = {
     portrait: "aspect-[9/16]", // TikTok/Instagram Reels style
@@ -47,6 +80,7 @@ const VideoPlayer = ({
 
   return (
     <div 
+      ref={containerRef}
       className={`group relative w-full rounded-xl overflow-hidden transition-all duration-500 hover:scale-[1.02] ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
