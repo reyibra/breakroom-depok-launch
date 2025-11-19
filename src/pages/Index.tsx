@@ -229,7 +229,7 @@ const Index = () => {
           
           <div className="container mx-auto max-w-6xl relative z-10">
             <div className="max-w-3xl">
-              <Badge className="mb-3 md:mb-4 bg-caution text-caution-foreground text-xs md:text-sm">Apa itu Breakroom?</Badge>
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Apa itu Breakroom?</Badge>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
                 Tempat <span className="text-gradient">Stress-Release</span> Pertama di Indonesia
               </h2>
@@ -445,7 +445,7 @@ const Index = () => {
         <section className="py-12 md:py-20 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-8 md:mb-12">
-              <Badge className="mb-3 md:mb-4 bg-caution text-caution-foreground text-xs md:text-sm">Keamanan Utama</Badge>
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Keamanan Utama</Badge>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
                 Perlengkapan <span className="text-gradient">Safety</span>
               </h2>
@@ -479,7 +479,7 @@ const Index = () => {
         <section id="about" className="py-20 px-4 bg-card">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
-              <Badge className="mb-4 bg-caution text-caution-foreground">Keamanan & Prosedur</Badge>
+              <Badge className="mb-4 bg-primary text-primary-foreground">Keamanan & Prosedur</Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Aturan <span className="text-gradient">Keamanan</span>
               </h2>
@@ -553,7 +553,7 @@ const Index = () => {
         <section className="py-20 px-4 bg-card">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
-              <Badge className="mb-4 bg-caution text-caution-foreground">Lokasi Kami</Badge>
+              <Badge className="mb-4 bg-primary text-primary-foreground">Lokasi Kami</Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Temukan <span className="text-gradient">Breakroom</span> Depok
               </h2>
