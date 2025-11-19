@@ -10,10 +10,9 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
-    { name: "Beranda", path: "/" },
-    { name: "Ruangan", path: "/rooms" },
-    { name: "Booking", path: "/booking" },
-    { name: "Tentang & Keamanan", path: "/about" },
+    { name: "Beranda", path: "#hero" },
+    { name: "Ruangan", path: "#rooms" },
+    { name: "Tentang & Keamanan", path: "#about" },
   ];
 
   return (
@@ -30,18 +29,18 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.path}
-                to={link.path}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(link.path) ? "text-primary" : "text-muted-foreground"
-                }`}
+                href={link.path}
+                className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
               >
                 {link.name}
-              </Link>
+              </a>
             ))}
             <Button variant="hero" size="sm" asChild>
-              <Link to="/booking">Booking Sekarang</Link>
+              <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+                Booking Sekarang
+              </a>
             </Button>
           </div>
 
@@ -59,21 +58,19 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden pb-4 space-y-2">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.path}
-                to={link.path}
-                className={`block py-2 text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(link.path) ? "text-primary" : "text-muted-foreground"
-                }`}
+                href={link.path}
+                className="block py-2 text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
-              </Link>
+              </a>
             ))}
             <Button variant="hero" size="sm" className="w-full" asChild>
-              <Link to="/booking" onClick={() => setIsOpen(false)}>
+              <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
                 Booking Sekarang
-              </Link>
+              </a>
             </Button>
           </div>
         )}
