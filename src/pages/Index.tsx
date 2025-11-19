@@ -6,6 +6,7 @@ import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ReviewsSection } from "@/components/ReviewsSection";
+import TikTokEmbed from "@/components/TikTokEmbed";
 import heroImage from "@/assets/hero-breakroom.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
@@ -282,18 +283,15 @@ const Index = () => {
               </p>
             </div>
             
-            {/* Placeholder for photos and videos */}
+            {/* TikTok Video & Photos */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {/* Video Placeholder */}
-              <Card className="col-span-1 md:col-span-2 lg:col-span-2 bg-muted/30 border-2 border-dashed border-border overflow-hidden">
-                <CardContent className="p-0 aspect-video flex items-center justify-center">
-                  <div className="text-center space-y-2 md:space-y-3 p-4">
-                    <Play className="w-12 h-12 md:w-16 md:h-16 text-muted-foreground mx-auto" />
-                    <p className="text-sm md:text-base text-muted-foreground font-medium">Tempat untuk video showcase utama</p>
-                    <p className="text-xs md:text-sm text-muted-foreground">Unggah video highlight pengalaman Breakroom</p>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* TikTok Video */}
+              <div className="col-span-1 md:col-span-2 lg:col-span-2">
+                <TikTokEmbed 
+                  videoUrl="https://www.tiktok.com/@breakroom.depok/video/7565167808103894279"
+                  username="breakroom.depok"
+                />
+              </div>
               
               {/* Photo Placeholders */}
               {[1, 2, 3, 4].map((i) => (
