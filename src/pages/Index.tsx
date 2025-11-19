@@ -285,7 +285,7 @@ const Index = () => {
             
             {/* Video Showcase & Photos */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {/* Video Showcase - Portrait Format */}
+              {/* Video Showcase 1 - Portrait Format */}
               <div className="col-span-1 flex justify-center">
                 <div className="max-w-md w-full">
                   <VideoPlayer 
@@ -295,8 +295,18 @@ const Index = () => {
                 </div>
               </div>
               
+              {/* Video Showcase 2 - Portrait Format */}
+              <div className="col-span-1 flex justify-center">
+                <div className="max-w-md w-full">
+                  <VideoPlayer 
+                    videoSrc="/videos/tiktok-vertical-2.mp4"
+                    aspectRatio="portrait"
+                  />
+                </div>
+              </div>
+              
               {/* Photo Placeholders */}
-              {[1, 2, 3, 4].map((i) => (
+              {[1, 2, 3].map((i) => (
                 <Card key={i} className="bg-muted/30 border-2 border-dashed border-border overflow-hidden">
                   <CardContent className="p-0 aspect-square flex items-center justify-center">
                     <div className="text-center space-y-1.5 md:space-y-2">
