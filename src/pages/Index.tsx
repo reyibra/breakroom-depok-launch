@@ -175,7 +175,7 @@ const Index = () => {
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${heroImage})` }}
@@ -184,48 +184,48 @@ const Index = () => {
           </div>
           
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-            <div className="inline-block mb-4 px-4 py-2 bg-caution/20 border border-caution rounded">
-              <span className="text-caution font-bold uppercase tracking-wider text-sm">
+            <div className="inline-block mb-3 md:mb-4 px-3 md:px-4 py-1.5 md:py-2 bg-caution/20 border border-caution rounded">
+              <span className="text-caution font-bold uppercase tracking-wider text-xs md:text-sm">
                 Stress-Release Room Indonesia
               </span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6">
               <span className="text-gradient">Luapkan,</span>{" "}
               <span className="text-gradient">Lepaskan</span>{" "}
               & <span className="text-gradient">Lupakan</span>
             </h1>
-            <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground">
+            <h2 className="text-xl md:text-2xl lg:text-4xl font-bold mb-4 md:mb-6 text-foreground">
               Penatmu di Breakroom Depok
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto">
               Tempat aman untuk melepaskan stress dengan cara yang berbeda. Hancurkan, teriak, dan rasakan kebebasan.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="xl" asChild>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
+              <Button variant="hero" size="lg" className="text-sm md:text-base" asChild>
                 <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-2 h-5 w-5" />
+                  <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                   Booking via WhatsApp
                 </a>
               </Button>
-              <Button variant="outline" size="xl" asChild>
+              <Button variant="outline" size="lg" className="text-sm md:text-base" asChild>
                 <a href="#rooms">Lihat Ruangan</a>
               </Button>
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-20 md:h-32 bg-gradient-to-t from-background to-transparent"></div>
         </section>
 
         {/* What is Breakroom Section */}
-        <section id="tentang" className="py-20 px-4 bg-card">
+        <section id="tentang" className="py-12 md:py-20 px-4 bg-card">
           <div className="container mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
               <div>
-                <Badge className="mb-4 bg-accent text-accent-foreground">Apa itu Breakroom?</Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <Badge className="mb-3 md:mb-4 bg-accent text-accent-foreground text-xs md:text-sm">Apa itu Breakroom?</Badge>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
                   Tempat <span className="text-gradient">Stress-Release</span> Pertama di Indonesia
                 </h2>
-                <p className="text-lg text-muted-foreground mb-6">
+                <p className="text-sm md:text-base lg:text-lg text-muted-foreground mb-4 md:mb-6">
                   Breakroom Depok adalah ruang pelepasan emosi yang aman dan terkontrol. Di sini, kamu bisa melampiaskan stress, frustrasi, atau emosi terpendam dengan cara yang berbeda—hancurkan barang dalam lingkungan yang dirancang khusus untuk itu.
                 </p>
                 <p className="text-lg text-muted-foreground mb-6">
@@ -270,27 +270,27 @@ const Index = () => {
         </section>
 
         {/* Gallery/Video Section */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-primary text-primary-foreground">Lihat Aksi</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <div className="text-center mb-8 md:mb-12">
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Lihat Aksi</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
                 Galeri & <span className="text-gradient">Video</span>
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
                 Lihat pengalaman nyata pelanggan kami dan rasakan sensasinya
               </p>
             </div>
             
             {/* Placeholder for photos and videos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {/* Video Placeholder */}
               <Card className="col-span-1 md:col-span-2 lg:col-span-2 bg-muted/30 border-2 border-dashed border-border overflow-hidden">
                 <CardContent className="p-0 aspect-video flex items-center justify-center">
-                  <div className="text-center space-y-3">
-                    <Play className="w-16 h-16 text-muted-foreground mx-auto" />
-                    <p className="text-muted-foreground font-medium">Tempat untuk video showcase utama</p>
-                    <p className="text-sm text-muted-foreground px-4">Unggah video highlight pengalaman Breakroom</p>
+                  <div className="text-center space-y-2 md:space-y-3 p-4">
+                    <Play className="w-12 h-12 md:w-16 md:h-16 text-muted-foreground mx-auto" />
+                    <p className="text-sm md:text-base text-muted-foreground font-medium">Tempat untuk video showcase utama</p>
+                    <p className="text-xs md:text-sm text-muted-foreground">Unggah video highlight pengalaman Breakroom</p>
                   </div>
                 </CardContent>
               </Card>
@@ -299,11 +299,11 @@ const Index = () => {
               {[1, 2, 3, 4].map((i) => (
                 <Card key={i} className="bg-muted/30 border-2 border-dashed border-border overflow-hidden">
                   <CardContent className="p-0 aspect-square flex items-center justify-center">
-                    <div className="text-center space-y-2">
-                      <div className="w-12 h-12 bg-muted rounded-full mx-auto flex items-center justify-center">
-                        <span className="text-muted-foreground text-xl font-bold">{i}</span>
+                    <div className="text-center space-y-1.5 md:space-y-2">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-muted rounded-full mx-auto flex items-center justify-center">
+                        <span className="text-muted-foreground text-lg md:text-xl font-bold">{i}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground px-4">Foto aktivitas / ruangan</p>
+                      <p className="text-xs md:text-sm text-muted-foreground px-4">Foto aktivitas / ruangan</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -313,20 +313,20 @@ const Index = () => {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12">
               Kenapa Pilih <span className="text-gradient">Breakroom?</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {features.map((feature, index) => (
                 <Card key={index} className="bg-card border-border hover:border-primary transition-colors">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                      <feature.icon className="w-8 h-8 text-primary" />
+                  <CardContent className="p-4 md:p-6 text-center">
+                    <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                      <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                     </div>
-                    <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    <h3 className="text-base md:text-lg font-bold mb-1 md:mb-2">{feature.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -335,63 +335,63 @@ const Index = () => {
         </section>
 
         {/* Rooms Detail Section */}
-        <section id="rooms" className="py-20 px-4 bg-card">
+        <section id="rooms" className="py-12 md:py-20 px-4 bg-card">
           <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-primary text-primary-foreground">Pilih Ruangan Anda</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <div className="text-center mb-8 md:mb-12">
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Pilih Ruangan Anda</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
                 Temukan <span className="text-gradient">Ruangan</span> yang Tepat
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
                 Setiap ruangan dirancang untuk memberikan pengalaman pelepasan stress yang aman dan memuaskan
               </p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {roomDetails.map((room) => (
                 <Card key={room.id} className="overflow-hidden border-2 border-border hover:border-primary transition-colors">
-                  <div className="relative h-80 overflow-hidden">
+                  <div className="relative h-64 md:h-80 overflow-hidden">
                     <img 
                       src={room.image} 
                       alt={room.name}
                       className="w-full h-full object-cover"
                     />
                     {room.badge && (
-                      <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground">
+                      <Badge className="absolute top-3 right-3 md:top-4 md:right-4 bg-primary text-primary-foreground text-xs md:text-sm">
                         {room.badge}
                       </Badge>
                     )}
                   </div>
                   
-                  <CardHeader>
-                    <CardTitle className="text-3xl">{room.name}</CardTitle>
-                    <p className="text-muted-foreground">{room.description}</p>
+                  <CardHeader className="p-4 md:p-6">
+                    <CardTitle className="text-2xl md:text-3xl">{room.name}</CardTitle>
+                    <p className="text-sm md:text-base text-muted-foreground">{room.description}</p>
                   </CardHeader>
 
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6 pt-0 md:pt-0">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold text-primary">{room.price}</span>
-                      <span className="text-muted-foreground">/ {room.duration}</span>
+                      <span className="text-3xl md:text-4xl font-bold text-primary">{room.price}</span>
+                      <span className="text-sm md:text-base text-muted-foreground">/ {room.duration}</span>
                     </div>
 
-                    <div className="flex gap-4 text-sm">
-                      <Badge variant="outline">⏱️ {room.duration}</Badge>
-                      <Badge variant="outline">👥 {room.capacity}</Badge>
+                    <div className="flex gap-3 md:gap-4 text-xs md:text-sm">
+                      <Badge variant="outline" className="text-xs md:text-sm">⏱️ {room.duration}</Badge>
+                      <Badge variant="outline" className="text-xs md:text-sm">👥 {room.capacity}</Badge>
                     </div>
 
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm uppercase tracking-wide">Yang Anda Dapatkan:</h4>
+                    <div className="space-y-2 md:space-y-3">
+                      <h4 className="font-semibold text-xs md:text-sm uppercase tracking-wide">Yang Anda Dapatkan:</h4>
                       {room.features.map((feature, idx) => (
                         <div key={idx} className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-muted-foreground">{feature}</span>
+                          <Check className="w-4 h-4 md:w-5 md:h-5 text-primary mt-0.5 flex-shrink-0" />
+                          <span className="text-xs md:text-sm text-muted-foreground">{feature}</span>
                         </div>
                       ))}
                     </div>
 
-                    <Button variant="hero" className="w-full" size="lg" asChild>
+                    <Button variant="hero" className="w-full text-sm md:text-base" size="lg" asChild>
                       <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
-                        <MessageCircle className="mr-2 h-5 w-5" />
+                        <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                         Booking {room.name}
                       </a>
                     </Button>
@@ -403,11 +403,11 @@ const Index = () => {
         </section>
 
         {/* Safety Equipment Section */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-caution text-caution-foreground">Keamanan Utama</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <div className="text-center mb-8 md:mb-12">
+              <Badge className="mb-3 md:mb-4 bg-caution text-caution-foreground text-xs md:text-sm">Keamanan Utama</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
                 Perlengkapan <span className="text-gradient">Safety</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
