@@ -69,15 +69,15 @@ export const ReviewForm = ({ onSuccess }: ReviewFormProps) => {
         role: data.role || null,
         rating: data.rating,
         review_text: data.reviewText,
-        is_approved: false, // Needs approval
+        is_approved: true, // Auto-publish
       });
 
       if (error) throw error;
 
       toast({
-        title: "Review Terkirim!",
+        title: "Review Berhasil Dipublikasikan!",
         description:
-          "Terima kasih atas review Anda. Review akan ditampilkan setelah disetujui.",
+          "Terima kasih atas review Anda. Review Anda sudah tampil.",
       });
 
       form.reset();
