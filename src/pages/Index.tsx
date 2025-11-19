@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
-import heroImage from "@/assets/hero-breakroom.jpg";
+import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
 import safetyGear from "@/assets/safety-gear.jpg";
