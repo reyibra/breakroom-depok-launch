@@ -1,4 +1,4 @@
-import { MapPin, Instagram, Mail, Phone, Music } from "lucide-react";
+import { MapPin, Instagram, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -26,15 +26,6 @@ const Footer = () => {
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
-              </a>
-              <a
-                href="https://www.tiktok.com/@breakroom.depok"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="TikTok"
-              >
-                <Music size={20} />
               </a>
             </div>
           </div>
@@ -76,8 +67,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-2 text-xs md:text-sm text-muted-foreground">
                 <Phone size={14} className="flex-shrink-0 text-primary md:w-4 md:h-4" />
-                <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                  +62 823-1250-4723
+                <a href="tel:+628123456789" className="hover:text-primary transition-colors">
+                  +62 812-3456-7890
                 </a>
               </li>
               <li className="flex items-center space-x-2 text-xs md:text-sm text-muted-foreground">

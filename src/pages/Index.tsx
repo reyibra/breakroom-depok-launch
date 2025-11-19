@@ -1,11 +1,14 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Shield, Clock, Users, Heart, AlertTriangle, MessageCircle, MapPin, Check } from "lucide-react";
+import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import heroImage from "@/assets/hero-breakroom.jpg";
+import roomClassic from "@/assets/room-classic.jpg";
+import roomPremium from "@/assets/room-premium.jpg";
 import safetyGear from "@/assets/safety-gear.jpg";
 
 const Index = () => {
@@ -32,22 +35,21 @@ const Index = () => {
     },
   ];
 
-  const consultationServices = [
+  const rooms = [
     {
-      icon: Users,
-      title: "Konsultasi Psikologi",
-      description: "Kami menyediakan layanan konsultasi psikologi profesional"
+      name: "Classic Room",
+      price: "Rp 150.000",
+      duration: "30 menit",
+      image: roomClassic,
+      description: "Ruangan standar dengan berbagai item untuk dihancurkan",
     },
     {
-      icon: MapPin,
-      title: "Online & Offline",
-      description: "Tersedia sesi konsultasi secara online maupun tatap muka"
+      name: "Premium Room",
+      price: "Rp 250.000",
+      duration: "45 menit",
+      image: roomPremium,
+      description: "Ruangan premium dengan lebih banyak pilihan item dan durasi lebih lama",
     },
-    {
-      icon: MessageCircle,
-      title: "Hubungi Kami",
-      description: "Untuk info lebih lanjut, hubungi kami via WhatsApp"
-    }
   ];
 
   const safetyRules = [
@@ -128,78 +130,202 @@ const Index = () => {
     },
   ];
 
+
+  const roomDetails = [
+    {
+      id: "classic",
+      name: "Classic Room",
+      price: "Rp 150.000",
+      duration: "30 menit",
+      capacity: "1 orang",
+      image: roomClassic,
+      description: "Pilihan sempurna untuk mencoba pengalaman stress-release pertama kali",
+      features: [
+        "Berbagai item untuk dihancurkan (piring, gelas, botol)",
+        "Perlengkapan safety lengkap",
+        "Background music sesuai pilihan",
+        "Staff pendamping",
+        "Dokumentasi foto",
+      ],
+      badge: "Populer",
+    },
+    {
+      id: "premium",
+      name: "Premium Room",
+      price: "Rp 250.000",
+      duration: "45 menit",
+      capacity: "1-2 orang",
+      image: roomPremium,
+      description: "Pengalaman maksimal dengan durasi lebih lama dan pilihan item lebih banyak",
+      features: [
+        "Semua benefit Classic Room",
+        "Lebih banyak item untuk dihancurkan",
+        "Elektronik bekas (TV, komputer, printer)",
+        "Durasi lebih lama (45 menit)",
+        "Dokumentasi video",
+        "Minuman gratis setelah sesi",
+      ],
+      badge: "Best Value",
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <section id="hero" className="relative min-h-[80vh] flex items-center pt-16">
+        <section className="relative min-h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
           <div 
-            className="absolute inset-0 z-0"
-            style={{
-              backgroundImage: `url(${heroImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroImage})` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/40" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
           </div>
           
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-2xl space-y-3 md:space-y-4">
-              <Badge variant="secondary" className="text-xs">
-                #1 Stress Release Room di Indonesia
-              </Badge>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                Luapkan, Lepaskan & Lupakan Penatmu
-              </h1>
-              <p className="text-sm md:text-base text-muted-foreground max-w-xl">
-                Rasakan pengalaman unik melepaskan stress dengan menghancurkan berbagai item dalam ruangan yang aman dan terkontrol.
-              </p>
-              <p className="text-lg md:text-xl font-semibold text-primary">
-                Mulai dari Rp 65.000
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2 md:gap-3 pt-2">
-                <Button size="lg" variant="hero" className="text-sm" asChild>
-                  <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
-                    Booking Sekarang
-                  </a>
-                </Button>
-              </div>
-              <div className="flex items-center gap-3 text-xs md:text-sm text-muted-foreground pt-1">
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-primary" />
-                  <span>Aman & Terkontrol</span>
+          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div className="inline-block mb-3 md:mb-4 px-3 md:px-4 py-1.5 md:py-2 bg-caution/20 border border-caution rounded">
+              <span className="text-caution font-bold uppercase tracking-wider text-xs md:text-sm">
+                Stress-Release Room Indonesia
+              </span>
+            </div>
+            <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6">
+              <span className="text-gradient">Luapkan,</span>{" "}
+              <span className="text-gradient">Lepaskan</span>{" "}
+              & <span className="text-gradient">Lupakan</span>
+            </h1>
+            <h2 className="text-xl md:text-2xl lg:text-4xl font-bold mb-4 md:mb-6 text-foreground">
+              Penatmu di Breakroom Depok
+            </h2>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto">
+              Tempat aman untuk melepaskan stress dengan cara yang berbeda. Hancurkan, teriak, dan rasakan kebebasan.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
+              <Button variant="hero" size="lg" className="text-sm md:text-base" asChild>
+                <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+                  Booking via WhatsApp
+                </a>
+              </Button>
+              <Button variant="outline" size="lg" className="text-sm md:text-base" asChild>
+                <a href="#rooms">Lihat Ruangan</a>
+              </Button>
+            </div>
+          </div>
+
+          <div className="absolute bottom-0 left-0 right-0 h-20 md:h-32 bg-gradient-to-t from-background to-transparent"></div>
+        </section>
+
+        {/* What is Breakroom Section */}
+        <section id="tentang" className="py-12 md:py-20 px-4 bg-card">
+          <div className="container mx-auto max-w-6xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
+              <div>
+                <Badge className="mb-3 md:mb-4 bg-accent text-accent-foreground text-xs md:text-sm">Apa itu Breakroom?</Badge>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
+                  Tempat <span className="text-gradient">Stress-Release</span> Pertama di Indonesia
+                </h2>
+                <p className="text-sm md:text-base lg:text-lg text-muted-foreground mb-4 md:mb-6">
+                  Breakroom Depok adalah ruang pelepasan emosi yang aman dan terkontrol. Di sini, kamu bisa melampiaskan stress, frustrasi, atau emosi terpendam dengan cara yang berbeda—hancurkan barang dalam lingkungan yang dirancang khusus untuk itu.
+                </p>
+                <p className="text-lg text-muted-foreground mb-6">
+                  Bukan hanya tentang menghancurkan barang. Ini tentang memberikan diri kamu ruang untuk melepaskan tekanan hidup dengan cara yang aman, legal, dan bahkan menyenangkan.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Aman & Terkontrol</h4>
+                      <p className="text-sm text-muted-foreground">Perlengkapan safety lengkap dan staff terlatih mendampingi setiap sesi</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Fleksibel & Private</h4>
+                      <p className="text-sm text-muted-foreground">Pilih durasi sesuai kebutuhan, tersedia untuk individu atau kelompok</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Pengalaman Unik</h4>
+                      <p className="text-sm text-muted-foreground">Cara yang berbeda dan efektif untuk melepaskan stress setelah minggu yang melelahkan</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-primary" />
-                  <span>APD Lengkap</span>
+              </div>
+              <div className="relative">
+                <img 
+                  src={safetyGear} 
+                  alt="Safety Equipment"
+                  className="w-full h-auto rounded-lg shadow-2xl"
+                />
+                <div className="absolute top-4 left-4 bg-caution/90 backdrop-blur-sm px-4 py-2 rounded border border-caution">
+                  <span className="text-sm font-bold text-caution-foreground">100% AMAN</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-8 md:py-10 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                Kenapa Memilih Breakroom?
+        {/* Gallery/Video Section */}
+        <section className="py-12 md:py-20 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-8 md:mb-12">
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Lihat Aksi</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
+                Galeri & <span className="text-gradient">Video</span>
               </h2>
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                Pengalaman stress-release yang aman, menyenangkan, dan efektif
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+                Lihat pengalaman nyata pelanggan kami dan rasakan sensasinya
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-              {features.map((feature, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-2">
-                      <feature.icon className="w-5 h-5 text-primary" />
+            
+            {/* Placeholder for photos and videos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {/* Video Placeholder */}
+              <Card className="col-span-1 md:col-span-2 lg:col-span-2 bg-muted/30 border-2 border-dashed border-border overflow-hidden">
+                <CardContent className="p-0 aspect-video flex items-center justify-center">
+                  <div className="text-center space-y-2 md:space-y-3 p-4">
+                    <Play className="w-12 h-12 md:w-16 md:h-16 text-muted-foreground mx-auto" />
+                    <p className="text-sm md:text-base text-muted-foreground font-medium">Tempat untuk video showcase utama</p>
+                    <p className="text-xs md:text-sm text-muted-foreground">Unggah video highlight pengalaman Breakroom</p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Photo Placeholders */}
+              {[1, 2, 3, 4].map((i) => (
+                <Card key={i} className="bg-muted/30 border-2 border-dashed border-border overflow-hidden">
+                  <CardContent className="p-0 aspect-square flex items-center justify-center">
+                    <div className="text-center space-y-1.5 md:space-y-2">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-muted rounded-full mx-auto flex items-center justify-center">
+                        <span className="text-muted-foreground text-lg md:text-xl font-bold">{i}</span>
+                      </div>
+                      <p className="text-xs md:text-sm text-muted-foreground px-4">Foto aktivitas / ruangan</p>
                     </div>
-                    <h3 className="text-base font-semibold mb-1">{feature.title}</h3>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="py-12 md:py-20 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12">
+              Kenapa Pilih <span className="text-gradient">Breakroom?</span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {features.map((feature, index) => (
+                <Card key={index} className="bg-card border-border hover:border-primary transition-colors">
+                  <CardContent className="p-4 md:p-6 text-center">
+                    <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                      <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+                    </div>
+                    <h3 className="text-base md:text-lg font-bold mb-1 md:mb-2">{feature.title}</h3>
                     <p className="text-xs md:text-sm text-muted-foreground">{feature.description}</p>
                   </CardContent>
                 </Card>
@@ -208,107 +334,175 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Consultation Services Section */}
-        <section className="py-8 md:py-10">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                Kami Menyediakan Konsultasi Psikologi
+        {/* Rooms Detail Section */}
+        <section id="rooms" className="py-12 md:py-20 px-4 bg-card">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-8 md:mb-12">
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Pilih Ruangan Anda</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
+                Temukan <span className="text-gradient">Ruangan</span> yang Tepat
               </h2>
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                Layanan konsultasi psikologi tersedia secara online dan offline
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+                Setiap ruangan dirancang untuk memberikan pengalaman pelepasan stress yang aman dan memuaskan
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto mb-4">
-              {consultationServices.map((service, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-2">
-                      <service.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="text-base font-semibold mb-1">{service.title}</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">{service.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            <div className="text-center">
-              <Button size="lg" variant="hero" className="text-sm" asChild>
-                <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
-                  Hubungi Kami untuk Info Lebih Lanjut
-                </a>
-              </Button>
-            </div>
-          </div>
-        </section>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+              {roomDetails.map((room) => (
+                <Card key={room.id} className="overflow-hidden border-2 border-border hover:border-primary transition-colors">
+                  <div className="relative h-64 md:h-80 overflow-hidden">
+                    <img 
+                      src={room.image} 
+                      alt={room.name}
+                      className="w-full h-full object-cover"
+                    />
+                    {room.badge && (
+                      <Badge className="absolute top-3 right-3 md:top-4 md:right-4 bg-primary text-primary-foreground text-xs md:text-sm">
+                        {room.badge}
+                      </Badge>
+                    )}
+                  </div>
+                  
+                  <CardHeader className="p-4 md:p-6">
+                    <CardTitle className="text-2xl md:text-3xl">{room.name}</CardTitle>
+                    <p className="text-sm md:text-base text-muted-foreground">{room.description}</p>
+                  </CardHeader>
 
-        {/* Safety Section */}
-        <section className="py-8 md:py-10 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center mb-8">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                  Keamanan Terjamin
-                </h2>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Keselamatan Anda adalah prioritas utama kami
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {safetyRules.map((rule, index) => (
-                    <Card key={index} className="hover:shadow-lg transition-shadow">
-                      <CardContent className="p-3">
-                        <div className="flex items-start gap-2">
-                          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <rule.icon className="w-4 h-4 text-primary" />
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-semibold mb-0.5">{rule.title}</h3>
-                            <p className="text-xs text-muted-foreground">{rule.description}</p>
-                          </div>
+                  <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6 pt-0 md:pt-0">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl md:text-4xl font-bold text-primary">{room.price}</span>
+                      <span className="text-sm md:text-base text-muted-foreground">/ {room.duration}</span>
+                    </div>
+
+                    <div className="flex gap-3 md:gap-4 text-xs md:text-sm">
+                      <Badge variant="outline" className="text-xs md:text-sm">⏱️ {room.duration}</Badge>
+                      <Badge variant="outline" className="text-xs md:text-sm">👥 {room.capacity}</Badge>
+                    </div>
+
+                    <div className="space-y-2 md:space-y-3">
+                      <h4 className="font-semibold text-xs md:text-sm uppercase tracking-wide">Yang Anda Dapatkan:</h4>
+                      {room.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                          <Check className="w-4 h-4 md:w-5 md:h-5 text-primary mt-0.5 flex-shrink-0" />
+                          <span className="text-xs md:text-sm text-muted-foreground">{feature}</span>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-              <div className="relative">
-                <img 
-                  src={safetyGear} 
-                  alt="Safety Equipment"
-                  className="w-full h-auto rounded-lg shadow-xl"
-                />
-              </div>
+                      ))}
+                    </div>
+
+                    <Button variant="hero" className="w-full text-sm md:text-base" size="lg" asChild>
+                      <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+                        Booking {room.name}
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Procedures Section */}
-        <section id="about" className="py-8 md:py-10">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                Prosedur Kunjungan
+        {/* Safety Equipment Section */}
+        <section className="py-12 md:py-20 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-8 md:mb-12">
+              <Badge className="mb-3 md:mb-4 bg-caution text-caution-foreground text-xs md:text-sm">Keamanan Utama</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
+                Perlengkapan <span className="text-gradient">Safety</span>
               </h2>
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                Langkah-langkah yang akan Anda lalui
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Semua perlengkapan keamanan disediakan dan wajib digunakan selama sesi
               </p>
             </div>
-            <div className="max-w-3xl mx-auto space-y-2 md:space-y-3">
-              {procedures.map((procedure, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-3 md:p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-base font-bold text-primary-foreground">{procedure.step}</span>
-                      </div>
-                      <div>
-                        <h3 className="text-sm md:text-base font-semibold mb-0.5">{procedure.title}</h3>
-                        <p className="text-xs md:text-sm text-muted-foreground">{procedure.description}</p>
-                      </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { name: "Coverall Safety", desc: "Pakaian pelindung penuh" },
+                { name: "Helm Safety", desc: "Melindungi kepala dari pecahan" },
+                { name: "Sarung Tangan", desc: "Pelindung tangan tebal" },
+                { name: "Safety Goggles", desc: "Pelindung mata" },
+              ].map((item, idx) => (
+                <Card key={idx} className="text-center border-border hover:border-caution transition-colors">
+                  <CardContent className="p-6">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-caution/10 rounded-full flex items-center justify-center">
+                      <Shield className="w-8 h-8 text-caution" />
+                    </div>
+                    <h4 className="font-bold mb-2">{item.name}</h4>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* About & Safety Section */}
+        <section id="about" className="py-20 px-4 bg-card">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <Badge className="mb-4 bg-accent text-accent-foreground">Keamanan & Prosedur</Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Aturan <span className="text-gradient">Keamanan</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Keselamatan Anda adalah prioritas utama kami
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+              {safetyRules.map((rule, index) => (
+                <Card key={index} className="border-border hover:border-primary transition-colors">
+                  <CardContent className="p-6 flex gap-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <rule.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">{rule.title}</h3>
+                      <p className="text-sm text-muted-foreground">{rule.description}</p>
                     </div>
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* Procedures */}
+            <div className="mb-16">
+              <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+                Alur <span className="text-gradient">Sesi</span>
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                {procedures.map((proc, index) => (
+                  <div key={index} className="relative">
+                    <div className="text-center">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-2xl font-bold text-primary-foreground shadow-lg">
+                        {proc.step}
+                      </div>
+                      <h4 className="font-bold mb-2">{proc.title}</h4>
+                      <p className="text-sm text-muted-foreground">{proc.description}</p>
+                    </div>
+                    {index < procedures.length - 1 && (
+                      <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* FAQ */}
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+                <span className="text-gradient">FAQ</span> - Pertanyaan Umum
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {faqs.map((faq, index) => (
+                  <Card key={index} className="border-border">
+                    <CardContent className="p-6">
+                      <h4 className="font-bold mb-2 text-primary">{faq.q}</h4>
+                      <p className="text-sm text-muted-foreground">{faq.a}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -316,48 +510,110 @@ const Index = () => {
         {/* Reviews Section */}
         <ReviewsSection />
 
-        {/* FAQ Section */}
-        <section className="py-8 md:py-10 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                Pertanyaan Umum
+        {/* Contact Section */}
+        <section className="py-20 px-4">
+          <div className="container mx-auto max-w-4xl">
+            <Card className="border-2 border-primary/20 bg-gradient-to-br from-card to-primary/5">
+              <CardContent className="p-12 text-center">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Masih Ada <span className="text-gradient">Pertanyaan?</span>
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Hubungi kami melalui Instagram atau WhatsApp untuk informasi lebih lanjut
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button variant="hero" size="lg" asChild>
+                    <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="mr-2 h-5 w-5" />
+                      WhatsApp
+                    </a>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <a href="https://instagram.com/breakroom.depok" target="_blank" rel="noopener noreferrer">
+                      <Instagram className="mr-2 h-5 w-5" />
+                      Instagram
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Location/Map Section */}
+        <section className="py-20 px-4 bg-card">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <Badge className="mb-4 bg-accent text-accent-foreground">Lokasi Kami</Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Temukan <span className="text-gradient">Breakroom</span> Depok
               </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-2">
+                📍 Kelapa Dua, Kota Depok, Jawa Barat
+              </p>
               <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                Jawaban untuk pertanyaan yang sering diajukan
+                Lokasi strategis di Depok, dekat dengan Jakarta Selatan. Mudah diakses dari Lenteng Agung, Pancoran, dan area Jakarta Selatan lainnya (15-25 menit via kendaraan).
               </p>
             </div>
-            <div className="max-w-3xl mx-auto space-y-2 md:space-y-3">
-              {faqs.map((faq, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-3 md:p-4">
-                    <h3 className="text-sm md:text-base font-semibold mb-1">{faq.q}</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">{faq.a}</p>
-                  </CardContent>
-                </Card>
-              ))}
+
+            <Card className="overflow-hidden border-border">
+              <CardContent className="p-0">
+                <div className="aspect-video w-full">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.277342638673!2d106.83900657630343!3d-6.358136693631881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed00289e1189%3A0x76e086b5b8691047!2sBREAKROOM%20DEPOK!5e0!3m2!1sen!2sid!4v1763554402977!5m2!1sen!2sid" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Lokasi Breakroom Depok"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <Card className="border-border">
+                <CardContent className="p-6">
+                  <MapPin className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <h4 className="font-bold mb-2">Lokasi Strategis</h4>
+                  <p className="text-sm text-muted-foreground">Dekat dengan Jakarta Selatan (Lenteng Agung, Pancoran)</p>
+                </CardContent>
+              </Card>
+              <Card className="border-border">
+                <CardContent className="p-6">
+                  <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <h4 className="font-bold mb-2">Akses Mudah</h4>
+                  <p className="text-sm text-muted-foreground">15-25 menit dari area Jakarta Selatan</p>
+                </CardContent>
+              </Card>
+              <Card className="border-border">
+                <CardContent className="p-6">
+                  <MessageCircle className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <h4 className="font-bold mb-2">Hubungi Kami</h4>
+                  <p className="text-sm text-muted-foreground">Via WhatsApp untuk petunjuk arah detail</p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-8 md:py-10">
-          <div className="container mx-auto px-4">
-            <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-background border-primary/20">
-              <CardContent className="p-6 text-center">
-                <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                  Siap Melepaskan Stress?
-                </h2>
-                <p className="text-sm text-muted-foreground mb-4 max-w-2xl mx-auto">
-                  Booking sekarang dan rasakan pengalaman stress-release yang tidak akan Anda lupakan!
-                </p>
-                <Button size="lg" variant="hero" className="text-sm" asChild>
-                  <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
-                    Booking Sekarang
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
+        {/* Final CTA Section */}
+        <section className="py-20 px-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10">
+          <div className="container mx-auto max-w-4xl text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Siap Melepaskan Stress Anda?
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              Booking sekarang dan rasakan pengalaman pelepasan stress yang berbeda
+            </p>
+            <Button variant="hero" size="xl" asChild>
+              <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Booking via WhatsApp
+              </a>
+            </Button>
           </div>
         </section>
       </main>
