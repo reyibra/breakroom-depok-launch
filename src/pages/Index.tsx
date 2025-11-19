@@ -11,6 +11,7 @@ import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
 import safetyGear from "@/assets/safety-gear.jpg";
+import breakroomInterior from "@/assets/breakroom-interior.jpg";
 
 const Index = () => {
   const features = [
@@ -218,52 +219,47 @@ const Index = () => {
         </section>
 
         {/* What is Breakroom Section */}
-        <section id="tentang" className="py-12 md:py-20 px-4 bg-card">
-          <div className="container mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-              <div>
-                <Badge className="mb-3 md:mb-4 bg-accent text-accent-foreground text-xs md:text-sm">Apa itu Breakroom?</Badge>
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-                  Tempat <span className="text-gradient">Stress-Release</span> Pertama di Indonesia
-                </h2>
-                <p className="text-sm md:text-base lg:text-lg text-muted-foreground mb-4 md:mb-6">
-                  Breakroom Depok adalah ruang pelepasan emosi yang aman dan terkontrol. Di sini, kamu bisa melampiaskan stress, frustrasi, atau emosi terpendam dengan cara yang berbeda—hancurkan barang dalam lingkungan yang dirancang khusus untuk itu.
-                </p>
-                <p className="text-lg text-muted-foreground mb-6">
-                  Bukan hanya tentang menghancurkan barang. Ini tentang memberikan diri kamu ruang untuk melepaskan tekanan hidup dengan cara yang aman, legal, dan bahkan menyenangkan.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold mb-1">Aman & Terkontrol</h4>
-                      <p className="text-sm text-muted-foreground">Perlengkapan safety lengkap dan staff terlatih mendampingi setiap sesi</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold mb-1">Fleksibel & Private</h4>
-                      <p className="text-sm text-muted-foreground">Pilih durasi sesuai kebutuhan, tersedia untuk individu atau kelompok</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold mb-1">Pengalaman Unik</h4>
-                      <p className="text-sm text-muted-foreground">Cara yang berbeda dan efektif untuk melepaskan stress setelah minggu yang melelahkan</p>
-                    </div>
+        <section id="tentang" className="relative py-12 md:py-20 px-4 overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${breakroomInterior})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/60"></div>
+          </div>
+          
+          <div className="container mx-auto max-w-6xl relative z-10">
+            <div className="max-w-3xl">
+              <Badge className="mb-3 md:mb-4 bg-accent text-accent-foreground text-xs md:text-sm">Apa itu Breakroom?</Badge>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
+                Tempat <span className="text-gradient">Stress-Release</span> Pertama di Indonesia
+              </h2>
+              <p className="text-sm md:text-base lg:text-lg text-foreground/90 mb-4 md:mb-6">
+                Breakroom Depok adalah ruang pelepasan emosi yang aman dan terkontrol. Di sini, kamu bisa melampiaskan stress, frustrasi, atau emosi terpendam dengan cara yang berbeda—hancurkan barang dalam lingkungan yang dirancang khusus untuk itu.
+              </p>
+              <p className="text-lg text-foreground/80 mb-6">
+                Bukan hanya tentang menghancurkan barang. Ini tentang memberikan diri kamu ruang untuk melepaskan tekanan hidup dengan cara yang aman, legal, dan bahkan menyenangkan.
+              </p>
+              <div className="space-y-3 bg-card/80 backdrop-blur-sm p-6 rounded-lg border border-border">
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Aman & Terkontrol</h4>
+                    <p className="text-sm text-muted-foreground">Perlengkapan safety lengkap dan staff terlatih mendampingi setiap sesi</p>
                   </div>
                 </div>
-              </div>
-              <div className="relative">
-                <img 
-                  src={safetyGear} 
-                  alt="Safety Equipment"
-                  className="w-full h-auto rounded-lg shadow-2xl"
-                />
-                <div className="absolute top-4 left-4 bg-caution/90 backdrop-blur-sm px-4 py-2 rounded border border-caution">
-                  <span className="text-sm font-bold text-caution-foreground">100% AMAN</span>
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Fleksibel & Private</h4>
+                    <p className="text-sm text-muted-foreground">Pilih durasi sesuai kebutuhan, tersedia untuk individu atau kelompok</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Pengalaman Unik</h4>
+                    <p className="text-sm text-muted-foreground">Cara yang berbeda dan efektif untuk melepaskan stress setelah minggu yang melelahkan</p>
+                  </div>
                 </div>
               </div>
             </div>
