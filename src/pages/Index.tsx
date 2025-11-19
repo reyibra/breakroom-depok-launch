@@ -6,7 +6,7 @@ import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ReviewsSection } from "@/components/ReviewsSection";
-import TikTokEmbed from "@/components/TikTokEmbed";
+import VideoPlayer from "@/components/VideoPlayer";
 import heroImage from "@/assets/hero-breakroom.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
@@ -283,13 +283,13 @@ const Index = () => {
               </p>
             </div>
             
-            {/* TikTok Video & Photos */}
+            {/* Video Showcase & Photos */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {/* TikTok Video */}
+              {/* Video Showcase */}
               <div className="col-span-1 md:col-span-2 lg:col-span-2">
-                <TikTokEmbed 
-                  videoUrl="https://www.tiktok.com/@breakroom.depok/video/7565167808103894279"
-                  username="breakroom.depok"
+                <VideoPlayer 
+                  videoSrc="/videos/breakroom-showcase.mp4"
+                  className="aspect-video"
                 />
               </div>
               
