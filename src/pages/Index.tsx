@@ -285,12 +285,14 @@ const Index = () => {
             
             {/* Video Showcase & Photos */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {/* Video Showcase */}
-              <div className="col-span-1 md:col-span-2 lg:col-span-2">
-                <VideoPlayer 
-                  videoSrc="/videos/breakroom-showcase.mp4"
-                  className="aspect-video"
-                />
+              {/* Video Showcase - Portrait Format */}
+              <div className="col-span-1 flex justify-center">
+                <div className="max-w-md w-full">
+                  <VideoPlayer 
+                    videoSrc="/videos/breakroom-showcase.mp4"
+                    aspectRatio="portrait"
+                  />
+                </div>
               </div>
               
               {/* Photo Placeholders */}
