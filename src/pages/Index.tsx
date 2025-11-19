@@ -592,7 +592,7 @@ const Index = () => {
                       className="bg-background/90 backdrop-blur-md border-2 border-primary text-foreground hover:bg-primary hover:text-primary-foreground shadow-glow transition-all duration-300 hover:scale-105"
                     >
                       <a
-                        href="https://maps.app.goo.gl/kFx7dQBHFn5rQb7v5"
+                        href="https://www.google.com/maps/place/BREAKROOM+DEPOK/@-6.358136693631881,106.83900657630343,17z/data=!3m1!4b1!4m6!3m5!1s0x2e69ed00289e1189:0x76e086b5b8691047!8m2!3d-6.3581367!4d106.8416142!16s%2Fg%2F11y2ww1t_y?entry=ttu"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
