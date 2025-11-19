@@ -276,16 +276,24 @@ const Index = () => {
             <div className="text-center mb-8 md:mb-12">
               <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Lihat Aksi</Badge>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
-                Galeri & <span className="text-gradient">Video</span>
+                <span className="text-gradient">Galeri Video</span>
               </h2>
               <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
                 Lihat pengalaman nyata pelanggan kami dan rasakan sensasinya
               </p>
             </div>
             
-            {/* Video Showcase & Photos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {/* Video Showcase 1 - Portrait Format */}
+            {/* Video Gallery - 3 Videos Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {/* Horizontal Video - Full Width on Top */}
+              <div className="col-span-1 md:col-span-2">
+                <VideoPlayer 
+                  videoSrc="/videos/breakroom-horizontal.mp4"
+                  aspectRatio="landscape"
+                />
+              </div>
+              
+              {/* Vertical Video 1 */}
               <div className="col-span-1 flex justify-center">
                 <div className="max-w-md w-full">
                   <VideoPlayer 
@@ -295,7 +303,7 @@ const Index = () => {
                 </div>
               </div>
               
-              {/* Video Showcase 2 - Portrait Format */}
+              {/* Vertical Video 2 */}
               <div className="col-span-1 flex justify-center">
                 <div className="max-w-md w-full">
                   <VideoPlayer 
@@ -304,28 +312,6 @@ const Index = () => {
                   />
                 </div>
               </div>
-              
-              {/* Video Showcase 3 - Horizontal/Landscape Format */}
-              <div className="col-span-1 md:col-span-2 lg:col-span-1">
-                <VideoPlayer 
-                  videoSrc="/videos/breakroom-horizontal.mp4"
-                  aspectRatio="landscape"
-                />
-              </div>
-              
-              {/* Photo Placeholders */}
-              {[1, 2].map((i) => (
-                <Card key={i} className="bg-muted/30 border-2 border-dashed border-border overflow-hidden">
-                  <CardContent className="p-0 aspect-square flex items-center justify-center">
-                    <div className="text-center space-y-1.5 md:space-y-2">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-muted rounded-full mx-auto flex items-center justify-center">
-                        <span className="text-muted-foreground text-lg md:text-xl font-bold">{i}</span>
-                      </div>
-                      <p className="text-xs md:text-sm text-muted-foreground px-4">Foto aktivitas / ruangan</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
         </section>
