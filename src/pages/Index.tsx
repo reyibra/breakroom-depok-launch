@@ -550,14 +550,14 @@ const Index = () => {
         <ReviewsSection />
 
         {/* Location/Map Section */}
-        <section className="py-20 px-4 bg-card">
+        <section className="py-20 px-4 bg-gradient-to-b from-background to-card/50">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-12">
-              <Badge className="mb-4 bg-primary text-primary-foreground">Lokasi Kami</Badge>
+              <Badge className="mb-4 bg-primary text-primary-foreground shadow-glow">Lokasi Kami</Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Temukan <span className="text-gradient">Breakroom</span> Depok
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto mb-2">
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-2 text-lg">
                 📍 Kelapa Dua, Kota Depok, Jawa Barat
               </p>
               <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
@@ -565,42 +565,73 @@ const Index = () => {
               </p>
             </div>
 
-            <Card className="overflow-hidden border-border">
-              <CardContent className="p-0">
-                <div className="aspect-video w-full">
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.277342638673!2d106.83900657630343!3d-6.358136693631881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed00289e1189%3A0x76e086b5b8691047!2sBREAKROOM%20DEPOK!5e0!3m2!1sen!2sid!4v1763554402977!5m2!1sen!2sid" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Lokasi Breakroom Depok"
-                  />
-                </div>
-              </CardContent>
-            </Card>
+            <div className="relative group">
+              <Card className="overflow-hidden border-2 border-border shadow-glow hover:shadow-[0_0_50px_rgba(var(--primary),0.3)] transition-all duration-500">
+                <CardContent className="p-0 relative">
+                  <div className="aspect-video w-full relative overflow-hidden">
+                    {/* Gradient overlay for premium look */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.277342638673!2d106.83900657630343!3d-6.358136693631881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed00289e1189%3A0x76e086b5b8691047!2sBREAKROOM%20DEPOK!5e0!3m2!1sen!2sid!4v1763554402977!5m2!1sen!2sid" 
+                      width="100%" 
+                      height="100%" 
+                      style={{ border: 0 }} 
+                      allowFullScreen 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Lokasi Breakroom Depok"
+                      className="w-full h-full scale-100 group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  
+                  {/* Modern "View in Google Maps" button */}
+                  <div className="absolute bottom-4 right-4 z-20">
+                    <Button
+                      asChild
+                      className="bg-background/90 backdrop-blur-md border-2 border-primary text-foreground hover:bg-primary hover:text-primary-foreground shadow-glow transition-all duration-300 hover:scale-105"
+                    >
+                      <a
+                        href="https://maps.app.goo.gl/kFx7dQBHFn5rQb7v5"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <MapPin className="w-4 h-4 mr-2" />
+                        Buka di Google Maps
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <Card className="border-border">
-                <CardContent className="p-6">
-                  <MapPin className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h4 className="font-bold mb-2">Lokasi Strategis</h4>
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                    <MapPin className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <h4 className="font-bold mb-2 text-lg">Lokasi Strategis</h4>
                   <p className="text-sm text-muted-foreground">Dekat dengan Jakarta Selatan (Lenteng Agung, Pancoran)</p>
                 </CardContent>
               </Card>
-              <Card className="border-border">
-                <CardContent className="p-6">
-                  <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h4 className="font-bold mb-2">Akses Mudah</h4>
+              
+              <Card className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                    <Clock className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <h4 className="font-bold mb-2 text-lg">Akses Mudah</h4>
                   <p className="text-sm text-muted-foreground">15-25 menit dari area Jakarta Selatan</p>
                 </CardContent>
               </Card>
-              <Card className="border-border">
-                <CardContent className="p-6">
-                  <MessageCircle className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h4 className="font-bold mb-2">Hubungi Kami</h4>
+              
+              <Card className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                    <MessageCircle className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <h4 className="font-bold mb-2 text-lg">Hubungi Kami</h4>
                   <p className="text-sm text-muted-foreground">Via WhatsApp untuk petunjuk arah detail</p>
                 </CardContent>
               </Card>
