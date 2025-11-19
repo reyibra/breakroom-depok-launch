@@ -558,20 +558,17 @@ const Index = () => {
 
             <Card className="overflow-hidden border-border">
               <CardContent className="p-0">
-                {/* Placeholder for Google Maps embed */}
-                <div className="aspect-video bg-muted/30 flex items-center justify-center border-2 border-dashed border-border">
-                  <div className="text-center space-y-3 p-8">
-                    <MapPin className="w-12 h-12 text-muted-foreground mx-auto" />
-                    <p className="text-muted-foreground font-medium">Embed Google Maps di sini</p>
-                    <p className="text-sm text-muted-foreground max-w-md">
-                      Masukkan iframe Google Maps untuk lokasi: Kelapa Dua, Depok
-                    </p>
-                    <div className="pt-4">
-                      <code className="text-xs bg-muted px-3 py-1 rounded">
-                        &lt;iframe src="https://maps.google.com/..."&gt;&lt;/iframe&gt;
-                      </code>
-                    </div>
-                  </div>
+                <div className="aspect-video w-full">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.277342638673!2d106.83900657630343!3d-6.358136693631881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed00289e1189%3A0x76e086b5b8691047!2sBREAKROOM%20DEPOK!5e0!3m2!1sen!2sid!4v1763554402977!5m2!1sen!2sid" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Lokasi Breakroom Depok"
+                  />
                 </div>
               </CardContent>
             </Card>
