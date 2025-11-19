@@ -289,7 +289,7 @@ const Index = () => {
               <div className="col-span-1 flex justify-center">
                 <div className="max-w-md w-full">
                   <VideoPlayer 
-                    videoSrc="/videos/breakroom-showcase.mp4"
+                    videoSrc="/videos/tiktok-vertical.mp4"
                     aspectRatio="portrait"
                   />
                 </div>
