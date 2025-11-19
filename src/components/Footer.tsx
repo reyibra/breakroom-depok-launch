@@ -9,9 +9,11 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-2 mb-3 md:mb-4">
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded flex items-center justify-center font-bold text-primary-foreground text-sm md:text-base">
-                BR
-              </div>
+              <img 
+                src="/src/assets/breakroom-logo-footer.jpg" 
+                alt="Breakroom Depok Logo" 
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
+              />
               <span className="text-lg md:text-xl font-bold">Breakroom Depok</span>
             </div>
             <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">
@@ -55,24 +57,19 @@ const Footer = () => {
             <h3 className="text-sm md:text-base font-bold mb-3 md:mb-4 text-foreground">Link Cepat</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <a href="#hero" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Beranda
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/rooms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Ruangan
-                </Link>
+                <a href="#services" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Layanan
+                </a>
               </li>
               <li>
-                <Link to="/booking" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Booking
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <a href="#about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Tentang & Keamanan
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
