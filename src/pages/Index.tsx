@@ -284,8 +284,8 @@ const Index = () => {
             </div>
             
             {/* Video Gallery - 3 Videos Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {/* Horizontal Video - Full Width on Top */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+              {/* Horizontal Video - Constrained Width */}
               <div className="col-span-1 md:col-span-2">
                 <VideoPlayer 
                   videoSrc="/videos/breakroom-horizontal.mp4"
