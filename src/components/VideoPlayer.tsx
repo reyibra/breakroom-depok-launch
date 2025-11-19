@@ -25,7 +25,7 @@ const VideoPlayer = ({
           autoPlay
           loop
           muted
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover"
           poster={posterSrc}
           preload="metadata"
           playsInline
