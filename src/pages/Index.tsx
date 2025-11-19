@@ -527,36 +527,6 @@ const Index = () => {
         {/* Reviews Section */}
         <ReviewsSection />
 
-        {/* Contact Section */}
-        <section className="py-20 px-4">
-          <div className="container mx-auto max-w-4xl">
-            <Card className="border-2 border-primary/20 bg-gradient-to-br from-card to-primary/5">
-              <CardContent className="p-12 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Masih Ada <span className="text-gradient">Pertanyaan?</span>
-                </h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  Hubungi kami melalui Instagram atau WhatsApp untuk informasi lebih lanjut
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button variant="hero" size="lg" asChild>
-                    <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="mr-2 h-5 w-5" />
-                      WhatsApp
-                    </a>
-                  </Button>
-                  <Button variant="outline" size="lg" asChild>
-                    <a href="https://instagram.com/breakroom.depok" target="_blank" rel="noopener noreferrer">
-                      <Instagram className="mr-2 h-5 w-5" />
-                      Instagram
-                    </a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
         {/* Location/Map Section */}
         <section className="py-20 px-4 bg-card">
           <div className="container mx-auto max-w-6xl">
@@ -616,23 +586,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Final CTA Section */}
-        <section className="py-20 px-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10">
-          <div className="container mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Siap Melepaskan Stress Anda?
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Booking sekarang dan rasakan pengalaman pelepasan stress yang berbeda
-            </p>
-            <Button variant="hero" size="xl" asChild>
-              <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="mr-2 h-5 w-5" />
-                Booking via WhatsApp
-              </a>
-            </Button>
-          </div>
-        </section>
       </main>
 
       <Footer />
