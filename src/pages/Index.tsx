@@ -305,8 +305,16 @@ const Index = () => {
                 </div>
               </div>
               
+              {/* Video Showcase 3 - Horizontal/Landscape Format */}
+              <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                <VideoPlayer 
+                  videoSrc="/videos/breakroom-horizontal.mp4"
+                  aspectRatio="landscape"
+                />
+              </div>
+              
               {/* Photo Placeholders */}
-              {[1, 2, 3].map((i) => (
+              {[1, 2].map((i) => (
                 <Card key={i} className="bg-muted/30 border-2 border-dashed border-border overflow-hidden">
                   <CardContent className="p-0 aspect-square flex items-center justify-center">
                     <div className="text-center space-y-1.5 md:space-y-2">
