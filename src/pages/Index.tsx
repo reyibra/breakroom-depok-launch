@@ -267,9 +267,9 @@ const Index = () => {
         </section>
 
         {/* Gallery/Video Section */}
-        <section className="py-12 md:py-20 px-4">
+        <section className="py-12 md:py-20 px-4 bg-gradient-to-b from-background to-card/30">
           <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-8 md:mb-12">
+            <div className="text-center mb-8 md:mb-12 animate-fade-in">
               <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Lihat Aksi</Badge>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
                 <span className="text-gradient">Galeri Video</span>
@@ -279,34 +279,56 @@ const Index = () => {
               </p>
             </div>
             
-            {/* Video Gallery - 3 Videos Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+            {/* Video Gallery - 3 Videos Layout with Animations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
               {/* Horizontal Video - Constrained Width */}
-              <div className="col-span-1 md:col-span-2">
+              <div className="col-span-1 md:col-span-2 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'backwards' }}>
                 <VideoPlayer 
                   videoSrc="/videos/breakroom-horizontal.mp4"
                   aspectRatio="landscape"
+                  title="Breakroom Experience"
                 />
               </div>
               
               {/* Vertical Video 1 */}
-              <div className="col-span-1 flex justify-center">
+              <div className="col-span-1 flex justify-center animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'backwards' }}>
                 <div className="max-w-md w-full">
                   <VideoPlayer 
                     videoSrc="/videos/tiktok-vertical.mp4"
                     aspectRatio="portrait"
+                    title="Stress Release Session"
                   />
                 </div>
               </div>
               
               {/* Vertical Video 2 */}
-              <div className="col-span-1 flex justify-center">
+              <div className="col-span-1 flex justify-center animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'backwards' }}>
                 <div className="max-w-md w-full">
                   <VideoPlayer 
                     videoSrc="/videos/tiktok-vertical-2.mp4"
                     aspectRatio="portrait"
+                    title="Behind The Scenes"
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Social Media CTA */}
+            <div className="text-center mt-8 md:mt-12 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'backwards' }}>
+              <p className="text-muted-foreground mb-4">Ikuti kami untuk konten lebih banyak</p>
+              <div className="flex gap-4 justify-center">
+                <Button variant="outline" size="lg" asChild className="group">
+                  <a href="https://www.instagram.com/breakroom.depok/" target="_blank" rel="noopener noreferrer">
+                    <Instagram className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Instagram
+                  </a>
+                </Button>
+                <Button variant="outline" size="lg" asChild className="group">
+                  <a href="https://www.tiktok.com/@breakroom.depok" target="_blank" rel="noopener noreferrer">
+                    <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    TikTok
+                  </a>
+                </Button>
               </div>
             </div>
           </div>
