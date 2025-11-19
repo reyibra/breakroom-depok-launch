@@ -22,6 +22,9 @@ const VideoPlayer = ({
       <div className={`${aspectClasses[aspectRatio]} flex items-center justify-center bg-black`}>
         <video
           controls
+          autoPlay
+          loop
+          muted
           className="w-full h-full object-contain"
           poster={posterSrc}
           preload="metadata"
