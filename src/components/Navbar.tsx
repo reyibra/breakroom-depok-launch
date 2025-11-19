@@ -11,7 +11,6 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Beranda", path: "#hero" },
-    { name: "Ruangan", path: "#rooms" },
     { name: "Tentang & Keamanan", path: "#about" },
   ];
 
@@ -38,7 +37,7 @@ const Navbar = () => {
               </a>
             ))}
             <Button variant="hero" size="sm" asChild>
-              <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
                 Booking Sekarang
               </a>
             </Button>
@@ -68,7 +67,7 @@ const Navbar = () => {
               </a>
             ))}
             <Button variant="hero" size="sm" className="w-full" asChild>
-              <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
+              <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
                 Booking Sekarang
               </a>
             </Button>
