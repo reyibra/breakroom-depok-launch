@@ -203,13 +203,13 @@ const Index = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <Button variant="hero" size="lg" className="text-sm md:text-base" asChild>
-                <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                   Booking via WhatsApp
                 </a>
               </Button>
               <Button variant="outline" size="lg" className="text-sm md:text-base" asChild>
-                <a href="#rooms">Lihat Ruangan</a>
+                <a href="#konsultasi">Lihat Layanan</a>
               </Button>
             </div>
           </div>
@@ -334,70 +334,87 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Rooms Detail Section */}
-        <section id="rooms" className="py-12 md:py-20 px-4 bg-card">
+        {/* Psychology Consultation Section */}
+        <section id="konsultasi" className="py-12 md:py-20 px-4 bg-card">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-8 md:mb-12">
-              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Pilih Ruangan Anda</Badge>
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Layanan Konsultasi</Badge>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
-                Temukan <span className="text-gradient">Ruangan</span> yang Tepat
+                Konsultasi <span className="text-gradient">Psikologi</span>
               </h2>
               <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
-                Setiap ruangan dirancang untuk memberikan pengalaman pelepasan stress yang aman dan memuaskan
+                Kami menyediakan layanan konsultasi psikologi untuk membantu Anda mengatasi stress dan masalah emosional
               </p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-              {roomDetails.map((room) => (
-                <Card key={room.id} className="overflow-hidden border-2 border-border hover:border-primary transition-colors">
-                  <div className="relative h-64 md:h-80 overflow-hidden">
-                    <img 
-                      src={room.image} 
-                      alt={room.name}
-                      className="w-full h-full object-cover"
-                    />
-                    {room.badge && (
-                      <Badge className="absolute top-3 right-3 md:top-4 md:right-4 bg-primary text-primary-foreground text-xs md:text-sm">
-                        {room.badge}
-                      </Badge>
-                    )}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
+              <Card className="overflow-hidden border-2 border-border hover:border-primary transition-colors">
+                <CardContent className="p-6 md:p-8">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="w-8 h-8 text-primary" />
                   </div>
-                  
-                  <CardHeader className="p-4 md:p-6">
-                    <CardTitle className="text-2xl md:text-3xl">{room.name}</CardTitle>
-                    <p className="text-sm md:text-base text-muted-foreground">{room.description}</p>
-                  </CardHeader>
+                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-center">Konsultasi Online</h3>
+                  <p className="text-sm md:text-base text-muted-foreground text-center mb-4">
+                    Konsultasi dengan psikolog profesional dari mana saja melalui video call atau chat
+                  </p>
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-start gap-2 text-sm">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>Fleksibel dan nyaman dari rumah</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-sm">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>Privasi terjamin</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-sm">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>Jadwal yang dapat disesuaikan</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
 
-                  <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6 pt-0 md:pt-0">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl md:text-4xl font-bold text-primary">{room.price}</span>
-                      <span className="text-sm md:text-base text-muted-foreground">/ {room.duration}</span>
-                    </div>
+              <Card className="overflow-hidden border-2 border-border hover:border-primary transition-colors">
+                <CardContent className="p-6 md:p-8">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                    <MapPin className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-center">Konsultasi Offline</h3>
+                  <p className="text-sm md:text-base text-muted-foreground text-center mb-4">
+                    Bertemu langsung dengan psikolog di lokasi Breakroom Depok
+                  </p>
+                  <ul className="space-y-2 mb-6">
+                    <li className="flex items-start gap-2 text-sm">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>Interaksi tatap muka langsung</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-sm">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>Ruang konsultasi yang nyaman</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-sm">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>Suasana yang mendukung</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
 
-                    <div className="flex gap-3 md:gap-4 text-xs md:text-sm">
-                      <Badge variant="outline" className="text-xs md:text-sm">⏱️ {room.duration}</Badge>
-                      <Badge variant="outline" className="text-xs md:text-sm">👥 {room.capacity}</Badge>
-                    </div>
-
-                    <div className="space-y-2 md:space-y-3">
-                      <h4 className="font-semibold text-xs md:text-sm uppercase tracking-wide">Yang Anda Dapatkan:</h4>
-                      {room.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-start gap-2">
-                          <Check className="w-4 h-4 md:w-5 md:h-5 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-xs md:text-sm text-muted-foreground">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <Button variant="hero" className="w-full text-sm md:text-base" size="lg" asChild>
-                      <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
-                        <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-                        Booking {room.name}
-                      </a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="text-center">
+              <Card className="inline-block border-2 border-primary/20 bg-gradient-to-br from-card to-primary/5">
+                <CardContent className="p-6 md:p-8">
+                  <p className="text-base md:text-lg font-semibold mb-4">
+                    Untuk informasi lebih lanjut dan booking konsultasi
+                  </p>
+                  <Button variant="hero" size="lg" asChild>
+                    <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="mr-2 h-5 w-5" />
+                      Hubungi via WhatsApp
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -523,7 +540,7 @@ const Index = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button variant="hero" size="lg" asChild>
-                    <a href="https://wa.me/62YOUR_NUMBER" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-2 h-5 w-5" />
                       WhatsApp
                     </a>
