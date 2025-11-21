@@ -188,8 +188,25 @@ export const PromoSection = () => {
           refetch();
         }
       )
-      .subscribe((status) => {
-        console.log("📡 Promos subscription:", status);
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "promos",
+        },
+        () => {
+          console.log("📡 Promo deleted");
+          refetch();
+        }
+      )
+      .subscribe((status, err) => {
+        if (err) {
+          console.error("❌ Promos subscription error:", err);
+          refetch();
+        } else {
+          console.log("📡 Promos subscription:", status);
+        }
       });
 
     return () => {

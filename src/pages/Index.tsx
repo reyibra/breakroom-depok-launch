@@ -32,7 +32,7 @@ interface TimeLeft {
 const Index = () => {
   const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const carouselRef = useRef<any>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const [isCarouselInView, setIsCarouselInView] = useState(true);
   
   const { data: activePromos } = useQuery({
@@ -61,38 +61,27 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Optimize carousel: pause autoplay when not in viewport
+  // Optimize carousel: observe when in viewport
   useEffect(() => {
-    if (!carouselRef.current) return;
+    const carouselElement = carouselRef.current;
+    if (!carouselElement) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           setIsCarouselInView(entry.isIntersecting);
-          
-          // Access the Embla API and control autoplay
-          const emblaApi = carouselRef.current?.api;
-          if (emblaApi) {
-            const autoplayPlugin = emblaApi.plugins()?.autoplay;
-            if (autoplayPlugin) {
-              if (entry.isIntersecting) {
-                autoplayPlugin.play();
-              } else {
-                autoplayPlugin.stop();
-              }
-            }
-          }
         });
       },
       { threshold: 0.3 }
     );
 
-    const carouselElement = document.querySelector('[data-carousel-container]');
-    if (carouselElement) {
-      observer.observe(carouselElement);
-    }
+    observer.observe(carouselElement);
 
-    return () => observer.disconnect();
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+    };
   }, [activePromos]);
 
   useEffect(() => {
@@ -473,11 +462,10 @@ const Index = () => {
           {/* Promo Badge - Center Top - Pill/Capsule Responsive */}
           {activePromos && activePromos.length > 0 && (
             <div 
+              ref={carouselRef}
               className="absolute top-16 md:top-24 left-1/2 -translate-x-1/2 z-30 w-[160px] md:w-auto md:max-w-3xl animate-fade-in"
-              data-carousel-container
             >
               <Carousel
-                ref={carouselRef}
                 opts={{ 
                   loop: true,
                   skipSnaps: false,
