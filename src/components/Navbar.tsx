@@ -16,6 +16,25 @@ const Navbar = () => {
     { name: "Tentang & Keamanan", path: "#about" },
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    setIsOpen(false);
+    
+    const targetId = path.replace('#', '');
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      const navbarHeight = 64; // Height of fixed navbar
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4">
@@ -31,6 +50,7 @@ const Navbar = () => {
               <a
                 key={link.path}
                 href={link.path}
+                onClick={(e) => handleNavClick(e, link.path)}
                 className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
               >
                 {link.name}
@@ -60,8 +80,8 @@ const Navbar = () => {
               <a
                 key={link.path}
                 href={link.path}
+                onClick={(e) => handleNavClick(e, link.path)}
                 className="block py-2 text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
-                onClick={() => setIsOpen(false)}
               >
                 {link.name}
               </a>
