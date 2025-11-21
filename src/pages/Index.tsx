@@ -293,191 +293,87 @@ const Index = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
           </div>
           
-          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-            {/* Promo Carousel - Enhanced Design */}
-            {activePromos && activePromos.length > 0 && (
-              <div className="mb-6 md:mb-8 animate-fade-in">
-                <div className="relative">
-                  {/* Carousel Container */}
-                  <div className="overflow-hidden" ref={emblaRef}>
-                    <div className="flex">
-                      {activePromos.map((promo) => {
-                        const showCountdown = promoTimers[promo.id];
-                        
-                        return (
-                          <div key={promo.id} className="flex-[0_0_100%] min-w-0 px-2">
-                            <Card className="max-w-2xl mx-auto border-2 border-primary/40 bg-gradient-to-br from-card/95 via-card/90 to-primary/5 backdrop-blur-md shadow-[0_0_30px_rgba(255,102,0,0.3)] hover:shadow-[0_0_50px_rgba(255,102,0,0.5)] transition-all duration-300 overflow-hidden group">
-                              {/* Animated Background Effect */}
-                              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-caution/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          {/* Promo Badge - Top Right Corner - Minimal Glass Morphism */}
+          {activePromos && activePromos.length > 0 && (
+            <div className="absolute top-24 right-4 md:top-28 md:right-8 z-30 animate-fade-in">
+              <div className="overflow-hidden" ref={emblaRef}>
+                <div className="flex">
+                  {activePromos.map((promo) => {
+                    const showCountdown = promoTimers[promo.id];
+                    
+                    return (
+                      <div key={promo.id} className="flex-[0_0_100%] min-w-0">
+                        <div className="relative group">
+                          {/* Glass morphism badge */}
+                          <div className="bg-background/20 backdrop-blur-xl border border-primary/40 rounded-2xl p-3 md:p-4 shadow-[0_8px_32px_rgba(255,102,0,0.3)] hover:shadow-[0_12px_40px_rgba(255,102,0,0.5)] transition-all duration-300 hover:scale-105 min-w-[200px] md:min-w-[240px]">
+                            {/* Discount badge - corner */}
+                            {promo.discount_percentage && (
+                              <div className="absolute -top-2 -right-2 bg-gradient-to-br from-caution to-primary text-background text-xs md:text-sm font-black px-2 py-1 rounded-lg shadow-lg">
+                                -{promo.discount_percentage}%
+                              </div>
+                            )}
+                            
+                            <div className="space-y-2">
+                              {/* Title */}
+                              <h4 className="text-xs md:text-sm font-bold text-foreground/90 line-clamp-1">
+                                {promo.title}
+                              </h4>
                               
-                              {/* Discount Badge - Top Right */}
-                              {promo.discount_percentage && (
-                                <div className="absolute top-4 right-4 z-10">
-                                  <div className="relative">
-                                    <div className="bg-gradient-to-br from-caution via-primary to-caution p-4 rounded-2xl shadow-lg">
-                                      <div className="text-center">
-                                        <div className="text-3xl md:text-4xl font-black text-background leading-none">
-                                          {promo.discount_percentage}%
-                                        </div>
-                                        <div className="text-[10px] font-bold text-background/90 uppercase tracking-wider">
-                                          OFF
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="absolute inset-0 bg-caution/30 rounded-2xl blur-xl -z-10 animate-pulse"></div>
+                              {/* Promo Code */}
+                              {promo.promo_code && (
+                                <div className="bg-primary/20 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-dashed border-primary/50">
+                                  <div className="flex items-center justify-center gap-1.5">
+                                    <Tag className="w-3 h-3 text-primary" />
+                                    <span className="text-base md:text-lg font-black font-mono text-primary tracking-wider">
+                                      {promo.promo_code}
+                                    </span>
                                   </div>
                                 </div>
                               )}
-
-                              <CardContent className="p-6 md:p-8 space-y-4 relative">
-                                {/* Promo Image */}
-                                {promo.image_url && (
-                                  <div className="mb-6 rounded-xl overflow-hidden border-2 border-primary/20 shadow-md">
-                                    <img 
-                                      src={promo.image_url} 
-                                      alt={promo.title}
-                                      className="w-full h-40 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                  </div>
-                                )}
-
-                                {/* Title with Icon */}
-                                <div className="flex items-center justify-center gap-3 mb-4">
-                                  <Sparkles className="w-6 h-6 text-caution animate-pulse" />
-                                  <h3 className="text-2xl md:text-3xl font-black text-foreground group-hover:text-primary transition-colors">
-                                    {promo.title}
-                                  </h3>
-                                  <Sparkles className="w-6 h-6 text-caution animate-pulse" />
-                                </div>
-
-                                {/* Promo Code - Featured Display */}
-                                {promo.promo_code && (
-                                  <div className="relative">
-                                    <div className="bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 p-4 rounded-xl border-2 border-dashed border-primary/50 backdrop-blur-sm">
-                                      <div className="flex items-center justify-center gap-3">
-                                        <Tag className="w-5 h-5 md:w-6 md:h-6 text-primary animate-pulse" />
-                                        <div className="text-center">
-                                          <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">Gunakan Kode</p>
-                                          <p className="text-3xl md:text-4xl font-black font-mono text-primary tracking-widest">
-                                            {promo.promo_code}
-                                          </p>
-                                        </div>
-                                        <Tag className="w-5 h-5 md:w-6 md:h-6 text-primary animate-pulse" />
-                                      </div>
-                                    </div>
-                                    {/* Glow effect */}
-                                    <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg -z-10"></div>
-                                  </div>
-                                )}
-
-                                {/* Description */}
-                                <p className="text-sm md:text-base text-muted-foreground text-center leading-relaxed">
-                                  {promo.description}
-                                </p>
-
-                                {/* Countdown Timer */}
-                                {showCountdown && (
-                                  <div className="bg-gradient-to-r from-caution/10 via-caution/20 to-caution/10 p-4 rounded-xl border-2 border-caution/30">
-                                    <div className="flex items-center justify-center gap-2 mb-3">
-                                      <Clock className="w-5 h-5 text-caution animate-pulse" />
-                                      <span className="text-sm font-bold text-caution uppercase tracking-wider">
-                                        Promo Berakhir Dalam
-                                      </span>
-                                    </div>
-                                    <div className="grid grid-cols-4 gap-3">
-                                      {[
-                                        { value: showCountdown.days, label: 'Hari' },
-                                        { value: showCountdown.hours, label: 'Jam' },
-                                        { value: showCountdown.minutes, label: 'Menit' },
-                                        { value: showCountdown.seconds, label: 'Detik' },
-                                      ].map((item, index) => (
-                                        <div key={index} className="text-center">
-                                          <div className="bg-background/80 backdrop-blur-sm rounded-lg p-3 border-2 border-border shadow-md">
-                                            <div className="text-2xl md:text-3xl font-black text-primary">
-                                              {String(item.value).padStart(2, '0')}
-                                            </div>
-                                            <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">
-                                              {item.label}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-
-                                {/* Validity Date (when no countdown) */}
-                                {!showCountdown && (
-                                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border/50">
-                                    <Clock className="w-4 h-4" />
-                                    <span>
-                                      Berlaku hingga {new Date(promo.end_date).toLocaleDateString('id-ID', {
-                                        day: 'numeric',
-                                        month: 'long',
-                                        year: 'numeric'
-                                      })}
+                              
+                              {/* Countdown Timer - Compact */}
+                              {showCountdown && (
+                                <div className="space-y-1">
+                                  <div className="flex items-center justify-center gap-1">
+                                    <Clock className="w-3 h-3 text-caution" />
+                                    <span className="text-[9px] md:text-[10px] text-caution font-semibold uppercase tracking-wide">
+                                      Berakhir
                                     </span>
                                   </div>
-                                )}
-
-                                {/* CTA Button */}
-                                <Button 
-                                  variant="default" 
-                                  size="lg"
-                                  className="w-full mt-4 text-base font-bold shadow-glow hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all"
-                                  asChild
-                                >
-                                  <a 
-                                    href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking%20dengan%20promo%20${encodeURIComponent(promo.promo_code || promo.title)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <MessageCircle className="mr-2 h-5 w-5" />
-                                    Gunakan Promo Sekarang
-                                    <Sparkles className="ml-2 h-5 w-5 animate-pulse" />
-                                  </a>
-                                </Button>
-                              </CardContent>
-                            </Card>
+                                  <div className="grid grid-cols-4 gap-1">
+                                    {[
+                                      { value: showCountdown.days, label: 'H' },
+                                      { value: showCountdown.hours, label: 'J' },
+                                      { value: showCountdown.minutes, label: 'M' },
+                                      { value: showCountdown.seconds, label: 'D' },
+                                    ].map((item, index) => (
+                                      <div key={index} className="text-center bg-background/40 backdrop-blur-sm rounded-md p-1">
+                                        <div className="text-sm md:text-base font-black text-primary leading-none">
+                                          {String(item.value).padStart(2, '0')}
+                                        </div>
+                                        <div className="text-[8px] text-muted-foreground uppercase">
+                                          {item.label}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Navigation Buttons - Only show if more than 1 promo */}
-                  {activePromos.length > 1 && (
-                    <>
-                      <button
-                        onClick={scrollPrev}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-primary/90 hover:bg-primary text-primary-foreground rounded-full p-3 shadow-glow hover:shadow-[0_0_30px_rgba(255,102,0,0.6)] transition-all z-10"
-                        aria-label="Previous promo"
-                      >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
-                        </svg>
-                      </button>
-                      <button
-                        onClick={scrollNext}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-primary/90 hover:bg-primary text-primary-foreground rounded-full p-3 shadow-glow hover:shadow-[0_0_30px_rgba(255,102,0,0.6)] transition-all z-10"
-                        aria-label="Next promo"
-                      >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    </>
-                  )}
-
-                  {/* Promo Counter Badge */}
-                  {activePromos.length > 1 && (
-                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-primary/90 text-primary-foreground px-4 py-1 rounded-full text-xs font-bold shadow-md">
-                      {activePromos.length} Promo Aktif
-                    </div>
-                  )}
+                          
+                          {/* Glow effect */}
+                          <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl -z-10 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            )}
+            </div>
+          )}
+          
+          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
 
             <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6">
               <span className="text-gradient">Luapkan,</span>{" "}
