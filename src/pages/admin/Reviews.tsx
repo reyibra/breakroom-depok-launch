@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Check, X, Star, Trash2 } from "lucide-react";
 import {
@@ -32,6 +33,7 @@ const Reviews = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRating, setSelectedRating] = useState<number | "all">("all");
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest" | "highest" | "lowest">("latest");
+  const [selectedReviews, setSelectedReviews] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
   useEffect(() => {
@@ -162,6 +164,99 @@ const Reviews = () => {
     }
   };
 
+  const handleBulkApprove = async () => {
+    try {
+      const ids = Array.from(selectedReviews);
+      const { error } = await supabase
+        .from("reviews")
+        .update({ is_approved: true })
+        .in("id", ids);
+
+      if (error) throw error;
+
+      toast({
+        title: "Berhasil",
+        description: `${ids.length} review berhasil di-approve`,
+      });
+      setSelectedReviews(new Set());
+      fetchReviews();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal approve reviews",
+      });
+    }
+  };
+
+  const handleBulkReject = async () => {
+    try {
+      const ids = Array.from(selectedReviews);
+      const { error } = await supabase
+        .from("reviews")
+        .update({ is_approved: false })
+        .in("id", ids);
+
+      if (error) throw error;
+
+      toast({
+        title: "Berhasil",
+        description: `${ids.length} review berhasil di-reject`,
+      });
+      setSelectedReviews(new Set());
+      fetchReviews();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal reject reviews",
+      });
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    try {
+      const ids = Array.from(selectedReviews);
+      const { error } = await supabase
+        .from("reviews")
+        .delete()
+        .in("id", ids);
+
+      if (error) throw error;
+
+      toast({
+        title: "Berhasil",
+        description: `${ids.length} review berhasil dihapus`,
+      });
+      setSelectedReviews(new Set());
+      fetchReviews();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal menghapus reviews",
+      });
+    }
+  };
+
+  const toggleSelectReview = (id: string) => {
+    const newSelected = new Set(selectedReviews);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedReviews(newSelected);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedReviews.size === sortedReviews.length) {
+      setSelectedReviews(new Set());
+    } else {
+      setSelectedReviews(new Set(sortedReviews.map(r => r.id)));
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -260,6 +355,66 @@ const Reviews = () => {
         </CardContent>
       </Card>
 
+      {/* Bulk Actions */}
+      {selectedReviews.size > 0 && (
+        <Card className="border-primary">
+          <CardContent className="pt-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-medium">
+                {selectedReviews.size} review dipilih
+              </span>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={handleBulkApprove}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <Check className="w-4 h-4 mr-1" />
+                  Approve Semua
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleBulkReject}
+                >
+                  <X className="w-4 h-4 mr-1" />
+                  Reject Semua
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button size="sm" variant="destructive">
+                      <Trash2 className="w-4 h-4 mr-1" />
+                      Hapus Semua
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Hapus {selectedReviews.size} Review?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Review yang dipilih akan dihapus permanen dan tidak bisa dikembalikan.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Batal</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleBulkDelete}>
+                        Hapus
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setSelectedReviews(new Set())}
+                >
+                  Batal
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Filters */}
       <Card>
         <CardContent className="pt-6">
@@ -329,24 +484,49 @@ const Reviews = () => {
       </Card>
 
       {/* Reviews List */}
-      <div className="grid gap-4">
-        {sortedReviews.length === 0 ? (
-          <Card>
-            <CardContent className="pt-6 text-center text-muted-foreground">
-              Tidak ada review yang sesuai dengan filter
-            </CardContent>
-          </Card>
-        ) : (
-          sortedReviews.map((review) => (
-          <Card key={review.id}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-lg">{review.name}</CardTitle>
-                  {review.role && (
-                    <p className="text-sm text-muted-foreground">{review.role}</p>
-                  )}
-                </div>
+      <div className="space-y-4">
+        {/* Select All Header */}
+        {sortedReviews.length > 0 && (
+          <div className="flex items-center gap-3 px-1">
+            <Checkbox
+              checked={selectedReviews.size === sortedReviews.length && sortedReviews.length > 0}
+              onCheckedChange={toggleSelectAll}
+              id="select-all"
+            />
+            <label
+              htmlFor="select-all"
+              className="text-sm font-medium cursor-pointer select-none"
+            >
+              Pilih Semua ({sortedReviews.length})
+            </label>
+          </div>
+        )}
+
+        <div className="grid gap-4">
+          {sortedReviews.length === 0 ? (
+            <Card>
+              <CardContent className="pt-6 text-center text-muted-foreground">
+                Tidak ada review yang sesuai dengan filter
+              </CardContent>
+            </Card>
+          ) : (
+            sortedReviews.map((review) => (
+            <Card key={review.id} className={selectedReviews.has(review.id) ? "border-primary" : ""}>
+              <CardHeader>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3 flex-1">
+                    <Checkbox
+                      checked={selectedReviews.has(review.id)}
+                      onCheckedChange={() => toggleSelectReview(review.id)}
+                      id={`review-${review.id}`}
+                    />
+                    <div>
+                      <CardTitle className="text-lg">{review.name}</CardTitle>
+                      {review.role && (
+                        <p className="text-sm text-muted-foreground">{review.role}</p>
+                      )}
+                    </div>
+                  </div>
                 <div className="flex items-center gap-2">
                   <Badge variant={review.is_approved ? "default" : "secondary"}>
                     {review.is_approved ? "Approved" : "Pending"}
@@ -407,8 +587,9 @@ const Reviews = () => {
               </div>
             </CardContent>
           </Card>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
