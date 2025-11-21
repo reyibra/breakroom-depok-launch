@@ -349,6 +349,9 @@ const Index = () => {
           </div>
         </section>
 
+        {/* News Section */}
+        <NewsSection />
+
         {/* Features Section */}
         <section className="py-12 md:py-20 px-4">
           <div className="container mx-auto max-w-6xl">
@@ -563,9 +566,6 @@ const Index = () => {
 
         {/* Reviews Section */}
         <ReviewsSection />
-
-        {/* News Section */}
-        <NewsSection />
 
         {/* Location/Map Section */}
         <section className="py-20 px-4 bg-gradient-to-b from-background to-card/50">
