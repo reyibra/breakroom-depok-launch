@@ -55,6 +55,15 @@ const Promos = () => {
   const [promos, setPromos] = useState<Promo[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewData, setPreviewData] = useState<{
+    title: string;
+    description: string;
+    discount_percentage: string;
+    start_date: string;
+    end_date: string;
+    image_url: string;
+  } | null>(null);
   const [editingPromo, setEditingPromo] = useState<Promo | null>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -150,6 +159,44 @@ const Promos = () => {
         description: "Gagal menyimpan promo",
       });
     }
+  };
+
+  const handlePreview = () => {
+    const validation = promoSchema.safeParse({
+      ...formData,
+      discount_percentage: formData.discount_percentage ? Number(formData.discount_percentage) : undefined,
+    });
+    
+    if (!validation.success) {
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: validation.error.errors[0].message,
+      });
+      return;
+    }
+
+    setPreviewData({
+      title: formData.title,
+      description: formData.description,
+      discount_percentage: formData.discount_percentage,
+      start_date: formData.start_date,
+      end_date: formData.end_date,
+      image_url: formData.image_url,
+    });
+    setPreviewOpen(true);
+  };
+
+  const handlePreviewExisting = (item: Promo) => {
+    setPreviewData({
+      title: item.title,
+      description: item.description,
+      discount_percentage: item.discount_percentage?.toString() || "",
+      start_date: item.start_date.split("T")[0],
+      end_date: item.end_date.split("T")[0],
+      image_url: item.image_url || "",
+    });
+    setPreviewOpen(true);
   };
 
   const handleEdit = (item: Promo) => {
@@ -296,12 +343,79 @@ const Promos = () => {
                 />
               </div>
               <DialogFooter>
+                <Button type="button" variant="outline" onClick={handlePreview}>
+                  <Eye className="w-4 h-4 mr-2" />
+                  Preview
+                </Button>
                 <Button type="submit">{editingPromo ? "Update" : "Tambah"}</Button>
               </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* Preview Dialog */}
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Preview Promo</DialogTitle>
+            <DialogDescription>
+              Tampilan promo seperti yang akan dilihat pengunjung website
+            </DialogDescription>
+          </DialogHeader>
+          {previewData && (
+            <div className="space-y-4">
+              <Card className="border-2 border-primary/30">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CardTitle className="text-2xl">{previewData.title}</CardTitle>
+                        {previewData.discount_percentage && (
+                          <Badge variant="secondary" className="bg-caution text-background text-lg px-3 py-1">
+                            <Tag className="w-4 h-4 mr-1" />
+                            {previewData.discount_percentage}% OFF
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Valid: {new Date(previewData.start_date).toLocaleDateString("id-ID")} - {new Date(previewData.end_date).toLocaleDateString("id-ID")}
+                      </p>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {previewData.image_url && (
+                    <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted">
+                      <img
+                        src={previewData.image_url}
+                        alt={previewData.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div className="prose prose-sm max-w-none">
+                    <p className="text-foreground whitespace-pre-wrap">{previewData.description}</p>
+                  </div>
+                  <div className="pt-4 border-t">
+                    <Button className="w-full" size="lg">
+                      Dapatkan Promo Ini
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPreviewOpen(false)}>
+              Tutup
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="grid gap-4">
         {promos.map((item) => (
@@ -330,6 +444,10 @@ const Promos = () => {
             <CardContent>
               <p className="text-sm mb-4 line-clamp-2">{item.description}</p>
               <div className="flex gap-2">
+                <Button size="sm" variant="outline" onClick={() => handlePreviewExisting(item)}>
+                  <Eye className="w-4 h-4 mr-1" />
+                  Preview
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => handleEdit(item)}>
                   <Edit className="w-4 h-4 mr-1" />
                   Edit
