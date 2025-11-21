@@ -98,12 +98,11 @@ export const NewsSection = () => {
           setNews(prev => prev.filter(n => n.id !== payload.old.id));
         }
       )
-      .subscribe({
-        next: (status) => {
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
           console.log("📡 News subscription:", status);
-        },
-        error: (error) => {
-          console.error("❌ News subscription error:", error);
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error("❌ News subscription error");
           fetchNews();
         }
       });

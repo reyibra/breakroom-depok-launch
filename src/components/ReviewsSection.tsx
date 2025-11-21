@@ -108,12 +108,11 @@ export const ReviewsSection = () => {
           setReviews(prev => prev.filter(r => r.id !== payload.old.id));
         }
       )
-      .subscribe({
-        next: (status) => {
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
           console.log("📡 Reviews subscription status:", status);
-        },
-        error: (error) => {
-          console.error("❌ Reviews subscription error:", error);
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error("❌ Reviews subscription error");
           // Attempt to refetch on error
           fetchReviews(50);
         }
