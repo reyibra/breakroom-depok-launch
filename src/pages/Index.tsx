@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import { NewsSection } from "@/components/NewsSection";
-import { PromoSection } from "@/components/PromoSection";
 import VideoPlayer from "@/components/VideoPlayer";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
@@ -17,8 +16,19 @@ import safetyGear from "@/assets/safety-gear.jpg";
 import breakroomInterior from "@/assets/breakroom-interior.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
+import { differenceInDays } from "date-fns";
+
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
 
 const Index = () => {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
+  
   const { data: activePromo } = useQuery({
     queryKey: ["active-promo"],
     queryFn: async () => {
@@ -37,6 +47,34 @@ const Index = () => {
       return data;
     },
   });
+
+  const showCountdown = activePromo ? differenceInDays(new Date(activePromo.end_date), new Date()) <= 7 : false;
+
+  useEffect(() => {
+    if (!activePromo || !showCountdown) return;
+
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const endDate = new Date(activePromo.end_date);
+      const difference = endDate.getTime() - now.getTime();
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      } else {
+        setTimeLeft(null);
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, [activePromo, showCountdown]);
 
   const features = [
     {
@@ -238,26 +276,82 @@ const Index = () => {
           </div>
           
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-            {/* Promo Badge - Elegant and Integrated */}
+            {/* Promo Card - Minimalist Design */}
             {activePromo && (
-              <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 md:px-6 py-2 md:py-2.5 bg-gradient-to-r from-caution/20 via-primary/20 to-caution/20 backdrop-blur-sm border border-caution/40 rounded-full shadow-glow animate-fade-in">
-                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-caution animate-pulse" />
-                <span className="text-caution font-bold text-xs md:text-sm uppercase tracking-wider">
-                  {activePromo.title}
-                </span>
-                {activePromo.promo_code && (
-                  <>
-                    <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-                    <span className="text-foreground font-semibold text-xs md:text-sm">
-                      Kode: <span className="text-primary font-mono font-bold">{activePromo.promo_code}</span>
-                    </span>
-                  </>
-                )}
-                {activePromo.discount_percentage && (
-                  <span className="text-caution text-xs md:text-sm font-bold ml-1">
-                    {activePromo.discount_percentage}% OFF
-                  </span>
-                )}
+              <div className="inline-block mb-6 md:mb-8 animate-fade-in">
+                <Card className="max-w-md mx-auto border-primary/30 bg-card/95 backdrop-blur-sm shadow-glow">
+                  <CardContent className="p-4 md:p-6 space-y-3">
+                    {/* Title */}
+                    <h3 className="text-lg md:text-xl font-bold text-foreground">
+                      {activePromo.title}
+                    </h3>
+
+                    {/* Promo Code & Discount */}
+                    {activePromo.promo_code && (
+                      <div className="flex items-center justify-center gap-2 px-3 py-2 bg-primary/10 rounded-lg border border-primary/20">
+                        <Tag className="w-4 h-4 text-primary" />
+                        <span className="font-mono font-bold text-primary tracking-wide">
+                          {activePromo.promo_code}
+                        </span>
+                        {activePromo.discount_percentage && (
+                          <Badge variant="secondary" className="ml-2">
+                            {activePromo.discount_percentage}% OFF
+                          </Badge>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Description */}
+                    <p className="text-sm text-muted-foreground">
+                      {activePromo.description}
+                    </p>
+
+                    {/* Countdown Timer */}
+                    {showCountdown && timeLeft && (
+                      <div className="pt-3 border-t border-border">
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                          <Clock className="w-4 h-4 text-caution" />
+                          <span className="text-xs font-medium text-muted-foreground uppercase">
+                            Berakhir dalam
+                          </span>
+                        </div>
+                        <div className="flex gap-2 justify-center">
+                          {[
+                            { value: timeLeft.days, label: 'Hari' },
+                            { value: timeLeft.hours, label: 'Jam' },
+                            { value: timeLeft.minutes, label: 'Menit' },
+                            { value: timeLeft.seconds, label: 'Detik' },
+                          ].map((item, index) => (
+                            <div key={index} className="text-center">
+                              <div className="bg-muted rounded px-2 py-1.5 min-w-[3rem]">
+                                <div className="text-base md:text-lg font-bold text-foreground">
+                                  {String(item.value).padStart(2, '0')}
+                                </div>
+                                <div className="text-[9px] text-muted-foreground uppercase">
+                                  {item.label}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Validity Date (when no countdown) */}
+                    {!showCountdown && (
+                      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-2 border-t border-border">
+                        <Clock className="w-3 h-3" />
+                        <span>
+                          Berlaku hingga {new Date(activePromo.end_date).toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                          })}
+                        </span>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             )}
 
@@ -418,9 +512,6 @@ const Index = () => {
 
         {/* News Section */}
         <NewsSection />
-
-        {/* Promo Section */}
-        <PromoSection />
 
         {/* Features Section */}
         <section className="py-12 md:py-20 px-4">
