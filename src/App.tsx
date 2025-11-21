@@ -11,8 +11,6 @@ import Dashboard from "./pages/admin/Dashboard";
 import Reviews from "./pages/admin/Reviews";
 import News from "./pages/admin/News";
 import Promos from "./pages/admin/Promos";
-import Gallery from "./pages/admin/Gallery";
-import FAQs from "./pages/admin/FAQs";
 
 const queryClient = new QueryClient();
 
@@ -30,8 +28,6 @@ const App = () => (
             <Route path="reviews" element={<Reviews />} />
             <Route path="news" element={<News />} />
             <Route path="promos" element={<Promos />} />
-            <Route path="gallery" element={<Gallery />} />
-            <Route path="faqs" element={<FAQs />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

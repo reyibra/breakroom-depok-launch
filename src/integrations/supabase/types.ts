@@ -47,69 +47,6 @@ export type Database = {
         }
         Relationships: []
       }
-      faqs: {
-        Row: {
-          answer: string
-          category: string | null
-          created_at: string
-          display_order: number
-          id: string
-          is_active: boolean
-          question: string
-        }
-        Insert: {
-          answer: string
-          category?: string | null
-          created_at?: string
-          display_order?: number
-          id?: string
-          is_active?: boolean
-          question: string
-        }
-        Update: {
-          answer?: string
-          category?: string | null
-          created_at?: string
-          display_order?: number
-          id?: string
-          is_active?: boolean
-          question?: string
-        }
-        Relationships: []
-      }
-      galleries: {
-        Row: {
-          created_at: string
-          description: string | null
-          display_order: number
-          id: string
-          is_active: boolean
-          media_type: string
-          media_url: string
-          title: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          display_order?: number
-          id?: string
-          is_active?: boolean
-          media_type: string
-          media_url: string
-          title: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          display_order?: number
-          id?: string
-          is_active?: boolean
-          media_type?: string
-          media_url?: string
-          title?: string
-        }
-        Relationships: []
-      }
       news: {
         Row: {
           content: string

@@ -50,36 +50,6 @@ const Index = () => {
     },
   });
 
-  // Fetch active galleries
-  const { data: galleries } = useQuery({
-    queryKey: ["active-galleries"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("galleries")
-        .select("*")
-        .eq("is_active", true)
-        .order("display_order", { ascending: true });
-
-      if (error) throw error;
-      return data || [];
-    },
-  });
-
-  // Fetch active FAQs
-  const { data: faqs } = useQuery({
-    queryKey: ["active-faqs"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("faqs")
-        .select("*")
-        .eq("is_active", true)
-        .order("display_order", { ascending: true });
-
-      if (error) throw error;
-      return data || [];
-    },
-  });
-
   // Simulate initial loading for smooth skeleton display
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -211,6 +181,33 @@ const Index = () => {
       step: "5",
       title: "Selesai & Clean Up",
       description: "Staff akan membersihkan ruangan. Anda bisa beristirahat dan minum di area lounge."
+    },
+  ];
+
+  const faqs = [
+    {
+      q: "Apakah aman?",
+      a: "Sangat aman! Kami menggunakan perlengkapan safety standar industri dan staff terlatih siap membantu."
+    },
+    {
+      q: "Apa yang boleh dihancurkan?",
+      a: "Item yang disediakan meliputi piring, gelas, botol, dan untuk paket premium ada elektronik bekas (TV, printer, keyboard)."
+    },
+    {
+      q: "Boleh bawa item sendiri?",
+      a: "Mohon konfirmasi terlebih dahulu dengan tim kami. Beberapa item mungkin tidak diperbolehkan karena alasan keamanan."
+    },
+    {
+      q: "Bagaimana jika terlambat?",
+      a: "Jika terlambat lebih dari 15 menit, waktu sesi akan dikurangi sesuai keterlambatan."
+    },
+    {
+      q: "Bisakah reschedule?",
+      a: "Ya, reschedule bisa dilakukan maksimal H-1 dari jadwal booking."
+    },
+    {
+      q: "Apa yang harus dibawa?",
+      a: "Cukup bawa diri Anda! Semua perlengkapan sudah kami sediakan. Disarankan pakai pakaian nyaman."
     },
   ];
 
@@ -739,36 +736,42 @@ const Index = () => {
               </p>
             </div>
             
-            {/* Video Gallery - Dynamic from Database */}
-            {galleries && galleries.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
-                {galleries
-                  .filter(item => item.media_type === "video")
-                  .slice(0, 3)
-                  .map((gallery, index) => {
-                    const isHorizontal = index === 0;
-                    const aspectRatio = isHorizontal ? "landscape" : "portrait";
-                    const colSpan = isHorizontal ? "col-span-1 md:col-span-2" : "col-span-1";
-                    
-                    return (
-                      <div 
-                        key={gallery.id} 
-                        className={`${colSpan} ${isHorizontal ? "" : "flex justify-center"} animate-fade-in`} 
-                        style={{ animationDelay: `${(index + 1) * 0.1}s`, animationFillMode: 'backwards' }}
-                      >
-                        <div className={isHorizontal ? "w-full" : "max-w-md w-full"}>
-                          <VideoPlayer 
-                            videoSrc={gallery.media_url}
-                            aspectRatio={aspectRatio}
-                            title={gallery.title}
-                            autoplayOnView={true}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+            {/* Video Gallery - 3 Videos Layout with Animations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+              {/* Horizontal Video - Constrained Width */}
+              <div className="col-span-1 md:col-span-2 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'backwards' }}>
+                <VideoPlayer 
+                  videoSrc="/videos/breakroom-horizontal.mp4"
+                  aspectRatio="landscape"
+                  title="Breakroom Experience"
+                  autoplayOnView={true}
+                />
               </div>
-            )}
+              
+              {/* Vertical Video 1 */}
+              <div className="col-span-1 flex justify-center animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'backwards' }}>
+                <div className="max-w-md w-full">
+                  <VideoPlayer 
+                    videoSrc="/videos/tiktok-vertical.mp4"
+                    aspectRatio="portrait"
+                    title="Stress Release Session"
+                    autoplayOnView={true}
+                  />
+                </div>
+              </div>
+              
+              {/* Vertical Video 2 */}
+              <div className="col-span-1 flex justify-center animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'backwards' }}>
+                <div className="max-w-md w-full">
+                  <VideoPlayer 
+                    videoSrc="/videos/tiktok-vertical-2.mp4"
+                    aspectRatio="portrait"
+                    title="Behind The Scenes"
+                    autoplayOnView={true}
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* Social Media CTA - Mobile Optimized */}
             <div className="text-center mt-8 md:mt-12 animate-fade-in px-4" style={{ animationDelay: '0.4s', animationFillMode: 'backwards' }}>
@@ -987,25 +990,21 @@ const Index = () => {
               </div>
             </div>
 
-            {/* FAQ - Dynamic from Database */}
+            {/* FAQ */}
             <div>
               <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
                 <span className="text-gradient">FAQ</span> - Pertanyaan Umum
               </h3>
-              {faqs && faqs.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {faqs.map((faq) => (
-                    <Card key={faq.id} className="border-border">
-                      <CardContent className="p-6">
-                        <h4 className="font-bold mb-2 text-primary">{faq.question}</h4>
-                        <p className="text-sm text-muted-foreground whitespace-pre-wrap">{faq.answer}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center text-muted-foreground">Belum ada FAQ tersedia</p>
-              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {faqs.map((faq, index) => (
+                  <Card key={index} className="border-border">
+                    <CardContent className="p-6">
+                      <h4 className="font-bold mb-2 text-primary">{faq.q}</h4>
+                      <p className="text-sm text-muted-foreground">{faq.a}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </section>
