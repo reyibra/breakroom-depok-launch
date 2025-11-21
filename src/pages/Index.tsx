@@ -298,7 +298,7 @@ const Index = () => {
                       <CarouselItem key={promo.id}>
                         <div className="relative group">
                           {/* Pill/Capsule Glass morphism badge */}
-                          <div className="bg-background/15 backdrop-blur-2xl border border-primary/50 rounded-3xl md:rounded-full p-3 md:px-8 md:py-4 shadow-[0_8px_32px_rgba(255,102,0,0.4)] hover:shadow-[0_16px_48px_rgba(255,102,0,0.6)] transition-all duration-500 hover:scale-105 hover:border-primary/70">
+                          <div className="bg-background/15 backdrop-blur-2xl border border-primary/50 rounded-full p-3 md:px-8 md:py-4 shadow-[0_8px_32px_rgba(255,102,0,0.4)] hover:shadow-[0_16px_48px_rgba(255,102,0,0.6)] transition-all duration-500 hover:scale-105 hover:border-primary/70">
                             {/* Discount badge - corner */}
                             {promo.discount_percentage && (
                               <div className="absolute -top-2 -right-2 bg-gradient-to-br from-caution via-primary to-primary/90 text-background text-xs md:text-base font-black px-2.5 py-1.5 md:px-3.5 md:py-2 rounded-full shadow-lg animate-pulse">
@@ -431,7 +431,7 @@ const Index = () => {
                           </div>
                           
                           {/* Enhanced Glow effect - Pill shaped */}
-                          <div className="absolute inset-0 bg-primary/30 rounded-3xl md:rounded-full blur-2xl -z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+                          <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl -z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
                       </CarouselItem>
                     );
