@@ -25,10 +25,8 @@ const Navbar = () => {
     
     if (element) {
       const navbarHeight = 64; // Height of fixed navbar
-      const bannerHeight = 52; // Height of promo banner
-      const totalOffset = navbarHeight + bannerHeight;
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - totalOffset;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
 
       window.scrollTo({
         top: offsetPosition,
@@ -38,7 +36,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-[52px] left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">

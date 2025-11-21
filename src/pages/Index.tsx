@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play } from "lucide-react";
+import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play, Sparkles, Tag } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
-import PromoBanner from "@/components/PromoBanner";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
@@ -175,12 +174,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <PromoBanner />
       <Navbar />
       
-      <main className="flex-grow pt-[116px]">
+      <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative min-h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
+        <section id="hero" className="relative min-h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${heroImage})` }}
@@ -189,6 +187,18 @@ const Index = () => {
           </div>
           
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            {/* Promo Badge - Elegant and Integrated */}
+            <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-caution/20 via-primary/20 to-caution/20 backdrop-blur-sm border border-caution/40 rounded-full shadow-glow animate-fade-in">
+              <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-caution animate-pulse" />
+              <span className="text-caution font-bold text-xs md:text-sm">
+                PROMO SPESIAL
+              </span>
+              <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              <span className="text-foreground font-semibold text-xs md:text-sm">
+                Diskon 20% - Kode: <span className="text-primary">BREAK20</span>
+              </span>
+            </div>
+
             <div className="inline-block mb-3 md:mb-4 px-3 md:px-4 py-1.5 md:py-2 bg-caution/20 border border-caution rounded">
               <span className="text-caution font-bold uppercase tracking-wider text-xs md:text-sm">
                 Stress-Release Room Indonesia
@@ -206,10 +216,13 @@ const Index = () => {
               Tempat aman untuk melepaskan stress dengan cara yang berbeda. Hancurkan, teriak, dan rasakan kebebasan.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-              <Button variant="hero" size="lg" className="text-sm md:text-base" asChild>
-                <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
+              <Button variant="hero" size="lg" className="text-sm md:text-base relative overflow-hidden group" asChild>
+                <a href="https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking%20dengan%20kode%20BREAK20" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-                  Booking via WhatsApp
+                  Booking Sekarang
+                  <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full animate-pulse">
+                    -20%
+                  </span>
                 </a>
               </Button>
               <Button variant="outline" size="lg" className="text-sm md:text-base" asChild>
