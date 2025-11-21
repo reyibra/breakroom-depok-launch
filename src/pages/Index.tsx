@@ -311,7 +311,7 @@ const Index = () => {
                               {/* Left Section: Title & Code */}
                               <div className="flex-1 space-y-2 md:space-y-2">
                                 {/* Title */}
-                                <h4 className="text-xs md:text-sm font-bold text-foreground drop-shadow-sm line-clamp-2 md:line-clamp-1">
+                                <h4 className="text-xs md:text-sm font-bold text-foreground drop-shadow-sm line-clamp-2 md:line-clamp-1 leading-relaxed md:leading-normal">
                                   {promo.title}
                                 </h4>
                                 
@@ -320,7 +320,7 @@ const Index = () => {
                                   <div className="bg-primary/25 backdrop-blur-sm rounded-xl md:rounded-full px-3 py-2 md:px-4 md:py-2 border border-dashed border-primary/60 hover:bg-primary/30 transition-colors inline-block">
                                     <div className="flex items-center justify-center gap-1.5 md:gap-2">
                                       <Tag className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
-                                      <span className="text-base md:text-lg font-black font-mono text-primary tracking-wider drop-shadow-sm">
+                                      <span className="text-base md:text-lg font-black font-mono text-primary tracking-wider drop-shadow-sm leading-relaxed">
                                         {promo.promo_code}
                                       </span>
                                     </div>
@@ -334,7 +334,7 @@ const Index = () => {
                                   <div className="space-y-1.5">
                                     <div className="flex items-center justify-center md:justify-start gap-1">
                                       <Clock className="w-3 h-3 md:w-3 md:h-3 text-caution animate-pulse" />
-                                      <span className="text-[9px] md:text-[10px] text-caution font-semibold uppercase tracking-wide">
+                                      <span className="text-[9px] md:text-[10px] text-caution font-semibold uppercase tracking-wide leading-relaxed">
                                         Berakhir Dalam
                                       </span>
                                     </div>
@@ -346,10 +346,10 @@ const Index = () => {
                                         { value: showCountdown.seconds, label: 'Detik' },
                                       ].map((item, index) => (
                                         <div key={index} className="text-center bg-background/50 backdrop-blur-md rounded-lg p-1.5 md:p-2 border border-primary/20">
-                                          <div className="text-sm md:text-base font-black text-primary leading-none">
+                                          <div className="text-sm md:text-base font-black text-primary leading-tight">
                                             {String(item.value).padStart(2, '0')}
                                           </div>
-                                          <div className="text-[8px] md:text-[9px] text-muted-foreground uppercase font-semibold mt-0.5">
+                                          <div className="text-[8px] md:text-[9px] text-muted-foreground uppercase font-semibold mt-1 leading-relaxed">
                                             {item.label}
                                           </div>
                                         </div>
@@ -362,7 +362,7 @@ const Index = () => {
                               {/* Right Section: INFO Button */}
                               <Dialog>
                                 <DialogTrigger asChild>
-                                  <button className="w-full md:w-auto bg-primary/30 hover:bg-primary/40 backdrop-blur-sm text-foreground text-xs md:text-xs font-bold py-2.5 px-5 md:py-2.5 md:px-6 rounded-full border border-primary/40 hover:border-primary/60 transition-all flex items-center justify-center gap-1.5 md:gap-2 hover:scale-105">
+                                  <button className="w-full md:w-auto bg-primary/30 hover:bg-primary/40 backdrop-blur-sm text-foreground text-xs md:text-xs font-bold py-2.5 px-5 md:py-2.5 md:px-6 rounded-full border border-primary/40 hover:border-primary/60 transition-all flex items-center justify-center gap-1.5 md:gap-2 hover:scale-105 leading-relaxed">
                                     <Info className="w-3.5 h-3.5 md:w-3.5 md:h-3.5" />
                                     <span className="hidden md:inline">INFO PROMO</span>
                                     <span className="md:hidden">INFO</span>
