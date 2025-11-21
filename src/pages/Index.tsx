@@ -178,6 +178,37 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-grow">
+        {/* Price Badge - Top Left */}
+        <div className="fixed top-20 left-4 z-50 animate-fade-in">
+          <div className="relative group">
+            {/* Main Badge */}
+            <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 backdrop-blur-md p-4 rounded-2xl shadow-glow border-2 border-primary/40 hover:scale-105 transition-smooth hover:shadow-[0_0_50px_hsl(24_100%_50%/0.5)]">
+              <div className="flex flex-col items-start space-y-1">
+                <span className="text-[10px] uppercase tracking-wider text-primary-foreground/80 font-bold">
+                  Mulai Dari
+                </span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-black text-primary-foreground leading-none">
+                    65K
+                  </span>
+                  <Sparkles className="w-4 h-4 text-caution animate-pulse" />
+                </div>
+                <span className="text-[9px] text-primary-foreground/70 font-medium">
+                  /30 menit
+                </span>
+              </div>
+            </div>
+            
+            {/* Glow effect */}
+            <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl -z-10 animate-pulse"></div>
+            
+            {/* Decorative corner */}
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-caution rounded-full flex items-center justify-center shadow-md">
+              <Tag className="w-3 h-3 text-background" />
+            </div>
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section id="hero" className="relative min-h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
           <div 
