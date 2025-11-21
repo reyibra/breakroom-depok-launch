@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Eye, EyeOff, Upload, X } from "lucide-react";
+import { ImageCropper } from "@/components/ImageCropper";
 import {
   Dialog,
   DialogContent,
@@ -59,6 +60,8 @@ const News = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [uploading, setUploading] = useState(false);
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [tempImageUrl, setTempImageUrl] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -108,20 +111,38 @@ const News = () => {
         return;
       }
 
-      setSelectedImage(file);
-      
-      // Create preview
+      // Create temporary URL for cropper
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setTempImageUrl(reader.result as string);
+        setCropperOpen(true);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleCropComplete = (croppedImageBlob: Blob) => {
+    // Convert blob to file
+    const croppedFile = new File([croppedImageBlob], "cropped-image.jpg", {
+      type: "image/jpeg",
+    });
+    
+    setSelectedImage(croppedFile);
+    
+    // Create preview from cropped blob
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+    reader.readAsDataURL(croppedImageBlob);
+    
+    setCropperOpen(false);
+  };
+
   const removeImage = () => {
     setSelectedImage(null);
     setImagePreview("");
+    setTempImageUrl("");
   };
 
   const uploadImage = async (file: File): Promise<string | null> => {
@@ -210,6 +231,7 @@ const News = () => {
       setFormData({ title: "", content: "" });
       setSelectedImage(null);
       setImagePreview("");
+      setTempImageUrl("");
       fetchNews();
     } catch (error) {
       toast({
@@ -312,6 +334,7 @@ const News = () => {
                 setFormData({ title: "", content: "" });
                 setSelectedImage(null);
                 setImagePreview("");
+                setTempImageUrl("");
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -452,6 +475,18 @@ const News = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Image Cropper Dialog */}
+      <ImageCropper
+        open={cropperOpen}
+        imageUrl={tempImageUrl}
+        onClose={() => {
+          setCropperOpen(false);
+          setTempImageUrl("");
+        }}
+        onCropComplete={handleCropComplete}
+        aspectRatio={16 / 9}
+      />
 
       <div className="grid gap-4">
         {news.map((item) => (
