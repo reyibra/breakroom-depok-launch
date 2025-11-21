@@ -10,6 +10,8 @@ import {
   Tag,
   LogOut,
   Menu,
+  Image,
+  HelpCircle,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import type { Session } from "@supabase/supabase-js";
@@ -122,6 +124,16 @@ const AdminLayout = () => {
       icon: Tag,
       label: "Promos",
       path: "/admin/promos",
+    },
+    {
+      icon: Image,
+      label: "Gallery",
+      path: "/admin/gallery",
+    },
+    {
+      icon: HelpCircle,
+      label: "FAQs",
+      path: "/admin/faqs",
     },
   ];
 
