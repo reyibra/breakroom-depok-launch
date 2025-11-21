@@ -16,9 +16,9 @@ import safetyGear from "@/assets/safety-gear.jpg";
 import breakroomInterior from "@/assets/breakroom-interior.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { differenceInDays } from "date-fns";
-import useEmblaCarousel from "embla-carousel-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
 interface TimeLeft {
@@ -30,10 +30,6 @@ interface TimeLeft {
 
 const Index = () => {
   const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, duration: 30 },
-    [Autoplay({ delay: 5000, stopOnInteraction: false })]
-  );
   
   const { data: activePromos } = useQuery({
     queryKey: ["active-promos-hero"],
@@ -85,14 +81,6 @@ const Index = () => {
 
     return () => clearInterval(timer);
   }, [activePromos]);
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
 
   const features = [
     {
@@ -295,36 +283,40 @@ const Index = () => {
           
           {/* Promo Badge - Top Right Corner - Minimal Glass Morphism */}
           {activePromos && activePromos.length > 0 && (
-            <div className="absolute top-24 right-4 md:top-28 md:right-8 z-30 animate-fade-in">
-              <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex">
+            <div className="absolute top-20 right-2 md:top-28 md:right-6 z-30 w-[220px] md:w-[280px] animate-fade-in">
+              <Carousel
+                opts={{ loop: true }}
+                plugins={[Autoplay({ delay: 5000 })]}
+                className="w-full"
+              >
+                <CarouselContent>
                   {activePromos.map((promo) => {
                     const showCountdown = promoTimers[promo.id];
                     
                     return (
-                      <div key={promo.id} className="flex-[0_0_100%] min-w-0">
+                      <CarouselItem key={promo.id}>
                         <div className="relative group">
-                          {/* Glass morphism badge */}
-                          <div className="bg-background/20 backdrop-blur-xl border border-primary/40 rounded-2xl p-3 md:p-4 shadow-[0_8px_32px_rgba(255,102,0,0.3)] hover:shadow-[0_12px_40px_rgba(255,102,0,0.5)] transition-all duration-300 hover:scale-105 min-w-[200px] md:min-w-[240px]">
+                          {/* Enhanced Glass morphism badge */}
+                          <div className="bg-background/15 backdrop-blur-2xl border border-primary/50 rounded-2xl md:rounded-3xl p-3 md:p-5 shadow-[0_8px_32px_rgba(255,102,0,0.4)] hover:shadow-[0_16px_48px_rgba(255,102,0,0.6)] transition-all duration-500 hover:scale-105 hover:border-primary/70">
                             {/* Discount badge - corner */}
                             {promo.discount_percentage && (
-                              <div className="absolute -top-2 -right-2 bg-gradient-to-br from-caution to-primary text-background text-xs md:text-sm font-black px-2 py-1 rounded-lg shadow-lg">
+                              <div className="absolute -top-2 -right-2 bg-gradient-to-br from-caution via-primary to-primary/90 text-background text-sm md:text-base font-black px-2.5 py-1.5 md:px-3 md:py-2 rounded-xl shadow-lg animate-pulse">
                                 -{promo.discount_percentage}%
                               </div>
                             )}
                             
-                            <div className="space-y-2">
+                            <div className="space-y-2 md:space-y-3">
                               {/* Title */}
-                              <h4 className="text-xs md:text-sm font-bold text-foreground/90 line-clamp-1">
+                              <h4 className="text-xs md:text-sm font-bold text-foreground drop-shadow-sm line-clamp-2">
                                 {promo.title}
                               </h4>
                               
                               {/* Promo Code */}
                               {promo.promo_code && (
-                                <div className="bg-primary/20 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-dashed border-primary/50">
-                                  <div className="flex items-center justify-center gap-1.5">
-                                    <Tag className="w-3 h-3 text-primary" />
-                                    <span className="text-base md:text-lg font-black font-mono text-primary tracking-wider">
+                                <div className="bg-primary/25 backdrop-blur-sm rounded-lg px-2.5 py-2 border border-dashed border-primary/60 hover:bg-primary/30 transition-colors">
+                                  <div className="flex items-center justify-center gap-2">
+                                    <Tag className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+                                    <span className="text-base md:text-xl font-black font-mono text-primary tracking-wider drop-shadow-sm">
                                       {promo.promo_code}
                                     </span>
                                   </div>
@@ -335,8 +327,8 @@ const Index = () => {
                               {showCountdown && (
                                 <div className="space-y-1">
                                   <div className="flex items-center justify-center gap-1">
-                                    <Clock className="w-3 h-3 text-caution" />
-                                    <span className="text-[9px] md:text-[10px] text-caution font-semibold uppercase tracking-wide">
+                                    <Clock className="w-3 h-3 text-caution animate-pulse" />
+                                    <span className="text-[9px] md:text-[11px] text-caution font-semibold uppercase tracking-wide">
                                       Berakhir
                                     </span>
                                   </div>
@@ -347,11 +339,11 @@ const Index = () => {
                                       { value: showCountdown.minutes, label: 'M' },
                                       { value: showCountdown.seconds, label: 'D' },
                                     ].map((item, index) => (
-                                      <div key={index} className="text-center bg-background/40 backdrop-blur-sm rounded-md p-1">
+                                      <div key={index} className="text-center bg-background/50 backdrop-blur-md rounded-md p-1 md:p-1.5 border border-primary/20">
                                         <div className="text-sm md:text-base font-black text-primary leading-none">
                                           {String(item.value).padStart(2, '0')}
                                         </div>
-                                        <div className="text-[8px] text-muted-foreground uppercase">
+                                        <div className="text-[8px] md:text-[9px] text-muted-foreground uppercase font-semibold">
                                           {item.label}
                                         </div>
                                       </div>
@@ -362,14 +354,22 @@ const Index = () => {
                             </div>
                           </div>
                           
-                          {/* Glow effect */}
-                          <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl -z-10 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                          {/* Enhanced Glow effect */}
+                          <div className="absolute inset-0 bg-primary/30 rounded-2xl md:rounded-3xl blur-2xl -z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
-                      </div>
+                      </CarouselItem>
                     );
                   })}
-                </div>
-              </div>
+                </CarouselContent>
+                
+                {/* Navigation Arrows - Only show if multiple promos */}
+                {activePromos.length > 1 && (
+                  <>
+                    <CarouselPrevious className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 h-7 w-7 md:h-9 md:w-9 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg" />
+                    <CarouselNext className="absolute -right-3 md:-right-4 top-1/2 -translate-y-1/2 h-7 w-7 md:h-9 md:w-9 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg" />
+                  </>
+                )}
+              </Carousel>
             </div>
           )}
           
