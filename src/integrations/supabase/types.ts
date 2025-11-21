@@ -47,6 +47,36 @@ export type Database = {
         }
         Relationships: []
       }
+      news: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          published_at: string
+          title: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          published_at?: string
+          title: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          published_at?: string
+          title?: string
+        }
+        Relationships: []
+      }
       promos: {
         Row: {
           created_at: string | null
