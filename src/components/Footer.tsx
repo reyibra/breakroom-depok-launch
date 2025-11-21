@@ -9,14 +9,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8">
           {/* Brand - Mobile Optimized */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
+            <div className="mb-4">
               <img 
                 src={breakroomLogoFooter} 
                 alt="Breakroom Depok Logo"
                 loading="lazy"
-                className="w-10 h-10 md:w-10 md:h-10 rounded-full object-cover"
+                className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover"
               />
-              <span className="text-lg md:text-xl font-bold">Breakroom Depok</span>
             </div>
             <p className="text-sm md:text-sm text-muted-foreground mb-4 leading-relaxed">
               Luapkan, Lepaskan & Lupakan Penatmu di stress-release room pertama di Indonesia
