@@ -47,22 +47,22 @@ const PromoCard = ({ promo }: { promo: any }) => {
   }, [endDate, showCountdown]);
 
   return (
-    <Card className="hover:border-primary/50 transition-colors">
-      <CardContent className="p-6 space-y-4">
+    <Card className="border-border">
+      <CardContent className="p-4 md:p-6 space-y-3 md:space-y-4">
         {/* Title */}
-        <h3 className="text-xl font-bold text-foreground">
+        <h3 className="text-lg md:text-xl font-bold text-foreground">
           {promo.title}
         </h3>
 
         {/* Promo Code */}
         {promo.promo_code && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-lg border border-primary/20">
-            <Tag className="w-4 h-4 text-primary" />
-            <span className="font-mono font-bold text-primary tracking-wide">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-primary/10 rounded-lg border border-primary/20">
+            <Tag className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+            <span className="font-mono font-bold text-primary tracking-wide text-sm md:text-base">
               {promo.promo_code}
             </span>
             {promo.discount_percentage && (
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="secondary" className="ml-2 text-xs">
                 {promo.discount_percentage}% OFF
               </Badge>
             )}
@@ -70,15 +70,15 @@ const PromoCard = ({ promo }: { promo: any }) => {
         )}
 
         {/* Description */}
-        <p className="text-muted-foreground text-sm leading-relaxed">
+        <p className="text-muted-foreground text-xs md:text-sm leading-relaxed">
           {promo.description}
         </p>
 
-        {/* Countdown Timer */}
+        {/* Countdown Timer - Only Days & Hours */}
         {showCountdown && timeLeft && (
           <div className="pt-2 border-t border-border">
-            <div className="flex items-center gap-2 mb-3">
-              <Clock className="w-4 h-4 text-caution" />
+            <div className="flex items-center gap-2 mb-2">
+              <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-caution" />
               <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Berakhir dalam
               </span>
@@ -87,12 +87,10 @@ const PromoCard = ({ promo }: { promo: any }) => {
               {[
                 { value: timeLeft.days, label: 'Hari' },
                 { value: timeLeft.hours, label: 'Jam' },
-                { value: timeLeft.minutes, label: 'Menit' },
-                { value: timeLeft.seconds, label: 'Detik' },
               ].map((item, index) => (
                 <div key={index} className="flex-1 text-center">
                   <div className="bg-muted rounded p-2">
-                    <div className="text-lg font-bold text-foreground">
+                    <div className="text-base md:text-lg font-bold text-foreground">
                       {String(item.value).padStart(2, '0')}
                     </div>
                     <div className="text-[10px] text-muted-foreground uppercase">
@@ -107,8 +105,8 @@ const PromoCard = ({ promo }: { promo: any }) => {
 
         {/* Validity Date (when no countdown) */}
         {!showCountdown && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border">
-            <Clock className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground pt-2 border-t border-border">
+            <Clock className="w-3.5 h-3.5 md:w-4 md:h-4" />
             <span>
               Berlaku hingga {new Date(promo.end_date).toLocaleDateString('id-ID', {
                 day: 'numeric',
@@ -122,7 +120,8 @@ const PromoCard = ({ promo }: { promo: any }) => {
         {/* CTA Button */}
         <Button 
           variant="default" 
-          className="w-full"
+          size="sm"
+          className="w-full md:h-10"
           asChild
         >
           <a 
@@ -130,7 +129,7 @@ const PromoCard = ({ promo }: { promo: any }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <MessageCircle className="mr-2 h-4 w-4" />
+            <MessageCircle className="mr-2 h-3.5 w-3.5 md:h-4 md:w-4" />
             Gunakan Promo
           </a>
         </Button>
@@ -217,23 +216,22 @@ export const PromoSection = () => {
 
   if (isLoading) {
     return (
-      <section className="py-12 md:py-20 px-4">
+      <section className="py-8 md:py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="mb-8 md:mb-12 space-y-3 animate-fade-in">
-            <div className="h-10 bg-muted/50 rounded-lg w-48 animate-pulse"></div>
-            <div className="h-6 bg-muted/30 rounded-lg w-96 max-w-full animate-pulse"></div>
+          <div className="mb-6 md:mb-10 space-y-2 animate-fade-in">
+            <div className="h-8 md:h-10 bg-muted/50 rounded-lg w-32 md:w-48 animate-pulse"></div>
+            <div className="h-5 md:h-6 bg-muted/30 rounded-lg w-64 md:w-96 max-w-full animate-pulse"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="h-8 bg-muted/40 rounded w-3/4 animate-pulse"></div>
-                <div className="h-16 bg-muted/30 rounded-lg animate-pulse"></div>
+              <div key={i} className="bg-card border border-border rounded-lg p-4 md:p-6 space-y-3 md:space-y-4">
+                <div className="h-6 md:h-8 bg-muted/40 rounded w-3/4 animate-pulse"></div>
+                <div className="h-12 md:h-16 bg-muted/30 rounded-lg animate-pulse"></div>
                 <div className="space-y-2">
-                  <div className="h-4 bg-muted/20 rounded w-full animate-pulse"></div>
-                  <div className="h-4 bg-muted/20 rounded w-5/6 animate-pulse"></div>
-                  <div className="h-4 bg-muted/20 rounded w-4/5 animate-pulse"></div>
+                  <div className="h-3 md:h-4 bg-muted/20 rounded w-full animate-pulse"></div>
+                  <div className="h-3 md:h-4 bg-muted/20 rounded w-5/6 animate-pulse"></div>
                 </div>
-                <div className="h-10 bg-muted/40 rounded-lg animate-pulse"></div>
+                <div className="h-8 md:h-10 bg-muted/40 rounded-lg animate-pulse"></div>
               </div>
             ))}
           </div>
@@ -247,18 +245,18 @@ export const PromoSection = () => {
   }
 
   return (
-    <section id="promo" className="py-12 md:py-20 px-4">
+    <section id="promo" className="py-8 md:py-16 px-4">
       <div className="container mx-auto max-w-6xl">
-        <div className="mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-2">
+        <div className="mb-6 md:mb-10">
+          <h2 className="text-2xl md:text-4xl font-bold mb-1.5 md:mb-2">
             Promo Aktif
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm md:text-base">
             Gunakan kode promo berikut untuk mendapatkan penawaran spesial
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {promos.map((promo) => (
             <PromoCard key={promo.id} promo={promo} />
           ))}
