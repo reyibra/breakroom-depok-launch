@@ -23,24 +23,34 @@ export const NewsSection = () => {
   const [loading, setLoading] = useState(true);
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentLimit, setCurrentLimit] = useState(3);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        // Fetch current limit + 1 to check if there's more
         const { data, error } = await supabase
           .from("news")
           .select("*")
           .eq("is_active", true)
           .order("published_at", { ascending: false })
-          .limit(3);
+          .limit(currentLimit + 1);
 
         if (error) throw error;
-        setNews(data || []);
+        
+        // If we got more than currentLimit, there's more to load
+        setHasMore((data?.length || 0) > currentLimit);
+        
+        // Only show currentLimit items
+        setNews(data?.slice(0, currentLimit) || []);
         console.log("📰 News updated:", data?.length || 0, "active news");
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
     };
 
@@ -69,7 +79,12 @@ export const NewsSection = () => {
       console.log("📡 Unsubscribing from news updates");
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [currentLimit]);
+
+  const handleLoadMore = () => {
+    setLoadingMore(true);
+    setCurrentLimit(prev => prev + 3);
+  };
 
   if (loading) {
     return (
@@ -177,6 +192,21 @@ export const NewsSection = () => {
             </Card>
           ))}
         </div>
+
+        {/* Load More Button */}
+        {hasMore && (
+          <div className="text-center mt-8 md:mt-12 animate-fade-in">
+            <Button
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+              size="lg"
+              variant="outline"
+              className="min-w-[200px]"
+            >
+              {loadingMore ? "Memuat..." : "Muat Lebih Banyak"}
+            </Button>
+          </div>
+        )}
 
         {/* Detail Dialog */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

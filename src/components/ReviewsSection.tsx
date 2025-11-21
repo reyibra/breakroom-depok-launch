@@ -27,10 +27,13 @@ interface Review {
 export const ReviewsSection = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [filteredReviews, setFilteredReviews] = useState<Review[]>([]);
+  const [displayedReviews, setDisplayedReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [sortBy, setSortBy] = useState<"latest" | "highest">("latest");
   const [filterRating, setFilterRating] = useState<string>("all");
+  const [currentLimit, setCurrentLimit] = useState(6);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const fetchReviews = async () => {
     try {
@@ -92,7 +95,21 @@ export const ReviewsSection = () => {
     }
 
     setFilteredReviews(filtered);
+    setCurrentLimit(6); // Reset limit when filters change
   }, [reviews, sortBy, filterRating]);
+
+  // Update displayed reviews based on current limit
+  useEffect(() => {
+    setDisplayedReviews(filteredReviews.slice(0, currentLimit));
+    setLoadingMore(false);
+  }, [filteredReviews, currentLimit]);
+
+  const handleLoadMore = () => {
+    setLoadingMore(true);
+    setCurrentLimit(prev => prev + 6);
+  };
+
+  const hasMore = displayedReviews.length < filteredReviews.length;
 
   // Calculate average rating
   const averageRating =
@@ -212,19 +229,36 @@ export const ReviewsSection = () => {
             ))}
           </div>
         ) : filteredReviews.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-            {filteredReviews.map((review) => (
-              <ReviewCard
-                key={review.id}
-                name={review.name}
-                role={review.role || undefined}
-                rating={review.rating}
-                reviewText={review.review_text}
-                imageUrl={review.image_url || undefined}
-                createdAt={review.created_at}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+              {displayedReviews.map((review) => (
+                <ReviewCard
+                  key={review.id}
+                  name={review.name}
+                  role={review.role || undefined}
+                  rating={review.rating}
+                  reviewText={review.review_text}
+                  imageUrl={review.image_url || undefined}
+                  createdAt={review.created_at}
+                />
+              ))}
+            </div>
+            
+            {/* Load More Button */}
+            {hasMore && (
+              <div className="text-center mt-8 md:mt-12 animate-fade-in">
+                <Button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  size="lg"
+                  variant="outline"
+                  className="min-w-[200px]"
+                >
+                  {loadingMore ? "Memuat..." : `Muat Lebih Banyak (${filteredReviews.length - displayedReviews.length} lagi)`}
+                </Button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-12 px-4">
             <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">
