@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
@@ -645,6 +646,7 @@ const Index = () => {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };
