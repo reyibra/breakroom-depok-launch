@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tag, Clock, Sparkles, MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from "date-fns";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface TimeLeft {
   days: number;
@@ -16,6 +17,7 @@ interface TimeLeft {
 
 const PromoCard = ({ promo }: { promo: any }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
+  const { t } = useLanguage();
   const endDate = new Date(promo.end_date);
   const now = new Date();
   const daysUntilExpiry = differenceInDays(endDate, now);
@@ -80,15 +82,15 @@ const PromoCard = ({ promo }: { promo: any }) => {
             <div className="flex items-center gap-2 mb-3">
               <Clock className="w-4 h-4 text-caution" />
               <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Berakhir dalam
+                {t('hero.remaining')}
               </span>
             </div>
             <div className="flex gap-2">
               {[
-                { value: timeLeft.days, label: 'Hari' },
-                { value: timeLeft.hours, label: 'Jam' },
-                { value: timeLeft.minutes, label: 'Menit' },
-                { value: timeLeft.seconds, label: 'Detik' },
+                { value: timeLeft.days, label: t('hero.days') },
+                { value: timeLeft.hours, label: t('hero.hours') },
+                { value: timeLeft.minutes, label: t('hero.minutes') },
+                { value: timeLeft.seconds, label: t('hero.seconds') },
               ].map((item, index) => (
                 <div key={index} className="flex-1 text-center">
                   <div className="bg-muted rounded p-2">
@@ -110,7 +112,7 @@ const PromoCard = ({ promo }: { promo: any }) => {
           <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border">
             <Clock className="w-4 h-4" />
             <span>
-              Berlaku hingga {new Date(promo.end_date).toLocaleDateString('id-ID', {
+              {t('hero.validUntil')} {new Date(promo.end_date).toLocaleDateString('id-ID', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
@@ -131,7 +133,7 @@ const PromoCard = ({ promo }: { promo: any }) => {
             rel="noopener noreferrer"
           >
             <MessageCircle className="mr-2 h-4 w-4" />
-            Gunakan Promo
+            {t('promo.use')}
           </a>
         </Button>
       </CardContent>
@@ -157,6 +159,8 @@ export const PromoSection = () => {
       return data;
     },
   });
+  
+  const { t } = useLanguage();
 
   // Subscribe to real-time promo updates
   useEffect(() => {
@@ -220,10 +224,10 @@ export const PromoSection = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-2">
-            Promo Aktif
+            {t('promo.title')}
           </h2>
           <p className="text-muted-foreground">
-            Gunakan kode promo berikut untuk mendapatkan penawaran spesial
+            {t('promo.subtitle')}
           </p>
         </div>
 

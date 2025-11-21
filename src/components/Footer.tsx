@@ -1,7 +1,10 @@
 import { MapPin, Instagram, Mail, Phone, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+  
   return (
     <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 md:px-6 py-8 md:py-12">
@@ -55,21 +58,21 @@ const Footer = () => {
 
           {/* Quick Links - Mobile Optimized */}
           <div>
-            <h3 className="text-base md:text-base font-bold mb-4 text-foreground">Link Cepat</h3>
+            <h3 className="text-base md:text-base font-bold mb-4 text-foreground">{t('footer.quickLinks')}</h3>
             <ul className="space-y-3">
               <li>
                 <a href="#hero" className="text-sm text-muted-foreground hover:text-primary transition-colors inline-block py-1 leading-relaxed">
-                  Beranda
+                  {t('nav.home')}
                 </a>
               </li>
               <li>
                 <a href="#services" className="text-sm text-muted-foreground hover:text-primary transition-colors inline-block py-1 leading-relaxed">
-                  Layanan
+                  {t('nav.services')}
                 </a>
               </li>
               <li>
                 <a href="#about" className="text-sm text-muted-foreground hover:text-primary transition-colors inline-block py-1 leading-relaxed">
-                  Tentang & Keamanan
+                  {t('nav.about')}
                 </a>
               </li>
             </ul>
@@ -77,7 +80,7 @@ const Footer = () => {
 
           {/* Contact - Mobile Optimized */}
           <div>
-            <h3 className="text-base md:text-base font-bold mb-4 text-foreground">Kontak</h3>
+            <h3 className="text-base md:text-base font-bold mb-4 text-foreground">{t('footer.contact')}</h3>
             <ul className="space-y-3">
               <li className="flex items-start space-x-2 text-sm text-muted-foreground">
                 <MapPin size={16} className="mt-0.5 flex-shrink-0 text-primary" />
