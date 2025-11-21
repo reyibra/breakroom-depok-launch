@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import { NewsSection } from "@/components/NewsSection";
+import { PromoSection } from "@/components/PromoSection";
 import VideoPlayer from "@/components/VideoPlayer";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
@@ -409,6 +410,9 @@ const Index = () => {
 
         {/* News Section */}
         <NewsSection />
+
+        {/* Promo Section */}
+        <PromoSection />
 
         {/* Features Section */}
         <section className="py-12 md:py-20 px-4">
