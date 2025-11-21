@@ -663,11 +663,6 @@ const Index = () => {
                 >
                   <MessageCircle className="mr-2 h-5 w-5" />
                   Booking Sekarang
-                  {activePromos?.[0]?.discount_percentage && (
-                    <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full animate-pulse">
-                      -{activePromos[0].discount_percentage}%
-                    </span>
-                  )}
                 </a>
               </Button>
               <Button variant="outline" size="lg" className="w-full sm:w-auto min-h-[48px] text-sm sm:text-base" asChild>
