@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ReviewsSection } from "@/components/ReviewsSection";
+import { NewsSection } from "@/components/NewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
@@ -562,6 +563,9 @@ const Index = () => {
 
         {/* Reviews Section */}
         <ReviewsSection />
+
+        {/* News Section */}
+        <NewsSection />
 
         {/* Location/Map Section */}
         <section className="py-20 px-4 bg-gradient-to-b from-background to-card/50">
