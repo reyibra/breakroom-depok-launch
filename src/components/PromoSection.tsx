@@ -200,12 +200,11 @@ export const PromoSection = () => {
           refetch();
         }
       )
-      .subscribe({
-        next: (status) => {
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
           console.log("📡 Promos subscription:", status);
-        },
-        error: (error) => {
-          console.error("❌ Promos subscription error:", error);
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error("❌ Promos subscription error");
           refetch();
         }
       });

@@ -32,7 +32,7 @@ interface TimeLeft {
 const Index = () => {
   const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const carouselRef = useRef<{ api: any } | null>(null);
+  const carouselApiRef = useRef<any>(null);
   const [isCarouselInView, setIsCarouselInView] = useState(true);
   
   const { data: activePromos } = useQuery({
@@ -77,7 +77,7 @@ const Index = () => {
             setIsCarouselInView(entry.isIntersecting);
             
             // Access the Embla API and control autoplay
-            const emblaApi = carouselRef.current?.api;
+            const emblaApi = carouselApiRef.current;
             if (emblaApi) {
               const autoplayPlugin = emblaApi.plugins()?.autoplay;
               if (autoplayPlugin) {
