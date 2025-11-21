@@ -14,8 +14,29 @@ import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
 import safetyGear from "@/assets/safety-gear.jpg";
 import breakroomInterior from "@/assets/breakroom-interior.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
+  const { data: activePromo } = useQuery({
+    queryKey: ["active-promo"],
+    queryFn: async () => {
+      const now = new Date().toISOString();
+      const { data, error } = await supabase
+        .from("promos")
+        .select("*")
+        .eq("is_active", true)
+        .lte("start_date", now)
+        .gte("end_date", now)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const features = [
     {
       icon: Zap,
@@ -217,16 +238,19 @@ const Index = () => {
           
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             {/* Promo Badge - Elegant and Integrated */}
-            <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 md:px-6 py-2 md:py-2.5 bg-gradient-to-r from-caution/20 via-primary/20 to-caution/20 backdrop-blur-sm border border-caution/40 rounded-full shadow-glow animate-fade-in">
-              <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-caution animate-pulse" />
-              <span className="text-caution font-bold text-xs md:text-sm uppercase tracking-wider">
-                PROMO SPESIAL
-              </span>
-              <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-              <span className="text-foreground font-semibold text-xs md:text-sm">
-                Diskon 20% - Kode: <span className="text-primary">BREAK20</span>
-              </span>
-            </div>
+            {activePromo && (
+              <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 md:px-6 py-2 md:py-2.5 bg-gradient-to-r from-caution/20 via-primary/20 to-caution/20 backdrop-blur-sm border border-caution/40 rounded-full shadow-glow animate-fade-in">
+                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-caution animate-pulse" />
+                <span className="text-caution font-bold text-xs md:text-sm uppercase tracking-wider">
+                  {activePromo.title}
+                </span>
+                <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+                <span className="text-foreground font-semibold text-xs md:text-sm">
+                  {activePromo.discount_percentage && `Diskon ${activePromo.discount_percentage}%`}
+                  {activePromo.description && ` - ${activePromo.description.substring(0, 50)}${activePromo.description.length > 50 ? '...' : ''}`}
+                </span>
+              </div>
+            )}
 
             <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6">
               <span className="text-gradient">Luapkan,</span>{" "}
@@ -241,12 +265,18 @@ const Index = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <Button variant="hero" size="lg" className="text-sm md:text-base relative overflow-hidden group" asChild>
-                <a href="https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking%20dengan%20kode%20BREAK20" target="_blank" rel="noopener noreferrer">
+                <a 
+                  href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${activePromo ? ` dengan promo ${activePromo.title}` : ''}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                   Booking Sekarang
-                  <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full animate-pulse">
-                    -20%
-                  </span>
+                  {activePromo?.discount_percentage && (
+                    <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full animate-pulse">
+                      -{activePromo.discount_percentage}%
+                    </span>
+                  )}
                 </a>
               </Button>
               <Button variant="outline" size="lg" className="text-sm md:text-base" asChild>
