@@ -92,6 +92,21 @@ const PromoCard = ({ promo }: { promo: any }) => {
           {promo.description}
         </p>
 
+        {/* Promo code display */}
+        {promo.promo_code && (
+          <div className="mb-4 p-3 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-lg border-2 border-dashed border-primary/30">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Kode Promo</p>
+                <p className="text-2xl font-black font-mono text-primary tracking-wider">
+                  {promo.promo_code}
+                </p>
+              </div>
+              <Tag className="w-8 h-8 text-primary/40" />
+            </div>
+          </div>
+        )}
+
         {/* Countdown timer */}
         {showCountdown && timeLeft && (
           <div className="mb-4 p-3 bg-gradient-to-r from-caution/10 via-primary/10 to-caution/10 rounded-lg border border-caution/30">
@@ -144,12 +159,12 @@ const PromoCard = ({ promo }: { promo: any }) => {
           asChild
         >
           <a 
-            href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking%20dengan%20promo%20${encodeURIComponent(promo.title)}`}
+            href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking%20dengan%20promo%20${encodeURIComponent(promo.promo_code || promo.title)}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             <MessageCircle className="mr-2 h-4 w-4" />
-            Gunakan Promo Ini
+            {promo.promo_code ? `Gunakan ${promo.promo_code}` : 'Gunakan Promo Ini'}
             <Sparkles className="ml-2 h-4 w-4 group-hover/btn:animate-pulse" />
           </a>
         </Button>
