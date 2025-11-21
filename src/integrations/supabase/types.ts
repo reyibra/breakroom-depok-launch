@@ -244,7 +244,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      reviews_public: {
+        Row: {
+          admin_response: string | null
+          admin_response_date: string | null
+          created_at: string | null
+          id: string | null
+          image_url: string | null
+          is_approved: boolean | null
+          name: string | null
+          rating: number | null
+          review_text: string | null
+          role: string | null
+        }
+        Insert: {
+          admin_response?: string | null
+          admin_response_date?: string | null
+          created_at?: string | null
+          id?: string | null
+          image_url?: string | null
+          is_approved?: boolean | null
+          name?: string | null
+          rating?: number | null
+          review_text?: string | null
+          role?: string | null
+        }
+        Update: {
+          admin_response?: string | null
+          admin_response_date?: string | null
+          created_at?: string | null
+          id?: string | null
+          image_url?: string | null
+          is_approved?: boolean | null
+          name?: string | null
+          rating?: number | null
+          review_text?: string | null
+          role?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
