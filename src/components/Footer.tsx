@@ -1,5 +1,6 @@
 import { MapPin, Instagram, Mail, Phone, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import breakroomLogoFooter from "@/assets/breakroom-logo-footer.jpg";
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <img 
-                src="/src/assets/breakroom-logo-footer.jpg" 
+                src={breakroomLogoFooter} 
                 alt="Breakroom Depok Logo"
                 loading="lazy"
                 className="w-10 h-10 md:w-10 md:h-10 rounded-full object-cover"
