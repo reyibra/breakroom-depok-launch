@@ -39,10 +39,10 @@ export const ReviewsSection = () => {
 
   const fetchReviews = async (limit?: number) => {
     try {
+      // Use reviews_public view which excludes admin_responder_id for security
       let query = supabase
-        .from("reviews")
+        .from("reviews_public")
         .select("*")
-        .eq("is_approved", true)
         .order("created_at", { ascending: false });
       
       // Add limit if specified (for initial load optimization)
@@ -66,8 +66,8 @@ export const ReviewsSection = () => {
     // Initial fetch with smart limit (fetch more than displayed for filtering)
     fetchReviews(50);
 
-    // Only subscribe to INSERT and UPDATE for approved reviews
-    // This reduces unnecessary refetches from admin operations
+    // Subscribe to changes on reviews table (not the view) for real-time updates
+    // We still listen to the base table but fetch from the secure view
     const channel = supabase
       .channel("reviews-changes")
       .on(
@@ -96,8 +96,25 @@ export const ReviewsSection = () => {
           fetchReviews(50);
         }
       )
-      .subscribe((status) => {
-        console.log("📡 Reviews subscription status:", status);
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "reviews",
+        },
+        () => {
+          console.log("📡 Review deleted");
+          fetchReviews(50);
+        }
+      )
+      .subscribe((status, err) => {
+        if (err) {
+          console.error("❌ Reviews subscription error:", err);
+          fetchReviews(50);
+        } else {
+          console.log("📡 Reviews subscription status:", status);
+        }
       });
 
     return () => {
