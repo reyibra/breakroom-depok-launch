@@ -44,8 +44,9 @@ export const NewsSection = () => {
         setHasMore((data?.length || 0) > currentLimit);
         
         // Only show currentLimit items
-        setNews(data?.slice(0, currentLimit) || []);
-        console.log("📰 News updated:", data?.length || 0, "active news");
+        const displayedNews = data?.slice(0, currentLimit) || [];
+        setNews(displayedNews);
+        console.log("📰 News loaded:", displayedNews.length, "displayed,", (data?.length || 0), "total available");
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
