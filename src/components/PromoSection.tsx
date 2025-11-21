@@ -188,13 +188,22 @@ export const PromoSection = () => {
     return (
       <section className="py-12 md:py-20 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-8">
-            <div className="h-8 bg-muted animate-pulse rounded w-48 mx-auto mb-4"></div>
-            <div className="h-12 bg-muted animate-pulse rounded w-96 mx-auto"></div>
+          <div className="mb-8 md:mb-12 space-y-3 animate-fade-in">
+            <div className="h-10 bg-muted/50 rounded-lg w-48 animate-pulse"></div>
+            <div className="h-6 bg-muted/30 rounded-lg w-96 max-w-full animate-pulse"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-96 bg-muted animate-pulse rounded-lg"></div>
+              <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="h-8 bg-muted/40 rounded w-3/4 animate-pulse"></div>
+                <div className="h-16 bg-muted/30 rounded-lg animate-pulse"></div>
+                <div className="space-y-2">
+                  <div className="h-4 bg-muted/20 rounded w-full animate-pulse"></div>
+                  <div className="h-4 bg-muted/20 rounded w-5/6 animate-pulse"></div>
+                  <div className="h-4 bg-muted/20 rounded w-4/5 animate-pulse"></div>
+                </div>
+                <div className="h-10 bg-muted/40 rounded-lg animate-pulse"></div>
+              </div>
             ))}
           </div>
         </div>

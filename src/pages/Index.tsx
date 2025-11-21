@@ -31,6 +31,7 @@ interface TimeLeft {
 
 const Index = () => {
   const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   
   const { data: activePromos } = useQuery({
     queryKey: ["active-promos-hero"],
@@ -48,6 +49,15 @@ const Index = () => {
       return data || [];
     },
   });
+
+  // Simulate initial loading for smooth skeleton display
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!activePromos || activePromos.length === 0) return;
@@ -239,6 +249,147 @@ const Index = () => {
       badge: "Best Value",
     },
   ];
+
+  // Loading skeleton for entire page
+  if (isInitialLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow">
+          {/* Hero Skeleton */}
+          <section className="relative min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0 bg-muted/20">
+            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
+            <div className="relative z-10 text-center px-4 max-w-4xl mx-auto space-y-6 animate-fade-in">
+              <div className="h-12 md:h-16 bg-muted/50 rounded-lg w-3/4 mx-auto animate-pulse"></div>
+              <div className="h-8 bg-muted/30 rounded-lg w-2/3 mx-auto animate-pulse" style={{ animationDelay: '0.1s' }}></div>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <div className="h-12 bg-muted/40 rounded-lg w-48 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <div className="h-12 bg-muted/40 rounded-lg w-48 animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+              </div>
+            </div>
+          </section>
+
+          {/* About Section Skeleton */}
+          <section className="py-12 md:py-20 px-4">
+            <div className="container mx-auto max-w-6xl">
+              <div className="max-w-3xl space-y-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                <div className="h-8 bg-muted/50 rounded-lg w-48 animate-pulse"></div>
+                <div className="h-10 md:h-12 bg-muted/50 rounded-lg w-3/4 animate-pulse"></div>
+                <div className="space-y-2">
+                  <div className="h-6 bg-muted/30 rounded w-full animate-pulse"></div>
+                  <div className="h-6 bg-muted/30 rounded w-5/6 animate-pulse"></div>
+                  <div className="h-6 bg-muted/30 rounded w-4/5 animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Video Gallery Skeleton */}
+          <section className="py-12 md:py-20 px-4 bg-gradient-to-b from-background to-card/30">
+            <div className="container mx-auto max-w-6xl">
+              <div className="text-center mb-8 md:mb-12 space-y-3 animate-fade-in">
+                <div className="h-8 bg-muted/50 rounded-lg w-40 mx-auto animate-pulse"></div>
+                <div className="h-10 bg-muted/50 rounded-lg w-64 mx-auto animate-pulse"></div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+                <div className="col-span-1 md:col-span-2 aspect-video bg-muted/40 rounded-xl animate-pulse"></div>
+                <div className="aspect-[9/16] bg-muted/40 rounded-xl animate-pulse"></div>
+                <div className="aspect-[9/16] bg-muted/40 rounded-xl animate-pulse"></div>
+              </div>
+            </div>
+          </section>
+
+          {/* Features Skeleton */}
+          <section className="py-12 md:py-20 px-4">
+            <div className="container mx-auto max-w-6xl">
+              <div className="h-12 bg-muted/50 rounded-lg w-96 mx-auto mb-8 md:mb-12 animate-pulse"></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                    <div className="w-16 h-16 bg-muted/50 rounded-full mx-auto animate-pulse"></div>
+                    <div className="h-6 bg-muted/40 rounded w-3/4 mx-auto animate-pulse"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-muted/30 rounded w-full animate-pulse"></div>
+                      <div className="h-4 bg-muted/30 rounded w-5/6 mx-auto animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Consultation Skeleton */}
+          <section className="py-12 md:py-20 px-4 bg-card">
+            <div className="container mx-auto max-w-6xl">
+              <div className="text-center mb-8 space-y-3">
+                <div className="h-8 bg-muted/50 rounded-lg w-48 mx-auto animate-pulse"></div>
+                <div className="h-10 bg-muted/50 rounded-lg w-80 mx-auto animate-pulse"></div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                {[1, 2].map((i) => (
+                  <div key={i} className="bg-background border-2 border-border rounded-lg p-8 space-y-4 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                    <div className="w-16 h-16 bg-muted/50 rounded-full mx-auto animate-pulse"></div>
+                    <div className="h-8 bg-muted/40 rounded w-2/3 mx-auto animate-pulse"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-muted/30 rounded w-full animate-pulse"></div>
+                      <div className="h-4 bg-muted/30 rounded w-5/6 mx-auto animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Reviews Skeleton */}
+          <section className="py-12 md:py-20 px-4">
+            <div className="container mx-auto max-w-6xl">
+              <div className="text-center mb-8 space-y-4">
+                <div className="h-8 bg-muted/50 rounded-lg w-40 mx-auto animate-pulse"></div>
+                <div className="h-12 bg-muted/50 rounded-lg w-96 mx-auto animate-pulse"></div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <div key={s} className="w-5 h-5 bg-muted/40 rounded animate-pulse"></div>
+                      ))}
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-4 bg-muted/30 rounded w-full animate-pulse"></div>
+                      <div className="h-4 bg-muted/30 rounded w-5/6 animate-pulse"></div>
+                      <div className="h-4 bg-muted/30 rounded w-4/5 animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Location Skeleton */}
+          <section className="py-12 md:py-20 px-4 bg-gradient-to-b from-background to-card/50">
+            <div className="container mx-auto max-w-6xl">
+              <div className="text-center mb-8 space-y-3">
+                <div className="h-8 bg-muted/50 rounded-lg w-48 mx-auto animate-pulse"></div>
+                <div className="h-10 bg-muted/50 rounded-lg w-80 mx-auto animate-pulse"></div>
+              </div>
+              <div className="aspect-video bg-muted/40 rounded-lg animate-pulse mb-8"></div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-card border-2 border-border rounded-lg p-6 space-y-4 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                    <div className="w-16 h-16 bg-muted/50 rounded-full mx-auto animate-pulse"></div>
+                    <div className="h-6 bg-muted/40 rounded w-2/3 mx-auto animate-pulse"></div>
+                    <div className="h-4 bg-muted/30 rounded w-full animate-pulse"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
