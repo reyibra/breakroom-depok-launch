@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play, Sparkles, Tag } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play, Sparkles, Tag, Info } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -281,9 +282,9 @@ const Index = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
           </div>
           
-          {/* Promo Badge - Top Right Corner - Minimal Glass Morphism */}
+          {/* Promo Badge - Center Top - Compact Glass Morphism */}
           {activePromos && activePromos.length > 0 && (
-            <div className="absolute top-20 right-2 md:top-28 md:right-6 z-30 w-[220px] md:w-[280px] animate-fade-in">
+            <div className="absolute top-20 md:top-24 left-1/2 -translate-x-1/2 z-30 w-[180px] md:w-[220px] animate-fade-in">
               <Carousel
                 opts={{ loop: true }}
                 plugins={[Autoplay({ delay: 5000 })]}
@@ -297,26 +298,26 @@ const Index = () => {
                       <CarouselItem key={promo.id}>
                         <div className="relative group">
                           {/* Enhanced Glass morphism badge */}
-                          <div className="bg-background/15 backdrop-blur-2xl border border-primary/50 rounded-2xl md:rounded-3xl p-3 md:p-5 shadow-[0_8px_32px_rgba(255,102,0,0.4)] hover:shadow-[0_16px_48px_rgba(255,102,0,0.6)] transition-all duration-500 hover:scale-105 hover:border-primary/70">
+                          <div className="bg-background/15 backdrop-blur-2xl border border-primary/50 rounded-xl md:rounded-2xl p-2.5 md:p-4 shadow-[0_8px_32px_rgba(255,102,0,0.4)] hover:shadow-[0_16px_48px_rgba(255,102,0,0.6)] transition-all duration-500 hover:scale-105 hover:border-primary/70">
                             {/* Discount badge - corner */}
                             {promo.discount_percentage && (
-                              <div className="absolute -top-2 -right-2 bg-gradient-to-br from-caution via-primary to-primary/90 text-background text-sm md:text-base font-black px-2.5 py-1.5 md:px-3 md:py-2 rounded-xl shadow-lg animate-pulse">
+                              <div className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-caution via-primary to-primary/90 text-background text-xs md:text-sm font-black px-2 py-1 md:px-2.5 md:py-1.5 rounded-lg shadow-lg animate-pulse">
                                 -{promo.discount_percentage}%
                               </div>
                             )}
                             
-                            <div className="space-y-2 md:space-y-3">
+                            <div className="space-y-1.5 md:space-y-2">
                               {/* Title */}
-                              <h4 className="text-xs md:text-sm font-bold text-foreground drop-shadow-sm line-clamp-2">
+                              <h4 className="text-[10px] md:text-xs font-bold text-foreground drop-shadow-sm line-clamp-2">
                                 {promo.title}
                               </h4>
                               
                               {/* Promo Code */}
                               {promo.promo_code && (
-                                <div className="bg-primary/25 backdrop-blur-sm rounded-lg px-2.5 py-2 border border-dashed border-primary/60 hover:bg-primary/30 transition-colors">
-                                  <div className="flex items-center justify-center gap-2">
-                                    <Tag className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
-                                    <span className="text-base md:text-xl font-black font-mono text-primary tracking-wider drop-shadow-sm">
+                                <div className="bg-primary/25 backdrop-blur-sm rounded-lg px-2 py-1.5 border border-dashed border-primary/60 hover:bg-primary/30 transition-colors">
+                                  <div className="flex items-center justify-center gap-1.5">
+                                    <Tag className="w-3 h-3 md:w-3.5 md:h-3.5 text-primary" />
+                                    <span className="text-sm md:text-base font-black font-mono text-primary tracking-wider drop-shadow-sm">
                                       {promo.promo_code}
                                     </span>
                                   </div>
@@ -327,23 +328,23 @@ const Index = () => {
                               {showCountdown && (
                                 <div className="space-y-1">
                                   <div className="flex items-center justify-center gap-1">
-                                    <Clock className="w-3 h-3 text-caution animate-pulse" />
-                                    <span className="text-[9px] md:text-[11px] text-caution font-semibold uppercase tracking-wide">
+                                    <Clock className="w-2.5 h-2.5 text-caution animate-pulse" />
+                                    <span className="text-[8px] md:text-[10px] text-caution font-semibold uppercase tracking-wide">
                                       Berakhir
                                     </span>
                                   </div>
-                                  <div className="grid grid-cols-4 gap-1">
+                                  <div className="grid grid-cols-4 gap-0.5">
                                     {[
                                       { value: showCountdown.days, label: 'H' },
                                       { value: showCountdown.hours, label: 'J' },
                                       { value: showCountdown.minutes, label: 'M' },
                                       { value: showCountdown.seconds, label: 'D' },
                                     ].map((item, index) => (
-                                      <div key={index} className="text-center bg-background/50 backdrop-blur-md rounded-md p-1 md:p-1.5 border border-primary/20">
-                                        <div className="text-sm md:text-base font-black text-primary leading-none">
+                                      <div key={index} className="text-center bg-background/50 backdrop-blur-md rounded p-0.5 md:p-1 border border-primary/20">
+                                        <div className="text-xs md:text-sm font-black text-primary leading-none">
                                           {String(item.value).padStart(2, '0')}
                                         </div>
-                                        <div className="text-[8px] md:text-[9px] text-muted-foreground uppercase font-semibold">
+                                        <div className="text-[7px] md:text-[8px] text-muted-foreground uppercase font-semibold">
                                           {item.label}
                                         </div>
                                       </div>
@@ -351,11 +352,79 @@ const Index = () => {
                                   </div>
                                 </div>
                               )}
+                              
+                              {/* INFO PROMO Button */}
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <button className="w-full mt-1 bg-primary/30 hover:bg-primary/40 backdrop-blur-sm text-foreground text-[9px] md:text-[10px] font-bold py-1 md:py-1.5 rounded-lg border border-primary/40 hover:border-primary/60 transition-all flex items-center justify-center gap-1">
+                                    <Info className="w-2.5 h-2.5 md:w-3 md:h-3" />
+                                    INFO PROMO
+                                  </button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-md">
+                                  <DialogHeader>
+                                    <DialogTitle className="text-xl font-bold text-primary">
+                                      {promo.title}
+                                    </DialogTitle>
+                                  </DialogHeader>
+                                  <div className="space-y-4">
+                                    {promo.discount_percentage && (
+                                      <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
+                                        <p className="text-3xl font-black text-primary text-center">
+                                          Diskon {promo.discount_percentage}%
+                                        </p>
+                                      </div>
+                                    )}
+                                    
+                                    {promo.promo_code && (
+                                      <div className="bg-accent/20 border border-dashed border-accent rounded-lg p-3">
+                                        <p className="text-xs text-muted-foreground text-center mb-1">Kode Promo:</p>
+                                        <p className="text-2xl font-black text-center font-mono tracking-wider text-foreground">
+                                          {promo.promo_code}
+                                        </p>
+                                      </div>
+                                    )}
+                                    
+                                    <div className="space-y-2">
+                                      <h4 className="font-semibold text-sm text-muted-foreground">Deskripsi:</h4>
+                                      <p className="text-foreground leading-relaxed">
+                                        {promo.description}
+                                      </p>
+                                    </div>
+                                    
+                                    <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t">
+                                      <div>
+                                        <p className="text-xs">Mulai:</p>
+                                        <p className="font-semibold">{new Date(promo.start_date).toLocaleDateString('id-ID')}</p>
+                                      </div>
+                                      <div className="text-right">
+                                        <p className="text-xs">Berakhir:</p>
+                                        <p className="font-semibold text-caution">{new Date(promo.end_date).toLocaleDateString('id-ID')}</p>
+                                      </div>
+                                    </div>
+                                    
+                                    <Button 
+                                      className="w-full" 
+                                      variant="hero"
+                                      asChild
+                                    >
+                                      <a 
+                                        href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${promo.promo_code ? ` dengan kode ${promo.promo_code}` : ` dengan promo ${promo.title}`}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        <MessageCircle className="mr-2 h-4 w-4" />
+                                        Booking dengan Promo Ini
+                                      </a>
+                                    </Button>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
                             </div>
                           </div>
                           
                           {/* Enhanced Glow effect */}
-                          <div className="absolute inset-0 bg-primary/30 rounded-2xl md:rounded-3xl blur-2xl -z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+                          <div className="absolute inset-0 bg-primary/30 rounded-xl md:rounded-2xl blur-2xl -z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
                       </CarouselItem>
                     );
@@ -365,8 +434,8 @@ const Index = () => {
                 {/* Navigation Arrows - Only show if multiple promos */}
                 {activePromos.length > 1 && (
                   <>
-                    <CarouselPrevious className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 h-7 w-7 md:h-9 md:w-9 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg" />
-                    <CarouselNext className="absolute -right-3 md:-right-4 top-1/2 -translate-y-1/2 h-7 w-7 md:h-9 md:w-9 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg" />
+                    <CarouselPrevious className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 h-6 w-6 md:h-8 md:w-8 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg" />
+                    <CarouselNext className="absolute -right-3 md:-right-4 top-1/2 -translate-y-1/2 h-6 w-6 md:h-8 md:w-8 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg" />
                   </>
                 )}
               </Carousel>
