@@ -104,17 +104,17 @@ export const ReviewsSection = () => {
       : "0.0";
 
   return (
-    <section id="reviews" className="py-12 md:py-20 px-4 bg-card">
+    <section id="reviews" className="py-12 md:py-20 px-4 md:px-6 bg-card">
       <div className="container mx-auto max-w-6xl">
-        {/* Header with Stats */}
-        <div className="text-center mb-8 md:mb-12">
+        {/* Header with Stats - Mobile Optimized */}
+        <div className="text-center mb-8 md:mb-12 px-2">
           <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">
             Review Pelanggan
           </Badge>
-          <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 leading-tight">
             Apa Kata <span className="text-gradient">Mereka?</span>
           </h2>
-          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto mb-4 md:mb-6">
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto mb-4 md:mb-6 leading-relaxed">
             Pengalaman nyata dari pelanggan yang sudah merasakan Breakroom
           </p>
 
@@ -131,46 +131,46 @@ export const ReviewsSection = () => {
             </div>
           </div>
 
-          {/* Controls */}
-          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-4 mb-6 md:mb-8">
+          {/* Controls - Mobile Optimized */}
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-4 mb-6 md:mb-8 px-2">
             <Select value={sortBy} onValueChange={(val: "latest" | "highest") => setSortBy(val)}>
-              <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] h-9 text-sm">
+              <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] min-h-[44px] text-sm">
                 <SelectValue placeholder="Urutkan" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="latest">
                   <div className="flex items-center gap-2">
-                    <Clock className="w-3 h-3 md:w-4 md:h-4" />
-                    <span className="text-xs md:text-sm">Terbaru</span>
+                    <Clock className="w-4 h-4" />
+                    <span className="text-sm">Terbaru</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="highest">
                   <div className="flex items-center gap-2">
-                    <Star className="w-3 h-3 md:w-4 md:h-4" />
-                    <span className="text-xs md:text-sm">Rating Tertinggi</span>
+                    <Star className="w-4 h-4" />
+                    <span className="text-sm">Rating Tertinggi</span>
                   </div>
                 </SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={filterRating} onValueChange={setFilterRating}>
-              <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] h-9 text-sm">
+              <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] min-h-[44px] text-sm">
                 <SelectValue placeholder="Filter Rating" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all"><span className="text-xs md:text-sm">Semua Rating</span></SelectItem>
-                <SelectItem value="5"><span className="text-xs md:text-sm">⭐⭐⭐⭐⭐ (5)</span></SelectItem>
-                <SelectItem value="4"><span className="text-xs md:text-sm">⭐⭐⭐⭐ (4)</span></SelectItem>
-                <SelectItem value="3"><span className="text-xs md:text-sm">⭐⭐⭐ (3)</span></SelectItem>
-                <SelectItem value="2"><span className="text-xs md:text-sm">⭐⭐ (2)</span></SelectItem>
-                <SelectItem value="1"><span className="text-xs md:text-sm">⭐ (1)</span></SelectItem>
+                <SelectItem value="all"><span className="text-sm">Semua Rating</span></SelectItem>
+                <SelectItem value="5"><span className="text-sm">⭐⭐⭐⭐⭐ (5)</span></SelectItem>
+                <SelectItem value="4"><span className="text-sm">⭐⭐⭐⭐ (4)</span></SelectItem>
+                <SelectItem value="3"><span className="text-sm">⭐⭐⭐ (3)</span></SelectItem>
+                <SelectItem value="2"><span className="text-sm">⭐⭐ (2)</span></SelectItem>
+                <SelectItem value="1"><span className="text-sm">⭐ (1)</span></SelectItem>
               </SelectContent>
             </Select>
 
             <Button
               variant="hero"
               size="sm"
-              className="text-sm w-full sm:w-auto"
+              className="text-sm w-full sm:w-auto min-h-[44px]"
               onClick={() => setShowForm(!showForm)}
             >
               {showForm ? "Tutup Form" : "Tulis Review"}
@@ -189,7 +189,7 @@ export const ReviewsSection = () => {
           </div>
         )}
 
-        {/* Reviews Grid */}
+        {/* Reviews Grid - Mobile Optimized */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {[1, 2, 3].map((i) => (
@@ -197,7 +197,7 @@ export const ReviewsSection = () => {
             ))}
           </div>
         ) : filteredReviews.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {filteredReviews.map((review) => (
               <ReviewCard
                 key={review.id}
@@ -211,13 +211,13 @@ export const ReviewsSection = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">
+          <div className="text-center py-12 px-4">
+            <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">
               {filterRating !== "all"
                 ? `Belum ada review dengan rating ${filterRating} bintang`
                 : "Belum ada review. Jadilah yang pertama!"}
             </p>
-            <Button variant="hero" onClick={() => setShowForm(true)}>
+            <Button variant="hero" className="min-h-[44px]" onClick={() => setShowForm(true)}>
               Tulis Review Pertama
             </Button>
           </div>

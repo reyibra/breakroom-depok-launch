@@ -273,8 +273,8 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Hero Section */}
-        <section id="hero" className="relative min-h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
+        {/* Hero Section - Mobile Optimized */}
+        <section id="hero" className="relative min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0">
           <div 
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${heroImage})` }}
@@ -489,27 +489,27 @@ const Index = () => {
             </div>
           )}
           
-          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+          <div className="relative z-10 text-center px-4 md:px-6 max-w-5xl mx-auto">
 
-            <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-3 md:mb-6 leading-tight">
               <span className="text-gradient">Luapkan,</span>{" "}
               <span className="text-gradient">Lepaskan</span>{" "}
               & <span className="text-gradient">Lupakan</span>
             </h1>
-            <h2 className="text-xl md:text-2xl lg:text-4xl font-bold mb-4 md:mb-6 text-foreground">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-foreground leading-snug">
               Penatmu di Breakroom Depok
             </h2>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed px-2">
               Tempat aman untuk melepaskan stress dengan cara yang berbeda. Hancurkan, teriak, dan rasakan kebebasan.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-              <Button variant="hero" size="lg" className="text-sm md:text-base relative overflow-hidden group" asChild>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-2">
+              <Button variant="hero" size="lg" className="w-full sm:w-auto min-h-[48px] text-sm sm:text-base relative overflow-hidden group" asChild>
                 <a 
                   href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${activePromos && activePromos[0] ? (activePromos[0].promo_code ? ` dengan kode ${activePromos[0].promo_code}` : ` dengan promo ${activePromos[0].title}`) : ''}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
-                  <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+                  <MessageCircle className="mr-2 h-5 w-5" />
                   Booking Sekarang
                   {activePromos?.[0]?.discount_percentage && (
                     <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full animate-pulse">
@@ -518,7 +518,7 @@ const Index = () => {
                   )}
                 </a>
               </Button>
-              <Button variant="outline" size="lg" className="text-sm md:text-base" asChild>
+              <Button variant="outline" size="lg" className="w-full sm:w-auto min-h-[48px] text-sm sm:text-base" asChild>
                 <a href="#konsultasi">Lihat Layanan</a>
               </Button>
             </div>
@@ -625,17 +625,17 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Social Media CTA */}
-            <div className="text-center mt-8 md:mt-12 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'backwards' }}>
-              <p className="text-muted-foreground mb-4">Ikuti kami untuk konten lebih banyak</p>
-              <div className="flex gap-4 justify-center">
-                <Button variant="outline" size="lg" asChild className="group">
+            {/* Social Media CTA - Mobile Optimized */}
+            <div className="text-center mt-8 md:mt-12 animate-fade-in px-4" style={{ animationDelay: '0.4s', animationFillMode: 'backwards' }}>
+              <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">Ikuti kami untuk konten lebih banyak</p>
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center max-w-md mx-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto min-h-[48px] text-base group" asChild>
                   <a href="https://www.instagram.com/breakroom.depok/" target="_blank" rel="noopener noreferrer">
                     <Instagram className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                     Instagram
                   </a>
                 </Button>
-                <Button variant="outline" size="lg" asChild className="group">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto min-h-[48px] text-base group" asChild>
                   <a href="https://www.tiktok.com/@breakroom.depok" target="_blank" rel="noopener noreferrer">
                     <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                     TikTok
@@ -649,21 +649,21 @@ const Index = () => {
         {/* News Section */}
         <NewsSection />
 
-        {/* Features Section */}
-        <section className="py-12 md:py-20 px-4">
+        {/* Features Section - Mobile Optimized */}
+        <section className="py-12 md:py-20 px-4 md:px-6">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 leading-tight px-2">
               Kenapa Pilih <span className="text-gradient">Breakroom?</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {features.map((feature, index) => (
                 <Card key={index} className="bg-card border-border hover:border-primary transition-colors">
-                  <CardContent className="p-4 md:p-6 text-center">
-                    <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                      <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+                  <CardContent className="p-5 md:p-6 text-center">
+                    <div className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                      <feature.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" />
                     </div>
-                    <h3 className="text-base md:text-lg font-bold mb-1 md:mb-2">{feature.title}</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">{feature.description}</p>
+                    <h3 className="text-base md:text-lg font-bold mb-2 leading-snug">{feature.title}</h3>
+                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -671,15 +671,15 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Psychology Consultation Section */}
-        <section id="konsultasi" className="py-12 md:py-20 px-4 bg-card">
+        {/* Psychology Consultation Section - Mobile Optimized */}
+        <section id="konsultasi" className="py-12 md:py-20 px-4 md:px-6 bg-card">
           <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-8 md:mb-12">
+            <div className="text-center mb-8 md:mb-12 px-2">
               <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Layanan Konsultasi</Badge>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">
                 Konsultasi <span className="text-gradient">Psikologi</span>
               </h2>
-              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Kami menyediakan layanan konsultasi psikologi untuk membantu Anda mengatasi stress dan masalah emosional
               </p>
             </div>
@@ -738,13 +738,13 @@ const Index = () => {
               </Card>
             </div>
 
-            <div className="text-center">
-              <Card className="inline-block border-2 border-primary/20 bg-gradient-to-br from-card to-primary/5">
+            <div className="text-center px-4">
+              <Card className="inline-block w-full max-w-lg border-2 border-primary/20 bg-gradient-to-br from-card to-primary/5">
                 <CardContent className="p-6 md:p-8">
-                  <p className="text-base md:text-lg font-semibold mb-4">
+                  <p className="text-sm sm:text-base md:text-lg font-semibold mb-4 leading-relaxed">
                     Untuk informasi lebih lanjut dan booking konsultasi
                   </p>
-                  <Button variant="hero" size="lg" asChild>
+                  <Button variant="hero" size="lg" className="w-full sm:w-auto min-h-[48px] text-base" asChild>
                     <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-2 h-5 w-5" />
                       Hubungi via WhatsApp

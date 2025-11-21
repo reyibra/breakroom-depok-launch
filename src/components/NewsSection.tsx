@@ -90,35 +90,35 @@ export const NewsSection = () => {
   }
 
   return (
-    <section className="py-12 md:py-24 px-4 bg-gradient-to-br from-background via-background to-primary/5">
+    <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-br from-background via-background to-primary/5">
       <div className="container mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-primary/10 rounded-full">
-            <Newspaper className="w-5 h-5 text-primary" />
-            <span className="text-primary font-semibold uppercase tracking-wider text-sm">
+        {/* Section Header - Mobile Optimized */}
+        <div className="text-center mb-8 md:mb-12 animate-fade-in px-2">
+          <div className="inline-flex items-center gap-2 mb-3 md:mb-4 px-3 md:px-4 py-1.5 md:py-2 bg-primary/10 rounded-full">
+            <Newspaper className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+            <span className="text-primary font-semibold uppercase tracking-wider text-xs md:text-sm">
               Info Terkini
             </span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">
             <span className="text-gradient">Berita Terbaru</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Update dan informasi terbaru dari Breakroom Depok
           </p>
         </div>
 
-        {/* News Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* News Grid - Mobile Optimized */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
           {news.map((item, index) => (
             <Card
               key={item.id}
-              className="group overflow-hidden hover:shadow-glow transition-all duration-300 hover:-translate-y-2 bg-card border-border animate-fade-in"
+              className="group overflow-hidden hover:shadow-glow transition-all duration-300 hover:-translate-y-1 md:hover:-translate-y-2 bg-card border-border animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Image */}
               {item.image_url && (
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-44 md:h-48 overflow-hidden">
                   <img
                     src={item.image_url}
                     alt={item.title}
@@ -128,10 +128,10 @@ export const NewsSection = () => {
                 </div>
               )}
 
-              <CardContent className="p-6">
+              <CardContent className="p-5 md:p-6">
                 {/* Date */}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                  <Calendar className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                  <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4 flex-shrink-0" />
                   <span>
                     {format(new Date(item.published_at), "dd MMMM yyyy", {
                       locale: id,
@@ -140,12 +140,12 @@ export const NewsSection = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
                   {item.title}
                 </h3>
 
                 {/* Content */}
-                <p className="text-muted-foreground line-clamp-3 leading-relaxed">
+                <p className="text-sm md:text-base text-muted-foreground line-clamp-3 leading-relaxed">
                   {item.content}
                 </p>
               </CardContent>
