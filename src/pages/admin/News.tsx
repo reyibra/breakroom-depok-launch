@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Upload, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +33,6 @@ import { z } from "zod";
 const newsSchema = z.object({
   title: z.string().trim().min(1, "Judul harus diisi").max(200, "Judul maksimal 200 karakter"),
   content: z.string().trim().min(1, "Konten harus diisi").max(5000, "Konten maksimal 5000 karakter"),
-  image_url: z.string().trim().url("URL gambar tidak valid").optional().or(z.literal("")),
 });
 
 interface News {
@@ -56,8 +55,10 @@ const News = () => {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    image_url: "",
   });
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -84,6 +85,75 @@ const News = () => {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "File harus berupa gambar",
+        });
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Ukuran file maksimal 5MB",
+        });
+        return;
+      }
+
+      setSelectedImage(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setImagePreview("");
+  };
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      setUploading(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `news/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('news-images')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('news-images')
+        .getPublicUrl(fileName);
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal mengupload gambar",
+      });
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -98,13 +168,25 @@ const News = () => {
     }
 
     try {
+      let imageUrl = editingNews?.image_url || null;
+
+      // Upload new image if selected
+      if (selectedImage) {
+        const uploadedUrl = await uploadImage(selectedImage);
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
+        } else {
+          return; // Stop if upload failed
+        }
+      }
+
       if (editingNews) {
         const { error } = await supabase
           .from("news")
           .update({
             title: formData.title.trim(),
             content: formData.content.trim(),
-            image_url: formData.image_url.trim() || null,
+            image_url: imageUrl,
           })
           .eq("id", editingNews.id);
 
@@ -116,7 +198,7 @@ const News = () => {
           .insert({
             title: formData.title.trim(),
             content: formData.content.trim(),
-            image_url: formData.image_url.trim() || null,
+            image_url: imageUrl,
           });
 
         if (error) throw error;
@@ -125,7 +207,9 @@ const News = () => {
 
       setDialogOpen(false);
       setEditingNews(null);
-      setFormData({ title: "", content: "", image_url: "" });
+      setFormData({ title: "", content: "" });
+      setSelectedImage(null);
+      setImagePreview("");
       fetchNews();
     } catch (error) {
       toast({
@@ -150,7 +234,7 @@ const News = () => {
     setPreviewData({
       title: formData.title,
       content: formData.content,
-      image_url: formData.image_url,
+      image_url: imagePreview || (editingNews?.image_url || ""),
     });
     setPreviewOpen(true);
   };
@@ -169,8 +253,9 @@ const News = () => {
     setFormData({
       title: item.title,
       content: item.content,
-      image_url: item.image_url || "",
     });
+    setSelectedImage(null);
+    setImagePreview(item.image_url || "");
     setDialogOpen(true);
   };
 
@@ -224,7 +309,9 @@ const News = () => {
             <Button
               onClick={() => {
                 setEditingNews(null);
-                setFormData({ title: "", content: "", image_url: "" });
+                setFormData({ title: "", content: "" });
+                setSelectedImage(null);
+                setImagePreview("");
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -261,21 +348,55 @@ const News = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="image_url">URL Gambar (opsional)</Label>
-                <Input
-                  id="image_url"
-                  type="url"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://..."
-                />
+                <Label htmlFor="image">Gambar (opsional)</Label>
+                <div className="space-y-3">
+                  {imagePreview ? (
+                    <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted border">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="destructive"
+                        className="absolute top-2 right-2"
+                        onClick={removeImage}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary transition-colors">
+                      <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                      <Label
+                        htmlFor="image"
+                        className="cursor-pointer text-sm text-muted-foreground hover:text-primary"
+                      >
+                        Klik untuk upload gambar atau drag & drop
+                        <br />
+                        <span className="text-xs">PNG, JPG, WEBP (Max 5MB)</span>
+                      </Label>
+                      <Input
+                        id="image"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={handlePreview}>
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
                 </Button>
-                <Button type="submit">{editingNews ? "Update" : "Tambah"}</Button>
+                <Button type="submit" disabled={uploading}>
+                  {uploading ? "Mengupload..." : editingNews ? "Update" : "Tambah"}
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
