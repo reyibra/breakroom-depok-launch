@@ -649,17 +649,30 @@ const Index = () => {
         {/* News Section */}
         <NewsSection />
 
-        {/* Features Section - Mobile Optimized */}
+        {/* Features Section - Mobile Alternating Layout */}
         <section className="py-12 md:py-20 px-4 md:px-6">
           <div className="container mx-auto max-w-6xl">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 leading-tight px-2">
               Kenapa Pilih <span className="text-gradient">Breakroom?</span>
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {/* Mobile: Alternating Layout, Desktop: Grid */}
+            <div className="block md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {features.map((feature, index) => (
-                <Card key={index} className="bg-card border-border hover:border-primary transition-colors">
-                  <CardContent className="p-5 md:p-6 text-center">
-                    <div className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                <Card 
+                  key={index} 
+                  className={`bg-card border-border hover:border-primary transition-all mb-4 md:mb-0 animate-fade-in
+                    ${index % 2 === 0 ? 'md:translate-x-0 mr-auto' : 'md:translate-x-0 ml-auto'}
+                    ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-0 md:ml-auto'}
+                  `}
+                  style={{ 
+                    animationDelay: `${index * 100}ms`,
+                    maxWidth: index % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
+                    marginLeft: index % 2 === 0 ? '0' : 'auto',
+                    marginRight: index % 2 === 0 ? 'auto' : '0',
+                  }}
+                >
+                  <CardContent className="p-5 md:p-6 text-left md:text-center">
+                    <div className={`w-14 h-14 md:w-16 md:h-16 ${index % 2 === 0 ? '' : 'ml-0 md:mx-auto'} md:mx-auto mb-3 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center`}>
                       <feature.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" />
                     </div>
                     <h3 className="text-base md:text-lg font-bold mb-2 leading-snug">{feature.title}</h3>
@@ -684,58 +697,61 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8">
-              <Card className="overflow-hidden border-2 border-border hover:border-primary transition-colors">
-                <CardContent className="p-6 md:p-8">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Users className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-center">Konsultasi Online</h3>
-                  <p className="text-sm md:text-base text-muted-foreground text-center mb-4">
-                    Konsultasi dengan psikolog profesional dari mana saja melalui video call atau chat
-                  </p>
-                  <ul className="space-y-2 mb-6">
-                    <li className="flex items-start gap-2 text-sm">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span>Fleksibel dan nyaman dari rumah</span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span>Privasi terjamin</span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span>Jadwal yang dapat disesuaikan</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="overflow-hidden border-2 border-border hover:border-primary transition-colors">
-                <CardContent className="p-6 md:p-8">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                    <MapPin className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-center">Konsultasi Offline</h3>
-                  <p className="text-sm md:text-base text-muted-foreground text-center mb-4">
-                    Bertemu langsung dengan psikolog di lokasi Breakroom Depok
-                  </p>
-                  <ul className="space-y-2 mb-6">
-                    <li className="flex items-start gap-2 text-sm">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span>Interaksi tatap muka langsung</span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span>Ruang konsultasi yang nyaman</span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span>Suasana yang mendukung</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+            {/* Mobile: Alternating Layout, Desktop: Grid */}
+            <div className="block lg:grid lg:grid-cols-2 gap-6 md:gap-8 mb-8 space-y-6 lg:space-y-0">
+              {[
+                {
+                  icon: Users,
+                  title: "Konsultasi Online",
+                  desc: "Konsultasi dengan psikolog profesional dari mana saja melalui video call atau chat",
+                  features: [
+                    "Fleksibel dan nyaman dari rumah",
+                    "Privasi terjamin",
+                    "Jadwal yang dapat disesuaikan"
+                  ]
+                },
+                {
+                  icon: MapPin,
+                  title: "Konsultasi Offline",
+                  desc: "Bertemu langsung dengan psikolog di lokasi Breakroom Depok",
+                  features: [
+                    "Interaksi tatap muka langsung",
+                    "Ruang konsultasi yang nyaman",
+                    "Suasana yang mendukung"
+                  ]
+                }
+              ].map((item, index) => (
+                <Card 
+                  key={index}
+                  className={`overflow-hidden border-2 border-border hover:border-primary transition-all animate-fade-in
+                    ${index % 2 === 0 ? 'mr-0 lg:mr-auto' : 'ml-auto lg:ml-0'}
+                  `}
+                  style={{
+                    animationDelay: `${index * 150}ms`,
+                    maxWidth: '100%',
+                    marginLeft: index % 2 === 0 ? '0' : 'auto',
+                    marginRight: index % 2 === 0 ? 'auto' : '0',
+                  }}
+                >
+                  <CardContent className="p-6 md:p-8">
+                    <div className={`w-16 h-16 ${index % 2 === 0 ? '' : 'ml-0'} lg:mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center`}>
+                      <item.icon className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-bold mb-3 text-left lg:text-center">{item.title}</h3>
+                    <p className="text-sm md:text-base text-muted-foreground text-left lg:text-center mb-4">
+                      {item.desc}
+                    </p>
+                    <ul className="space-y-2 mb-6">
+                      {item.features.map((feat, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-sm">
+                          <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
 
             <div className="text-center px-4">
@@ -756,33 +772,45 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Safety Equipment Section */}
-        <section className="py-12 md:py-20 px-4">
+        {/* Safety Equipment Section - Mobile Alternating */}
+        <section className="py-12 md:py-20 px-4 md:px-6">
           <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-8 md:mb-12">
+            <div className="text-center mb-8 md:mb-12 px-2">
               <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Keamanan Utama</Badge>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 leading-tight">
                 Perlengkapan <span className="text-gradient">Safety</span>
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Semua perlengkapan keamanan disediakan dan wajib digunakan selama sesi
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Mobile: Alternating Layout, Desktop: Grid */}
+            <div className="block md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {[
                 { name: "Coverall Safety", desc: "Pakaian pelindung penuh" },
                 { name: "Helm Safety", desc: "Melindungi kepala dari pecahan" },
                 { name: "Sarung Tangan", desc: "Pelindung tangan tebal" },
                 { name: "Safety Goggles", desc: "Pelindung mata" },
               ].map((item, idx) => (
-                <Card key={idx} className="text-center border-border hover:border-caution transition-colors">
-                  <CardContent className="p-6">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-caution/10 rounded-full flex items-center justify-center">
-                      <Shield className="w-8 h-8 text-caution" />
+                <Card 
+                  key={idx} 
+                  className={`border-border hover:border-caution transition-all mb-4 md:mb-0 animate-fade-in
+                    ${idx % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
+                  `}
+                  style={{
+                    animationDelay: `${idx * 100}ms`,
+                    maxWidth: idx % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
+                    marginLeft: idx % 2 === 0 ? '0' : 'auto',
+                    marginRight: idx % 2 === 0 ? 'auto' : '0',
+                  }}
+                >
+                  <CardContent className="p-5 md:p-6 text-left md:text-center">
+                    <div className={`w-14 h-14 md:w-16 md:h-16 ${idx % 2 === 0 ? '' : 'ml-0 md:mx-auto'} md:mx-auto mb-3 md:mb-4 bg-caution/10 rounded-full flex items-center justify-center`}>
+                      <Shield className="w-7 h-7 md:w-8 md:h-8 text-caution" />
                     </div>
-                    <h4 className="font-bold mb-2">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    <h4 className="text-base md:text-lg font-bold mb-2 leading-snug">{item.name}</h4>
+                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -790,49 +818,73 @@ const Index = () => {
           </div>
         </section>
 
-        {/* About & Safety Section */}
-        <section id="about" className="py-20 px-4 bg-card">
+        {/* About & Safety Section - Mobile Alternating */}
+        <section id="about" className="py-12 md:py-20 px-4 md:px-6 bg-card">
           <div className="container mx-auto max-w-6xl">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-primary text-primary-foreground">Keamanan & Prosedur</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <div className="text-center mb-8 md:mb-12 px-2">
+              <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs md:text-sm">Keamanan & Prosedur</Badge>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">
                 Aturan <span className="text-gradient">Keamanan</span>
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Keselamatan Anda adalah prioritas utama kami
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            {/* Mobile: Alternating Layout, Desktop: Grid */}
+            <div className="block md:grid md:grid-cols-2 gap-4 md:gap-6 mb-12 md:mb-16 space-y-4 md:space-y-0">
               {safetyRules.map((rule, index) => (
-                <Card key={index} className="border-border hover:border-primary transition-colors">
-                  <CardContent className="p-6 flex gap-4">
+                <Card 
+                  key={index} 
+                  className={`border-border hover:border-primary transition-all animate-fade-in
+                    ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
+                  `}
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    maxWidth: '100%',
+                    marginLeft: index % 2 === 0 ? '0' : 'auto',
+                    marginRight: index % 2 === 0 ? 'auto' : '0',
+                  }}
+                >
+                  <CardContent className="p-5 md:p-6 flex gap-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <rule.icon className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg mb-2">{rule.title}</h3>
-                      <p className="text-sm text-muted-foreground">{rule.description}</p>
+                      <h3 className="font-bold text-base md:text-lg mb-2 leading-snug">{rule.title}</h3>
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{rule.description}</p>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
 
-            {/* Procedures */}
-            <div className="mb-16">
-              <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+            {/* Procedures - Mobile Alternating */}
+            <div className="mb-12 md:mb-16">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 leading-tight px-2">
                 Alur <span className="text-gradient">Sesi</span>
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+              {/* Mobile: Alternating, Desktop: Grid */}
+              <div className="block md:grid md:grid-cols-5 gap-4 md:gap-6 space-y-4 md:space-y-0">
                 {procedures.map((proc, index) => (
-                  <div key={index} className="relative">
-                    <div className="text-center">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-2xl font-bold text-primary-foreground shadow-lg">
+                  <div 
+                    key={index} 
+                    className={`relative animate-fade-in
+                      ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
+                    `}
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                      maxWidth: index % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
+                      marginLeft: index % 2 === 0 ? '0' : 'auto',
+                      marginRight: index % 2 === 0 ? 'auto' : '0',
+                    }}
+                  >
+                    <div className={`${index % 2 === 0 ? 'text-left md:text-center' : 'text-right md:text-center'} p-4 md:p-0`}>
+                      <div className={`w-14 h-14 md:w-16 md:h-16 ${index % 2 === 0 ? '' : 'ml-auto md:mx-auto'} md:mx-auto mb-3 md:mb-4 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-xl md:text-2xl font-bold text-primary-foreground shadow-lg`}>
                         {proc.step}
                       </div>
-                      <h4 className="font-bold mb-2">{proc.title}</h4>
-                      <p className="text-sm text-muted-foreground">{proc.description}</p>
+                      <h4 className="font-bold text-base md:text-lg mb-2 leading-snug">{proc.title}</h4>
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{proc.description}</p>
                     </div>
                     {index < procedures.length - 1 && (
                       <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
@@ -842,17 +894,29 @@ const Index = () => {
               </div>
             </div>
 
-            {/* FAQ */}
+            {/* FAQ - Mobile Alternating */}
             <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 leading-tight px-2">
                 <span className="text-gradient">FAQ</span> - Pertanyaan Umum
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Mobile: Alternating, Desktop: Grid */}
+              <div className="block md:grid md:grid-cols-2 gap-4 md:gap-6 space-y-4 md:space-y-0">
                 {faqs.map((faq, index) => (
-                  <Card key={index} className="border-border">
-                    <CardContent className="p-6">
-                      <h4 className="font-bold mb-2 text-primary">{faq.q}</h4>
-                      <p className="text-sm text-muted-foreground">{faq.a}</p>
+                  <Card 
+                    key={index} 
+                    className={`border-border transition-all animate-fade-in
+                      ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
+                    `}
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                      maxWidth: '100%',
+                      marginLeft: index % 2 === 0 ? '0' : 'auto',
+                      marginRight: index % 2 === 0 ? 'auto' : '0',
+                    }}
+                  >
+                    <CardContent className="p-5 md:p-6">
+                      <h4 className="font-bold text-base md:text-lg mb-2 text-primary leading-snug">{faq.q}</h4>
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{faq.a}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -920,36 +984,46 @@ const Index = () => {
               </Card>
             </div>
 
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                    <MapPin className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  <h4 className="font-bold mb-2 text-lg">Lokasi Strategis</h4>
-                  <p className="text-sm text-muted-foreground">Dekat dengan Jakarta Selatan (Lenteng Agung, Pancoran)</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                    <Clock className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  <h4 className="font-bold mb-2 text-lg">Akses Mudah</h4>
-                  <p className="text-sm text-muted-foreground">15-25 menit dari area Jakarta Selatan</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                    <MessageCircle className="w-8 h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  <h4 className="font-bold mb-2 text-lg">Hubungi Kami</h4>
-                  <p className="text-sm text-muted-foreground">Via WhatsApp untuk petunjuk arah detail</p>
-                </CardContent>
-              </Card>
+            {/* Location Cards - Mobile Alternating */}
+            <div className="mt-8 md:mt-12 block md:grid md:grid-cols-3 gap-4 md:gap-6 space-y-4 md:space-y-0">
+              {[
+                {
+                  icon: MapPin,
+                  title: "Lokasi Strategis",
+                  desc: "Dekat dengan Jakarta Selatan (Lenteng Agung, Pancoran)"
+                },
+                {
+                  icon: Clock,
+                  title: "Akses Mudah",
+                  desc: "15-25 menit dari area Jakarta Selatan"
+                },
+                {
+                  icon: MessageCircle,
+                  title: "Hubungi Kami",
+                  desc: "Via WhatsApp untuk petunjuk arah detail"
+                }
+              ].map((item, index) => (
+                <Card 
+                  key={index}
+                  className={`border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group animate-fade-in
+                    ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
+                  `}
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    maxWidth: index % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
+                    marginLeft: index % 2 === 0 ? '0' : 'auto',
+                    marginRight: index % 2 === 0 ? 'auto' : '0',
+                  }}
+                >
+                  <CardContent className="p-5 md:p-6 text-left md:text-center">
+                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center ${index % 2 === 0 ? '' : 'ml-0 md:mx-auto'} md:mx-auto mb-3 md:mb-4 group-hover:bg-primary/20 transition-colors duration-300`}>
+                      <item.icon className="w-7 h-7 md:w-8 md:h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <h4 className="font-bold text-base md:text-lg mb-2 leading-snug">{item.title}</h4>
+                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
