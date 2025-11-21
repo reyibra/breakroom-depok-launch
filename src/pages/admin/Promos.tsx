@@ -37,7 +37,6 @@ const promoSchema = z.object({
   discount_percentage: z.number().min(0, "Diskon minimal 0%").max(100, "Diskon maksimal 100%").optional(),
   start_date: z.string().min(1, "Tanggal mulai harus diisi"),
   end_date: z.string().min(1, "Tanggal berakhir harus diisi"),
-  image_url: z.string().trim().url("URL gambar tidak valid").optional().or(z.literal("")),
 });
 
 interface Promo {
@@ -65,7 +64,6 @@ const Promos = () => {
     discount_percentage: string;
     start_date: string;
     end_date: string;
-    image_url: string;
   } | null>(null);
   const [editingPromo, setEditingPromo] = useState<Promo | null>(null);
   const [formData, setFormData] = useState({
@@ -75,7 +73,6 @@ const Promos = () => {
     discount_percentage: "",
     start_date: "",
     end_date: "",
-    image_url: "",
   });
   const { toast } = useToast();
 
@@ -131,7 +128,6 @@ const Promos = () => {
             discount_percentage: formData.discount_percentage ? Number(formData.discount_percentage) : null,
             start_date: formData.start_date,
             end_date: formData.end_date,
-            image_url: formData.image_url.trim() || null,
           })
           .eq("id", editingPromo.id);
 
@@ -147,7 +143,6 @@ const Promos = () => {
             discount_percentage: formData.discount_percentage ? Number(formData.discount_percentage) : null,
             start_date: formData.start_date,
             end_date: formData.end_date,
-            image_url: formData.image_url.trim() || null,
           });
 
         if (error) throw error;
@@ -156,7 +151,7 @@ const Promos = () => {
 
       setDialogOpen(false);
       setEditingPromo(null);
-      setFormData({ title: "", description: "", promo_code: "", discount_percentage: "", start_date: "", end_date: "", image_url: "" });
+      setFormData({ title: "", description: "", promo_code: "", discount_percentage: "", start_date: "", end_date: "" });
       fetchPromos();
     } catch (error) {
       toast({
@@ -189,7 +184,6 @@ const Promos = () => {
       discount_percentage: formData.discount_percentage,
       start_date: formData.start_date,
       end_date: formData.end_date,
-      image_url: formData.image_url,
     });
     setPreviewOpen(true);
   };
@@ -202,7 +196,6 @@ const Promos = () => {
       discount_percentage: item.discount_percentage?.toString() || "",
       start_date: item.start_date.split("T")[0],
       end_date: item.end_date.split("T")[0],
-      image_url: item.image_url || "",
     });
     setPreviewOpen(true);
   };
@@ -216,7 +209,6 @@ const Promos = () => {
       discount_percentage: item.discount_percentage?.toString() || "",
       start_date: item.start_date.split("T")[0],
       end_date: item.end_date.split("T")[0],
-      image_url: item.image_url || "",
     });
     setDialogOpen(true);
   };
@@ -271,7 +263,7 @@ const Promos = () => {
             <Button
               onClick={() => {
                 setEditingPromo(null);
-                setFormData({ title: "", description: "", promo_code: "", discount_percentage: "", start_date: "", end_date: "", image_url: "" });
+                setFormData({ title: "", description: "", promo_code: "", discount_percentage: "", start_date: "", end_date: "" });
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -356,16 +348,6 @@ const Promos = () => {
                   />
                 </div>
               </div>
-              <div>
-                <Label htmlFor="image_url">URL Gambar (opsional)</Label>
-                <Input
-                  id="image_url"
-                  type="url"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://..."
-                />
-              </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={handlePreview}>
                   <Eye className="w-4 h-4 mr-2" />
@@ -415,18 +397,6 @@ const Promos = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {previewData.image_url && (
-                    <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted">
-                      <img
-                        src={previewData.image_url}
-                        alt={previewData.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.style.display = "none";
-                        }}
-                      />
-                    </div>
-                  )}
                   <div className="prose prose-sm max-w-none">
                     <p className="text-foreground whitespace-pre-wrap">{previewData.description}</p>
                   </div>
