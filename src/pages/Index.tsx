@@ -6,6 +6,7 @@ import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import PromoBanner from "@/components/PromoBanner";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
@@ -174,6 +175,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <PromoBanner />
       <Navbar />
       
       <main className="flex-grow">
