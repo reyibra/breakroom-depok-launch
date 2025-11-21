@@ -193,9 +193,6 @@ const Index = () => {
                   </span>
                   <Sparkles className="w-4 h-4 text-caution animate-pulse" />
                 </div>
-                <span className="text-[9px] text-primary-foreground/70 font-medium">
-                  /30 menit
-                </span>
               </div>
             </div>
             
