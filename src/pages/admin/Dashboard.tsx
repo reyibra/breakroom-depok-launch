@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, Newspaper, Calendar, Tag } from "lucide-react";
+import { MessageSquare, Newspaper, Tag } from "lucide-react";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
     reviews: { total: 0, pending: 0 },
     news: { total: 0, active: 0 },
-    events: { total: 0, active: 0 },
     promos: { total: 0, active: 0 },
   });
   const [loading, setLoading] = useState(true);
@@ -38,16 +37,6 @@ const Dashboard = () => {
         .select("*", { count: "exact", head: true })
         .eq("is_active", true);
 
-      // Fetch events stats
-      const { count: totalEvents } = await supabase
-        .from("events")
-        .select("*", { count: "exact", head: true });
-      
-      const { count: activeEvents } = await supabase
-        .from("events")
-        .select("*", { count: "exact", head: true })
-        .eq("is_active", true);
-
       // Fetch promos stats
       const { count: totalPromos } = await supabase
         .from("promos")
@@ -61,7 +50,6 @@ const Dashboard = () => {
       setStats({
         reviews: { total: totalReviews || 0, pending: pendingReviews || 0 },
         news: { total: totalNews || 0, active: activeNews || 0 },
-        events: { total: totalEvents || 0, active: activeEvents || 0 },
         promos: { total: totalPromos || 0, active: activePromos || 0 },
       });
     } catch (error) {
@@ -87,13 +75,6 @@ const Dashboard = () => {
       color: "text-green-500",
     },
     {
-      title: "Events",
-      icon: Calendar,
-      total: stats.events.total,
-      subtitle: `${stats.events.active} active`,
-      color: "text-purple-500",
-    },
-    {
       title: "Promos",
       icon: Tag,
       total: stats.promos.total,
@@ -115,7 +96,7 @@ const Dashboard = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
