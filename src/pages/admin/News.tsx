@@ -50,6 +50,8 @@ const News = () => {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewData, setPreviewData] = useState<{ title: string; content: string; image_url: string } | null>(null);
   const [editingNews, setEditingNews] = useState<News | null>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -132,6 +134,34 @@ const News = () => {
         description: "Gagal menyimpan news",
       });
     }
+  };
+
+  const handlePreview = () => {
+    const validation = newsSchema.safeParse(formData);
+    if (!validation.success) {
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: validation.error.errors[0].message,
+      });
+      return;
+    }
+
+    setPreviewData({
+      title: formData.title,
+      content: formData.content,
+      image_url: formData.image_url,
+    });
+    setPreviewOpen(true);
+  };
+
+  const handlePreviewExisting = (item: News) => {
+    setPreviewData({
+      title: item.title,
+      content: item.content,
+      image_url: item.image_url || "",
+    });
+    setPreviewOpen(true);
   };
 
   const handleEdit = (item: News) => {
@@ -241,12 +271,66 @@ const News = () => {
                 />
               </div>
               <DialogFooter>
+                <Button type="button" variant="outline" onClick={handlePreview}>
+                  <Eye className="w-4 h-4 mr-2" />
+                  Preview
+                </Button>
                 <Button type="submit">{editingNews ? "Update" : "Tambah"}</Button>
               </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* Preview Dialog */}
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Preview News</DialogTitle>
+            <DialogDescription>
+              Tampilan news seperti yang akan dilihat pengunjung website
+            </DialogDescription>
+          </DialogHeader>
+          {previewData && (
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-2xl">{previewData.title}</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    {new Date().toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {previewData.image_url && (
+                    <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted">
+                      <img
+                        src={previewData.image_url}
+                        alt={previewData.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div className="prose prose-sm max-w-none">
+                    <p className="text-foreground whitespace-pre-wrap">{previewData.content}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPreviewOpen(false)}>
+              Tutup
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="grid gap-4">
         {news.map((item) => (
@@ -267,6 +351,10 @@ const News = () => {
             <CardContent>
               <p className="text-sm mb-4 line-clamp-2">{item.content}</p>
               <div className="flex gap-2">
+                <Button size="sm" variant="outline" onClick={() => handlePreviewExisting(item)}>
+                  <Eye className="w-4 h-4 mr-1" />
+                  Preview
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => handleEdit(item)}>
                   <Edit className="w-4 h-4 mr-1" />
                   Edit
