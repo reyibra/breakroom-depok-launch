@@ -69,15 +69,26 @@ export const NewsSection = () => {
 
   if (loading) {
     return (
-      <section className="py-12 md:py-24 px-4 bg-gradient-to-br from-background via-background to-primary/5">
+      <section className="py-12 md:py-24 px-4 md:px-6 bg-gradient-to-br from-background via-background to-primary/5">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <Skeleton className="h-12 w-64 mx-auto mb-4" />
-            <Skeleton className="h-6 w-96 mx-auto" />
+          <div className="text-center mb-8 md:mb-12 px-2 animate-fade-in">
+            <div className="h-10 bg-muted/50 rounded-lg w-48 mx-auto mb-4 animate-pulse"></div>
+            <div className="h-12 bg-muted/50 rounded-lg w-80 mx-auto mb-3 animate-pulse"></div>
+            <div className="h-6 bg-muted/30 rounded-lg w-96 max-w-full mx-auto animate-pulse"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-96 w-full" />
+              <div key={i} className="bg-card border border-border rounded-lg overflow-hidden animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="h-44 md:h-48 bg-muted/40 animate-pulse"></div>
+                <div className="p-5 md:p-6 space-y-3">
+                  <div className="h-4 bg-muted/30 rounded w-32 animate-pulse"></div>
+                  <div className="h-6 bg-muted/40 rounded w-5/6 animate-pulse"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-muted/20 rounded w-full animate-pulse"></div>
+                    <div className="h-4 bg-muted/20 rounded w-4/5 animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>

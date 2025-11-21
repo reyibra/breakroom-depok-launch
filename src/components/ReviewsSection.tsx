@@ -191,9 +191,24 @@ export const ReviewsSection = () => {
 
         {/* Reviews Grid - Mobile Optimized */}
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-48 md:h-64" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4 animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="flex gap-1 mb-3">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <div key={s} className="w-5 h-5 bg-muted/40 rounded animate-pulse"></div>
+                  ))}
+                </div>
+                <div className="space-y-2 flex-grow">
+                  <div className="h-4 bg-muted/30 rounded w-full animate-pulse"></div>
+                  <div className="h-4 bg-muted/30 rounded w-5/6 animate-pulse"></div>
+                  <div className="h-4 bg-muted/30 rounded w-4/5 animate-pulse"></div>
+                </div>
+                <div className="border-t border-border pt-4 space-y-2">
+                  <div className="h-5 bg-muted/40 rounded w-32 animate-pulse"></div>
+                  <div className="h-4 bg-muted/20 rounded w-24 animate-pulse"></div>
+                </div>
+              </div>
             ))}
           </div>
         ) : filteredReviews.length > 0 ? (
