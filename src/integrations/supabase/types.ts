@@ -181,6 +181,9 @@ export type Database = {
       }
       reviews: {
         Row: {
+          admin_responder_id: string | null
+          admin_response: string | null
+          admin_response_date: string | null
           created_at: string
           id: string
           image_url: string | null
@@ -191,6 +194,9 @@ export type Database = {
           role: string | null
         }
         Insert: {
+          admin_responder_id?: string | null
+          admin_response?: string | null
+          admin_response_date?: string | null
           created_at?: string
           id?: string
           image_url?: string | null
@@ -201,6 +207,9 @@ export type Database = {
           role?: string | null
         }
         Update: {
+          admin_responder_id?: string | null
+          admin_response?: string | null
+          admin_response_date?: string | null
           created_at?: string
           id?: string
           image_url?: string | null

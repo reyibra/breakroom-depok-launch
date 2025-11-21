@@ -22,6 +22,8 @@ interface Review {
   review_text: string;
   image_url: string | null;
   created_at: string;
+  admin_response: string | null;
+  admin_response_date: string | null;
 }
 
 export const ReviewsSection = () => {
@@ -241,6 +243,8 @@ export const ReviewsSection = () => {
                   reviewText={review.review_text}
                   imageUrl={review.image_url || undefined}
                   createdAt={review.created_at}
+                  adminResponse={review.admin_response || undefined}
+                  adminResponseDate={review.admin_response_date || undefined}
                 />
               ))}
             </div>

@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Check, X, Star, Trash2 } from "lucide-react";
+import { Check, X, Star, Trash2, MessageSquare, Send } from "lucide-react";
+import { format } from "date-fns";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +28,9 @@ interface Review {
   rating: number;
   is_approved: boolean;
   created_at: string;
+  admin_response: string | null;
+  admin_response_date: string | null;
+  admin_responder_id: string | null;
 }
 
 const Reviews = () => {
@@ -34,6 +39,8 @@ const Reviews = () => {
   const [selectedRating, setSelectedRating] = useState<number | "all">("all");
   const [sortOrder, setSortOrder] = useState<"latest" | "oldest" | "highest" | "lowest">("latest");
   const [selectedReviews, setSelectedReviews] = useState<Set<string>>(new Set());
+  const [responseText, setResponseText] = useState<Record<string, string>>({});
+  const [savingResponse, setSavingResponse] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
   useEffect(() => {
@@ -254,6 +261,80 @@ const Reviews = () => {
       setSelectedReviews(new Set());
     } else {
       setSelectedReviews(new Set(sortedReviews.map(r => r.id)));
+    }
+  };
+
+  const handleSaveResponse = async (reviewId: string) => {
+    const response = responseText[reviewId]?.trim();
+    
+    if (!response) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Response tidak boleh kosong",
+      });
+      return;
+    }
+
+    setSavingResponse({ ...savingResponse, [reviewId]: true });
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { error } = await supabase
+        .from("reviews")
+        .update({
+          admin_response: response,
+          admin_response_date: new Date().toISOString(),
+          admin_responder_id: user?.id,
+        })
+        .eq("id", reviewId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Berhasil",
+        description: "Response berhasil disimpan",
+      });
+      
+      // Clear the input after save
+      setResponseText({ ...responseText, [reviewId]: "" });
+      fetchReviews();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal menyimpan response",
+      });
+    } finally {
+      setSavingResponse({ ...savingResponse, [reviewId]: false });
+    }
+  };
+
+  const handleDeleteResponse = async (reviewId: string) => {
+    try {
+      const { error } = await supabase
+        .from("reviews")
+        .update({
+          admin_response: null,
+          admin_response_date: null,
+          admin_responder_id: null,
+        })
+        .eq("id", reviewId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Berhasil",
+        description: "Response berhasil dihapus",
+      });
+      fetchReviews();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Gagal menghapus response",
+      });
     }
   };
 
@@ -541,7 +622,56 @@ const Reviews = () => {
             </CardHeader>
             <CardContent>
               <p className="text-sm mb-4">{review.review_text}</p>
-              <div className="flex gap-2">
+              
+              {/* Admin Response Section */}
+              <div className="mt-4 pt-4 border-t border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <MessageSquare className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium">Admin Response</span>
+                </div>
+                
+                {review.admin_response ? (
+                  <div className="bg-muted/50 rounded-lg p-3 mb-3">
+                    <p className="text-sm mb-2">{review.admin_response}</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs text-muted-foreground">
+                        {review.admin_response_date && 
+                          `Dibalas pada ${format(new Date(review.admin_response_date), "dd MMM yyyy, HH:mm")}`
+                        }
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDeleteResponse(review.id)}
+                        className="h-7 px-2 text-xs"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Hapus Response
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Textarea
+                      placeholder="Tulis response untuk review ini..."
+                      value={responseText[review.id] || ""}
+                      onChange={(e) => setResponseText({ ...responseText, [review.id]: e.target.value })}
+                      className="min-h-[80px] resize-none"
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => handleSaveResponse(review.id)}
+                      disabled={savingResponse[review.id] || !responseText[review.id]?.trim()}
+                      className="w-full sm:w-auto"
+                    >
+                      <Send className="w-4 h-4 mr-1" />
+                      {savingResponse[review.id] ? "Menyimpan..." : "Kirim Response"}
+                    </Button>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex gap-2 mt-4">
                 {!review.is_approved && (
                   <Button
                     size="sm"
