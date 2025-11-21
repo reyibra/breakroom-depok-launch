@@ -95,7 +95,7 @@ const VideoPlayer = ({
           muted={isMuted}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           poster={posterSrc}
-          preload="none"
+          preload="metadata"
           playsInline
           onClick={togglePlay}
           onPlay={() => setIsPlaying(true)}
