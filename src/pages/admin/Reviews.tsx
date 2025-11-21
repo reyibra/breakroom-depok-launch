@@ -34,6 +34,41 @@ const Reviews = () => {
 
   useEffect(() => {
     fetchReviews();
+
+    // Subscribe to real-time INSERT events for new reviews
+    const channel = supabase
+      .channel("new-reviews-notifications")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "reviews",
+        },
+        (payload) => {
+          console.log("🔔 New review submitted:", payload);
+          
+          // Show notification for new pending reviews
+          if (payload.new && !payload.new.is_approved) {
+            toast({
+              title: "📝 Review Baru Masuk!",
+              description: `Review dari ${payload.new.name} menunggu persetujuan`,
+              duration: 5000,
+            });
+          }
+          
+          // Refresh the reviews list
+          fetchReviews();
+        }
+      )
+      .subscribe((status) => {
+        console.log("🔔 Real-time notifications status:", status);
+      });
+
+    return () => {
+      console.log("🔔 Unsubscribing from review notifications");
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchReviews = async () => {
