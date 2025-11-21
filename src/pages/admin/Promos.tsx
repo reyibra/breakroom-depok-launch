@@ -33,6 +33,7 @@ import { z } from "zod";
 const promoSchema = z.object({
   title: z.string().trim().min(1, "Judul harus diisi").max(200, "Judul maksimal 200 karakter"),
   description: z.string().trim().min(1, "Deskripsi harus diisi").max(1000, "Deskripsi maksimal 1000 karakter"),
+  promo_code: z.string().trim().min(1, "Kode promo harus diisi").max(50, "Kode promo maksimal 50 karakter").regex(/^[A-Z0-9]+$/, "Kode promo hanya boleh huruf besar dan angka"),
   discount_percentage: z.number().min(0, "Diskon minimal 0%").max(100, "Diskon maksimal 100%").optional(),
   start_date: z.string().min(1, "Tanggal mulai harus diisi"),
   end_date: z.string().min(1, "Tanggal berakhir harus diisi"),
@@ -43,6 +44,7 @@ interface Promo {
   id: string;
   title: string;
   description: string;
+  promo_code: string | null;
   discount_percentage: number | null;
   start_date: string;
   end_date: string;
@@ -59,6 +61,7 @@ const Promos = () => {
   const [previewData, setPreviewData] = useState<{
     title: string;
     description: string;
+    promo_code: string;
     discount_percentage: string;
     start_date: string;
     end_date: string;
@@ -68,6 +71,7 @@ const Promos = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    promo_code: "",
     discount_percentage: "",
     start_date: "",
     end_date: "",
@@ -123,6 +127,7 @@ const Promos = () => {
           .update({
             title: formData.title.trim(),
             description: formData.description.trim(),
+            promo_code: formData.promo_code.trim().toUpperCase(),
             discount_percentage: formData.discount_percentage ? Number(formData.discount_percentage) : null,
             start_date: formData.start_date,
             end_date: formData.end_date,
@@ -138,6 +143,7 @@ const Promos = () => {
           .insert({
             title: formData.title.trim(),
             description: formData.description.trim(),
+            promo_code: formData.promo_code.trim().toUpperCase(),
             discount_percentage: formData.discount_percentage ? Number(formData.discount_percentage) : null,
             start_date: formData.start_date,
             end_date: formData.end_date,
@@ -150,7 +156,7 @@ const Promos = () => {
 
       setDialogOpen(false);
       setEditingPromo(null);
-      setFormData({ title: "", description: "", discount_percentage: "", start_date: "", end_date: "", image_url: "" });
+      setFormData({ title: "", description: "", promo_code: "", discount_percentage: "", start_date: "", end_date: "", image_url: "" });
       fetchPromos();
     } catch (error) {
       toast({
@@ -179,6 +185,7 @@ const Promos = () => {
     setPreviewData({
       title: formData.title,
       description: formData.description,
+      promo_code: formData.promo_code,
       discount_percentage: formData.discount_percentage,
       start_date: formData.start_date,
       end_date: formData.end_date,
@@ -191,6 +198,7 @@ const Promos = () => {
     setPreviewData({
       title: item.title,
       description: item.description,
+      promo_code: item.promo_code || "",
       discount_percentage: item.discount_percentage?.toString() || "",
       start_date: item.start_date.split("T")[0],
       end_date: item.end_date.split("T")[0],
@@ -204,6 +212,7 @@ const Promos = () => {
     setFormData({
       title: item.title,
       description: item.description,
+      promo_code: item.promo_code || "",
       discount_percentage: item.discount_percentage?.toString() || "",
       start_date: item.start_date.split("T")[0],
       end_date: item.end_date.split("T")[0],
@@ -262,7 +271,7 @@ const Promos = () => {
             <Button
               onClick={() => {
                 setEditingPromo(null);
-                setFormData({ title: "", description: "", discount_percentage: "", start_date: "", end_date: "", image_url: "" });
+                setFormData({ title: "", description: "", promo_code: "", discount_percentage: "", start_date: "", end_date: "", image_url: "" });
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -286,6 +295,21 @@ const Promos = () => {
                   required
                   maxLength={200}
                 />
+              </div>
+              <div>
+                <Label htmlFor="promo_code">Kode Promo</Label>
+                <Input
+                  id="promo_code"
+                  value={formData.promo_code}
+                  onChange={(e) => setFormData({ ...formData, promo_code: e.target.value.toUpperCase() })}
+                  required
+                  maxLength={50}
+                  placeholder="BREAK20"
+                  className="uppercase font-mono"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Hanya huruf besar dan angka (contoh: BREAK20, SPECIAL2024)
+                </p>
               </div>
               <div>
                 <Label htmlFor="description">Deskripsi</Label>
@@ -368,20 +392,26 @@ const Promos = () => {
               <Card className="border-2 border-primary/30">
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <CardTitle className="text-2xl">{previewData.title}</CardTitle>
-                        {previewData.discount_percentage && (
-                          <Badge variant="secondary" className="bg-caution text-background text-lg px-3 py-1">
-                            <Tag className="w-4 h-4 mr-1" />
-                            {previewData.discount_percentage}% OFF
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Valid: {new Date(previewData.start_date).toLocaleDateString("id-ID")} - {new Date(previewData.end_date).toLocaleDateString("id-ID")}
-                      </p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CardTitle className="text-2xl">{previewData.title}</CardTitle>
+                      {previewData.discount_percentage && (
+                        <Badge variant="secondary" className="bg-caution text-background text-lg px-3 py-1">
+                          <Tag className="w-4 h-4 mr-1" />
+                          {previewData.discount_percentage}% OFF
+                        </Badge>
+                      )}
                     </div>
+                    {previewData.promo_code && (
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg mb-2">
+                        <span className="text-xs text-muted-foreground">Kode:</span>
+                        <span className="text-sm font-bold font-mono text-primary">{previewData.promo_code}</span>
+                      </div>
+                    )}
+                    <p className="text-sm text-muted-foreground">
+                      Valid: {new Date(previewData.start_date).toLocaleDateString("id-ID")} - {new Date(previewData.end_date).toLocaleDateString("id-ID")}
+                    </p>
+                  </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -425,6 +455,11 @@ const Promos = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <CardTitle className="text-lg">{item.title}</CardTitle>
+                    {item.promo_code && (
+                      <Badge variant="outline" className="font-mono text-xs">
+                        {item.promo_code}
+                      </Badge>
+                    )}
                     {item.discount_percentage && (
                       <Badge variant="secondary" className="bg-caution text-background">
                         <Tag className="w-3 h-3 mr-1" />

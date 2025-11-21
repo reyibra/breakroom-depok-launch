@@ -245,11 +245,19 @@ const Index = () => {
                 <span className="text-caution font-bold text-xs md:text-sm uppercase tracking-wider">
                   {activePromo.title}
                 </span>
-                <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-                <span className="text-foreground font-semibold text-xs md:text-sm">
-                  {activePromo.discount_percentage && `Diskon ${activePromo.discount_percentage}%`}
-                  {activePromo.description && ` - ${activePromo.description.substring(0, 50)}${activePromo.description.length > 50 ? '...' : ''}`}
-                </span>
+                {activePromo.promo_code && (
+                  <>
+                    <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+                    <span className="text-foreground font-semibold text-xs md:text-sm">
+                      Kode: <span className="text-primary font-mono font-bold">{activePromo.promo_code}</span>
+                    </span>
+                  </>
+                )}
+                {activePromo.discount_percentage && (
+                  <span className="text-caution text-xs md:text-sm font-bold ml-1">
+                    {activePromo.discount_percentage}% OFF
+                  </span>
+                )}
               </div>
             )}
 
@@ -267,7 +275,7 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <Button variant="hero" size="lg" className="text-sm md:text-base relative overflow-hidden group" asChild>
                 <a 
-                  href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${activePromo ? ` dengan promo ${activePromo.title}` : ''}`} 
+                  href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${activePromo ? (activePromo.promo_code ? ` dengan kode ${activePromo.promo_code}` : ` dengan promo ${activePromo.title}`) : ''}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >

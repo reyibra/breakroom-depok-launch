@@ -86,6 +86,7 @@ export type Database = {
           id: string
           image_url: string | null
           is_active: boolean | null
+          promo_code: string | null
           start_date: string
           title: string
         }
@@ -97,6 +98,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_active?: boolean | null
+          promo_code?: string | null
           start_date: string
           title: string
         }
@@ -108,6 +110,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_active?: boolean | null
+          promo_code?: string | null
           start_date?: string
           title?: string
         }
