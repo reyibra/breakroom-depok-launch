@@ -421,34 +421,6 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-grow">
-        {/* Price Badge - Top Left - Responsive */}
-        <div className="fixed top-16 left-2 md:top-20 md:left-4 z-50 animate-fade-in">
-          <div className="relative group">
-            {/* Main Badge */}
-            <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 backdrop-blur-md p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-glow border border-primary/40 md:border-2 hover:scale-105 transition-smooth hover:shadow-[0_0_50px_hsl(24_100%_50%/0.5)]">
-              <div className="flex flex-col items-start space-y-0.5 md:space-y-1">
-                <span className="text-[8px] md:text-[10px] uppercase tracking-wider text-primary-foreground/80 font-bold">
-                  Mulai Dari
-                </span>
-                <div className="flex items-baseline gap-0.5 md:gap-1">
-                  <span className="text-xl md:text-3xl font-black text-primary-foreground leading-none">
-                    65K
-                  </span>
-                  <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-caution animate-pulse" />
-                </div>
-              </div>
-            </div>
-            
-            {/* Glow effect */}
-            <div className="absolute inset-0 bg-primary/20 rounded-xl md:rounded-2xl blur-xl -z-10 animate-pulse"></div>
-            
-            {/* Decorative corner */}
-            <div className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-4 h-4 md:w-6 md:h-6 bg-caution rounded-full flex items-center justify-center shadow-md">
-              <Tag className="w-2 h-2 md:w-3 md:h-3 text-background" />
-            </div>
-          </div>
-        </div>
-
         {/* Hero Section - Mobile Optimized */}
         <section id="hero" className="relative min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0">
           <img 
@@ -688,9 +660,26 @@ const Index = () => {
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-foreground leading-snug">
               Penatmu di Breakroom Depok
             </h2>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed px-2">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-6 max-w-2xl mx-auto leading-relaxed px-2">
               Tempat aman untuk melepaskan stress dengan cara yang berbeda. Hancurkan, teriak, dan rasakan kebebasan.
             </p>
+            
+            {/* Price Badge - Integrated in Hero */}
+            <div className="mb-6 md:mb-8 flex justify-center">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 backdrop-blur-sm border-2 border-primary/40 rounded-full px-4 py-2 md:px-6 md:py-3">
+                <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-xs md:text-sm uppercase tracking-wider text-muted-foreground font-semibold">
+                    Mulai Dari
+                  </span>
+                  <span className="text-2xl md:text-3xl font-black text-primary leading-none">
+                    65K
+                  </span>
+                </div>
+                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              </div>
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-2">
               <Button variant="hero" size="lg" className="w-full sm:w-auto min-h-[48px] text-sm sm:text-base relative overflow-hidden group" asChild>
                 <a 
