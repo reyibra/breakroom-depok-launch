@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
+import PromoSection from "@/components/PromoSection";
+import EventSection from "@/components/EventSection";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
@@ -338,6 +340,9 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Promo Section */}
+        <PromoSection />
+
         {/* Features Section */}
         <section className="py-12 md:py-20 px-4">
           <div className="container mx-auto max-w-6xl">
@@ -552,6 +557,9 @@ const Index = () => {
 
         {/* Reviews Section */}
         <ReviewsSection />
+
+        {/* Event Section */}
+        <EventSection />
 
         {/* Location/Map Section */}
         <section className="py-20 px-4 bg-gradient-to-b from-background to-card/50">
