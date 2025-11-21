@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import { NewsSection } from "@/components/NewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
+import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
@@ -32,6 +33,7 @@ interface TimeLeft {
 const Index = () => {
   const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const { t } = useLanguage();
   
   const { data: activePromos } = useQuery({
     queryKey: ["active-promos-hero"],
@@ -403,7 +405,7 @@ const Index = () => {
             <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 backdrop-blur-md p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-glow border border-primary/40 md:border-2 hover:scale-105 transition-smooth hover:shadow-[0_0_50px_hsl(24_100%_50%/0.5)]">
               <div className="flex flex-col items-start space-y-0.5 md:space-y-1">
                 <span className="text-[8px] md:text-[10px] uppercase tracking-wider text-primary-foreground/80 font-bold">
-                  Mulai Dari
+                  {t('price.startFrom')}
                 </span>
                 <div className="flex items-baseline gap-0.5 md:gap-1">
                   <span className="text-xl md:text-3xl font-black text-primary-foreground leading-none">
