@@ -81,17 +81,7 @@ export const NewsSection = () => {
   }
 
   if (news.length === 0) {
-    return (
-      <section className="py-12 md:py-24 px-4 bg-gradient-to-br from-background via-background to-primary/5">
-        <div className="container mx-auto text-center">
-          <Newspaper className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Berita Terbaru</h2>
-          <p className="text-muted-foreground">
-            Belum ada berita tersedia saat ini.
-          </p>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   return (
