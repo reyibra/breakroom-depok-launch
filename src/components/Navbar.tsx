@@ -2,21 +2,18 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 import breakroomLogo from "@/assets/breakroom-logo.jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { t } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
-    { name: t('nav.home'), path: "#hero" },
-    { name: t('nav.services'), path: "#konsultasi" },
-    { name: t('nav.about'), path: "#about" },
+    { name: "Beranda", path: "#hero" },
+    { name: "Layanan", path: "#konsultasi" },
+    { name: "Tentang & Keamanan", path: "#about" },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
@@ -48,7 +45,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <a
                 key={link.path}
@@ -59,10 +56,9 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <LanguageSwitcher />
             <Button variant="hero" size="sm" asChild>
               <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer">
-                {t('nav.booking')}
+                Booking Sekarang
               </a>
             </Button>
           </div>
@@ -90,12 +86,9 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <div className="pt-2">
-              <LanguageSwitcher />
-            </div>
             <Button variant="hero" size="sm" className="w-full" asChild>
               <a href="https://wa.me/6282312504723" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
-                {t('nav.booking')}
+                Booking Sekarang
               </a>
             </Button>
           </div>

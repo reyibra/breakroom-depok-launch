@@ -7,7 +7,6 @@ import { Calendar, Newspaper, X } from "lucide-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 interface News {
   id: string;
@@ -27,7 +26,6 @@ export const NewsSection = () => {
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentLimit, setCurrentLimit] = useState(3);
-  const { t } = useLanguage();
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -129,14 +127,14 @@ export const NewsSection = () => {
           <div className="inline-flex items-center gap-2 mb-3 md:mb-4 px-3 md:px-4 py-1.5 md:py-2 bg-primary/10 rounded-full">
             <Newspaper className="w-4 h-4 md:w-5 md:h-5 text-primary" />
             <span className="text-primary font-semibold uppercase tracking-wider text-xs md:text-sm">
-              {t('news.badge')}
+              Info Terkini
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">
-            <span className="text-gradient">{t('news.title')}</span>
+            <span className="text-gradient">Berita Terbaru</span>
           </h2>
           <p className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {t('news.subtitle')}
+            Update dan informasi terbaru dari Breakroom Depok
           </p>
         </div>
 
@@ -188,7 +186,7 @@ export const NewsSection = () => {
                 
                 {/* Read More Indicator */}
                 <p className="text-xs md:text-sm text-primary font-semibold mt-3 group-hover:underline">
-                  {t('news.readMore')} →
+                  Baca Selengkapnya →
                 </p>
               </CardContent>
             </Card>
@@ -205,7 +203,7 @@ export const NewsSection = () => {
               variant="outline"
               className="min-w-[200px]"
             >
-              {loadingMore ? t('common.loading') : "Muat Lebih Banyak"}
+              {loadingMore ? "Memuat..." : "Muat Lebih Banyak"}
             </Button>
           </div>
         )}
@@ -225,7 +223,7 @@ export const NewsSection = () => {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="w-4 h-4" />
                   <span>
-                    {t('news.published')} {format(new Date(selectedNews.published_at), "dd MMMM yyyy", {
+                    {format(new Date(selectedNews.published_at), "dd MMMM yyyy", {
                       locale: id,
                     })}
                   </span>
