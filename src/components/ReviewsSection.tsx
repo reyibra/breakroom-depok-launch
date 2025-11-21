@@ -66,8 +66,7 @@ export const ReviewsSection = () => {
     // Initial fetch with smart limit (fetch more than displayed for filtering)
     fetchReviews(50);
 
-    // Only subscribe to INSERT and UPDATE for approved reviews
-    // This reduces unnecessary refetches from admin operations
+    // Subscribe to all critical review changes
     const channel = supabase
       .channel("reviews-changes")
       .on(
@@ -96,8 +95,28 @@ export const ReviewsSection = () => {
           fetchReviews(50);
         }
       )
-      .subscribe((status) => {
-        console.log("📡 Reviews subscription status:", status);
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "reviews",
+        },
+        (payload) => {
+          console.log("📡 Review deleted:", payload.old.id);
+          // Remove deleted review from state immediately
+          setReviews(prev => prev.filter(r => r.id !== payload.old.id));
+        }
+      )
+      .subscribe({
+        next: (status) => {
+          console.log("📡 Reviews subscription status:", status);
+        },
+        error: (error) => {
+          console.error("❌ Reviews subscription error:", error);
+          // Attempt to refetch on error
+          fetchReviews(50);
+        }
       });
 
     return () => {

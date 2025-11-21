@@ -44,8 +44,9 @@ export const NewsSection = () => {
         setHasMore((data?.length || 0) > currentLimit);
         
         // Only show currentLimit items
-        setNews(data?.slice(0, currentLimit) || []);
-        console.log("📰 News updated:", data?.length || 0, "active news");
+        const displayedNews = data?.slice(0, currentLimit) || [];
+        setNews(displayedNews);
+        console.log("📰 News loaded:", displayedNews.length, "displayed,", data?.length || 0, "total available");
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
@@ -85,8 +86,26 @@ export const NewsSection = () => {
           fetchNews();
         }
       )
-      .subscribe((status) => {
-        console.log("📡 News subscription:", status);
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "news",
+        },
+        (payload) => {
+          console.log("📡 News deleted:", payload.old.id);
+          setNews(prev => prev.filter(n => n.id !== payload.old.id));
+        }
+      )
+      .subscribe({
+        next: (status) => {
+          console.log("📡 News subscription:", status);
+        },
+        error: (error) => {
+          console.error("❌ News subscription error:", error);
+          fetchNews();
+        }
       });
 
     return () => {

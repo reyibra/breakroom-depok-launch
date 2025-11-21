@@ -32,7 +32,7 @@ interface TimeLeft {
 const Index = () => {
   const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const carouselRef = useRef<any>(null);
+  const carouselRef = useRef<{ api: any } | null>(null);
   const [isCarouselInView, setIsCarouselInView] = useState(true);
   
   const { data: activePromos } = useQuery({
@@ -63,36 +63,56 @@ const Index = () => {
 
   // Optimize carousel: pause autoplay when not in viewport
   useEffect(() => {
-    if (!carouselRef.current) return;
+    // Wait for carousel to mount and get element
+    const setupObserver = () => {
+      const carouselElement = document.querySelector('[data-carousel-container]');
+      if (!carouselElement) {
+        console.warn("⚠️ Carousel element not found, retrying...");
+        return null;
+      }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsCarouselInView(entry.isIntersecting);
-          
-          // Access the Embla API and control autoplay
-          const emblaApi = carouselRef.current?.api;
-          if (emblaApi) {
-            const autoplayPlugin = emblaApi.plugins()?.autoplay;
-            if (autoplayPlugin) {
-              if (entry.isIntersecting) {
-                autoplayPlugin.play();
-              } else {
-                autoplayPlugin.stop();
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            setIsCarouselInView(entry.isIntersecting);
+            
+            // Access the Embla API and control autoplay
+            const emblaApi = carouselRef.current?.api;
+            if (emblaApi) {
+              const autoplayPlugin = emblaApi.plugins()?.autoplay;
+              if (autoplayPlugin) {
+                if (entry.isIntersecting) {
+                  autoplayPlugin.play();
+                  console.log("▶️ Carousel autoplay resumed");
+                } else {
+                  autoplayPlugin.stop();
+                  console.log("⏸️ Carousel autoplay paused");
+                }
               }
             }
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
+          });
+        },
+        { threshold: 0.3 }
+      );
 
-    const carouselElement = document.querySelector('[data-carousel-container]');
-    if (carouselElement) {
       observer.observe(carouselElement);
-    }
+      console.log("✅ Carousel observer initialized");
+      return observer;
+    };
 
-    return () => observer.disconnect();
+    // Retry setup if element not ready
+    let observer: IntersectionObserver | null = null;
+    const timeoutId = setTimeout(() => {
+      observer = setupObserver();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (observer) {
+        observer.disconnect();
+        console.log("🔌 Carousel observer disconnected");
+      }
+    };
   }, [activePromos]);
 
   useEffect(() => {
