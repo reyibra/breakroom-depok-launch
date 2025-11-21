@@ -32,6 +32,7 @@ export const NewsSection = () => {
 
         if (error) throw error;
         setNews(data || []);
+        console.log("📰 News updated:", data?.length || 0, "active news");
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
@@ -41,23 +42,27 @@ export const NewsSection = () => {
 
     fetchNews();
 
-    // Subscribe to real-time updates
+    // Subscribe to real-time updates for news changes
     const channel = supabase
-      .channel("news-changes")
+      .channel("news-realtime-updates")
       .on(
         "postgres_changes",
         {
-          event: "*",
+          event: "*", // Listen to INSERT, UPDATE, DELETE
           schema: "public",
           table: "news",
         },
-        () => {
-          fetchNews();
+        (payload) => {
+          console.log("📡 Real-time news change detected:", payload.eventType);
+          fetchNews(); // Refetch news when any change occurs
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log("📡 News real-time subscription status:", status);
+      });
 
     return () => {
+      console.log("📡 Unsubscribing from news updates");
       supabase.removeChannel(channel);
     };
   }, []);
