@@ -47,85 +47,52 @@ const PromoCard = ({ promo }: { promo: any }) => {
   }, [endDate, showCountdown]);
 
   return (
-    <Card className="group relative overflow-hidden border-2 border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-glow hover:scale-[1.02]">
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-caution/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
-      {/* Discount badge */}
-      {promo.discount_percentage && (
-        <div className="absolute top-4 right-4 z-10">
-          <div className="bg-gradient-to-br from-caution via-primary to-caution p-3 rounded-full shadow-lg animate-pulse">
-            <div className="text-center">
-              <div className="text-2xl font-black text-background leading-none">
-                {promo.discount_percentage}%
-              </div>
-              <div className="text-[8px] font-bold text-background/90 uppercase">
-                OFF
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+    <Card className="hover:border-primary/50 transition-colors">
+      <CardContent className="p-6 space-y-4">
+        {/* Title */}
+        <h3 className="text-xl font-bold text-foreground">
+          {promo.title}
+        </h3>
 
-      <CardContent className="p-6 relative">
-        {/* Image */}
-        {promo.image_url && (
-          <div className="mb-4 rounded-xl overflow-hidden shadow-md">
-            <img 
-              src={promo.image_url} 
-              alt={promo.title}
-              className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-            />
+        {/* Promo Code */}
+        {promo.promo_code && (
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-lg border border-primary/20">
+            <Tag className="w-4 h-4 text-primary" />
+            <span className="font-mono font-bold text-primary tracking-wide">
+              {promo.promo_code}
+            </span>
+            {promo.discount_percentage && (
+              <Badge variant="secondary" className="ml-2">
+                {promo.discount_percentage}% OFF
+              </Badge>
+            )}
           </div>
         )}
 
-        {/* Title with icon */}
-        <div className="flex items-start gap-2 mb-3">
-          <Tag className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-            {promo.title}
-          </h3>
-        </div>
-
         {/* Description */}
-        <p className="text-muted-foreground mb-4 line-clamp-2">
+        <p className="text-muted-foreground text-sm leading-relaxed">
           {promo.description}
         </p>
 
-        {/* Promo code display */}
-        {promo.promo_code && (
-          <div className="mb-4 p-3 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-lg border-2 border-dashed border-primary/30">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground mb-1">Kode Promo</p>
-                <p className="text-2xl font-black font-mono text-primary tracking-wider">
-                  {promo.promo_code}
-                </p>
-              </div>
-              <Tag className="w-8 h-8 text-primary/40" />
-            </div>
-          </div>
-        )}
-
-        {/* Countdown timer */}
+        {/* Countdown Timer */}
         {showCountdown && timeLeft && (
-          <div className="mb-4 p-3 bg-gradient-to-r from-caution/10 via-primary/10 to-caution/10 rounded-lg border border-caution/30">
-            <div className="flex items-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-caution animate-pulse" />
-              <span className="text-xs font-semibold text-caution uppercase tracking-wider">
-                Promo Berakhir Dalam
+          <div className="pt-2 border-t border-border">
+            <div className="flex items-center gap-2 mb-3">
+              <Clock className="w-4 h-4 text-caution" />
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                Berakhir dalam
               </span>
             </div>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="flex gap-2">
               {[
                 { value: timeLeft.days, label: 'Hari' },
                 { value: timeLeft.hours, label: 'Jam' },
                 { value: timeLeft.minutes, label: 'Menit' },
                 { value: timeLeft.seconds, label: 'Detik' },
               ].map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="bg-background/50 backdrop-blur-sm rounded-md p-2 border border-border">
-                    <div className="text-lg font-black text-primary">
+                <div key={index} className="flex-1 text-center">
+                  <div className="bg-muted rounded p-2">
+                    <div className="text-lg font-bold text-foreground">
                       {String(item.value).padStart(2, '0')}
                     </div>
                     <div className="text-[10px] text-muted-foreground uppercase">
@@ -138,12 +105,12 @@ const PromoCard = ({ promo }: { promo: any }) => {
           </div>
         )}
 
-        {/* Validity period */}
+        {/* Validity Date (when no countdown) */}
         {!showCountdown && (
-          <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border">
             <Clock className="w-4 h-4" />
             <span>
-              Berlaku s/d {new Date(promo.end_date).toLocaleDateString('id-ID', {
+              Berlaku hingga {new Date(promo.end_date).toLocaleDateString('id-ID', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
@@ -155,7 +122,7 @@ const PromoCard = ({ promo }: { promo: any }) => {
         {/* CTA Button */}
         <Button 
           variant="default" 
-          className="w-full group/btn relative overflow-hidden"
+          className="w-full"
           asChild
         >
           <a 
@@ -164,8 +131,7 @@ const PromoCard = ({ promo }: { promo: any }) => {
             rel="noopener noreferrer"
           >
             <MessageCircle className="mr-2 h-4 w-4" />
-            {promo.promo_code ? `Gunakan ${promo.promo_code}` : 'Gunakan Promo Ini'}
-            <Sparkles className="ml-2 h-4 w-4 group-hover/btn:animate-pulse" />
+            Gunakan Promo
           </a>
         </Button>
       </CardContent>
@@ -214,20 +180,14 @@ export const PromoSection = () => {
   }
 
   return (
-    <section id="promo" className="py-12 md:py-20 px-4 bg-gradient-to-b from-background via-background/50 to-background">
+    <section id="promo" className="py-12 md:py-20 px-4">
       <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-8 md:mb-12">
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-gradient-to-r from-primary/10 to-caution/10 rounded-full border border-primary/20">
-            <Sparkles className="w-5 h-5 text-primary animate-pulse" />
-            <Badge variant="outline" className="text-sm font-bold">
-              Promo Spesial
-            </Badge>
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="text-gradient">Penawaran</span> Terbaik Untuk Anda
+        <div className="mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">
+            Promo Aktif
           </h2>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
-            Jangan lewatkan kesempatan untuk mendapatkan pengalaman stress-release dengan harga spesial
+          <p className="text-muted-foreground">
+            Gunakan kode promo berikut untuk mendapatkan penawaran spesial
           </p>
         </div>
 
