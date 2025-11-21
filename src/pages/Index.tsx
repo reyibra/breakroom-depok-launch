@@ -649,34 +649,28 @@ const Index = () => {
         {/* News Section */}
         <NewsSection />
 
-        {/* Features Section - Mobile Alternating Layout */}
+        {/* Features Section - Zigzag Layout Mobile */}
         <section className="py-12 md:py-20 px-4 md:px-6">
           <div className="container mx-auto max-w-6xl">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 leading-tight px-2">
               Kenapa Pilih <span className="text-gradient">Breakroom?</span>
             </h2>
-            {/* Mobile: Alternating Layout, Desktop: Grid */}
-            <div className="block md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {/* Mobile: Zigzag Layout, Desktop: Grid */}
+            <div className="space-y-6 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 md:space-y-0">
               {features.map((feature, index) => (
                 <Card 
                   key={index} 
-                  className={`bg-card border-border hover:border-primary transition-all mb-4 md:mb-0 animate-fade-in
-                    ${index % 2 === 0 ? 'md:translate-x-0 mr-auto' : 'md:translate-x-0 ml-auto'}
-                    ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-0 md:ml-auto'}
-                  `}
-                  style={{ 
-                    animationDelay: `${index * 100}ms`,
-                    maxWidth: index % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
-                    marginLeft: index % 2 === 0 ? '0' : 'auto',
-                    marginRight: index % 2 === 0 ? 'auto' : '0',
-                  }}
+                  className="bg-card border-border hover:border-primary transition-all animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <CardContent className="p-5 md:p-6 text-left md:text-center">
-                    <div className={`w-14 h-14 md:w-16 md:h-16 ${index % 2 === 0 ? '' : 'ml-0 md:mx-auto'} md:mx-auto mb-3 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center`}>
+                  <CardContent className={`p-5 md:p-6 flex md:flex-col gap-4 md:gap-0 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} md:flex-row`}>
+                    <div className="w-14 h-14 md:w-16 md:h-16 md:mx-auto mb-0 md:mb-4 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <feature.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" />
                     </div>
-                    <h3 className="text-base md:text-lg font-bold mb-2 leading-snug">{feature.title}</h3>
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{feature.description}</p>
+                    <div className={`flex-1 ${index % 2 === 0 ? 'text-left' : 'text-right'} md:text-center`}>
+                      <h3 className="text-base md:text-lg font-bold mb-2 leading-snug">{feature.title}</h3>
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{feature.description}</p>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -697,8 +691,8 @@ const Index = () => {
               </p>
             </div>
             
-            {/* Mobile: Alternating Layout, Desktop: Grid */}
-            <div className="block lg:grid lg:grid-cols-2 gap-6 md:gap-8 mb-8 space-y-6 lg:space-y-0">
+            {/* Mobile: Zigzag Layout, Desktop: Grid */}
+            <div className="space-y-6 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0 mb-8">
               {[
                 {
                   icon: Users,
@@ -723,32 +717,27 @@ const Index = () => {
               ].map((item, index) => (
                 <Card 
                   key={index}
-                  className={`overflow-hidden border-2 border-border hover:border-primary transition-all animate-fade-in
-                    ${index % 2 === 0 ? 'mr-0 lg:mr-auto' : 'ml-auto lg:ml-0'}
-                  `}
-                  style={{
-                    animationDelay: `${index * 150}ms`,
-                    maxWidth: '100%',
-                    marginLeft: index % 2 === 0 ? '0' : 'auto',
-                    marginRight: index % 2 === 0 ? 'auto' : '0',
-                  }}
+                  className="overflow-hidden border-2 border-border hover:border-primary transition-all animate-fade-in"
+                  style={{ animationDelay: `${index * 150}ms` }}
                 >
-                  <CardContent className="p-6 md:p-8">
-                    <div className={`w-16 h-16 ${index % 2 === 0 ? '' : 'ml-0'} lg:mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center`}>
+                  <CardContent className={`p-6 md:p-8 flex lg:flex-col gap-5 lg:gap-0 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} lg:flex-row`}>
+                    <div className="w-16 h-16 lg:mx-auto mb-0 lg:mb-4 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <item.icon className="w-8 h-8 text-primary" />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-bold mb-3 text-left lg:text-center">{item.title}</h3>
-                    <p className="text-sm md:text-base text-muted-foreground text-left lg:text-center mb-4">
-                      {item.desc}
-                    </p>
-                    <ul className="space-y-2 mb-6">
-                      {item.features.map((feat, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm">
-                          <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className={`flex-1 ${index % 2 === 0 ? 'text-left' : 'text-right'} lg:text-center`}>
+                      <h3 className="text-xl md:text-2xl font-bold mb-3">{item.title}</h3>
+                      <p className="text-sm md:text-base text-muted-foreground mb-4">
+                        {item.desc}
+                      </p>
+                      <ul className={`space-y-2 mb-6 ${index % 2 === 0 ? 'text-left' : 'text-right'} lg:text-left`}>
+                        {item.features.map((feat, idx) => (
+                          <li key={idx} className={`flex items-start gap-2 text-sm ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} lg:flex-row`}>
+                            <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                            <span>{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -772,7 +761,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Safety Equipment Section - Mobile Alternating */}
+        {/* Safety Equipment Section - Zigzag Layout */}
         <section className="py-12 md:py-20 px-4 md:px-6">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center mb-8 md:mb-12 px-2">
@@ -785,8 +774,8 @@ const Index = () => {
               </p>
             </div>
 
-            {/* Mobile: Alternating Layout, Desktop: Grid */}
-            <div className="block md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {/* Mobile: Zigzag Layout, Desktop: Grid */}
+            <div className="space-y-6 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 md:space-y-0">
               {[
                 { name: "Coverall Safety", desc: "Pakaian pelindung penuh" },
                 { name: "Helm Safety", desc: "Melindungi kepala dari pecahan" },
@@ -795,22 +784,17 @@ const Index = () => {
               ].map((item, idx) => (
                 <Card 
                   key={idx} 
-                  className={`border-border hover:border-caution transition-all mb-4 md:mb-0 animate-fade-in
-                    ${idx % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
-                  `}
-                  style={{
-                    animationDelay: `${idx * 100}ms`,
-                    maxWidth: idx % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
-                    marginLeft: idx % 2 === 0 ? '0' : 'auto',
-                    marginRight: idx % 2 === 0 ? 'auto' : '0',
-                  }}
+                  className="border-border hover:border-caution transition-all animate-fade-in"
+                  style={{ animationDelay: `${idx * 100}ms` }}
                 >
-                  <CardContent className="p-5 md:p-6 text-left md:text-center">
-                    <div className={`w-14 h-14 md:w-16 md:h-16 ${idx % 2 === 0 ? '' : 'ml-0 md:mx-auto'} md:mx-auto mb-3 md:mb-4 bg-caution/10 rounded-full flex items-center justify-center`}>
+                  <CardContent className={`p-5 md:p-6 flex md:flex-col gap-4 md:gap-0 ${idx % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} md:flex-row`}>
+                    <div className="w-14 h-14 md:w-16 md:h-16 md:mx-auto mb-0 md:mb-4 bg-caution/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <Shield className="w-7 h-7 md:w-8 md:h-8 text-caution" />
                     </div>
-                    <h4 className="text-base md:text-lg font-bold mb-2 leading-snug">{item.name}</h4>
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <div className={`flex-1 ${idx % 2 === 0 ? 'text-left' : 'text-right'} md:text-center`}>
+                      <h4 className="text-base md:text-lg font-bold mb-2 leading-snug">{item.name}</h4>
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -831,26 +815,19 @@ const Index = () => {
               </p>
             </div>
 
-            {/* Mobile: Alternating Layout, Desktop: Grid */}
-            <div className="block md:grid md:grid-cols-2 gap-4 md:gap-6 mb-12 md:mb-16 space-y-4 md:space-y-0">
+            {/* Mobile: Zigzag Layout, Desktop: Grid */}
+            <div className="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0 mb-12 md:mb-16">
               {safetyRules.map((rule, index) => (
                 <Card 
                   key={index} 
-                  className={`border-border hover:border-primary transition-all animate-fade-in
-                    ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
-                  `}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    maxWidth: '100%',
-                    marginLeft: index % 2 === 0 ? '0' : 'auto',
-                    marginRight: index % 2 === 0 ? 'auto' : '0',
-                  }}
+                  className="border-border hover:border-primary transition-all animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <CardContent className="p-5 md:p-6 flex gap-4">
+                  <CardContent className={`p-5 md:p-6 flex gap-4 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} md:flex-row`}>
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <rule.icon className="w-6 h-6 text-primary" />
                     </div>
-                    <div>
+                    <div className={`flex-1 ${index % 2 === 0 ? 'text-left' : 'text-right'} md:text-left`}>
                       <h3 className="font-bold text-base md:text-lg mb-2 leading-snug">{rule.title}</h3>
                       <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{rule.description}</p>
                     </div>
@@ -859,32 +836,27 @@ const Index = () => {
               ))}
             </div>
 
-            {/* Procedures - Mobile Alternating */}
+            {/* Procedures - Zigzag Layout Mobile */}
             <div className="mb-12 md:mb-16">
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 leading-tight px-2">
                 Alur <span className="text-gradient">Sesi</span>
               </h3>
-              {/* Mobile: Alternating, Desktop: Grid */}
-              <div className="block md:grid md:grid-cols-5 gap-4 md:gap-6 space-y-4 md:space-y-0">
+              {/* Mobile: Zigzag, Desktop: Grid */}
+              <div className="space-y-6 md:grid md:grid-cols-5 md:gap-6 md:space-y-0">
                 {procedures.map((proc, index) => (
                   <div 
                     key={index} 
-                    className={`relative animate-fade-in
-                      ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
-                    `}
-                    style={{
-                      animationDelay: `${index * 100}ms`,
-                      maxWidth: index % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
-                      marginLeft: index % 2 === 0 ? '0' : 'auto',
-                      marginRight: index % 2 === 0 ? 'auto' : '0',
-                    }}
+                    className="relative animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className={`${index % 2 === 0 ? 'text-left md:text-center' : 'text-right md:text-center'} p-4 md:p-0`}>
-                      <div className={`w-14 h-14 md:w-16 md:h-16 ${index % 2 === 0 ? '' : 'ml-auto md:mx-auto'} md:mx-auto mb-3 md:mb-4 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-xl md:text-2xl font-bold text-primary-foreground shadow-lg`}>
+                    <div className={`flex md:flex-col gap-4 md:gap-0 items-center md:items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} md:flex-col`}>
+                      <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-xl md:text-2xl font-bold text-primary-foreground shadow-lg flex-shrink-0">
                         {proc.step}
                       </div>
-                      <h4 className="font-bold text-base md:text-lg mb-2 leading-snug">{proc.title}</h4>
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{proc.description}</p>
+                      <div className={`flex-1 md:flex-none ${index % 2 === 0 ? 'text-left' : 'text-right'} md:text-center md:mt-4`}>
+                        <h4 className="font-bold text-base md:text-lg mb-2 leading-snug">{proc.title}</h4>
+                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{proc.description}</p>
+                      </div>
                     </div>
                     {index < procedures.length - 1 && (
                       <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
@@ -894,27 +866,20 @@ const Index = () => {
               </div>
             </div>
 
-            {/* FAQ - Mobile Alternating */}
+            {/* FAQ - Zigzag Layout */}
             <div>
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 leading-tight px-2">
                 <span className="text-gradient">FAQ</span> - Pertanyaan Umum
               </h3>
-              {/* Mobile: Alternating, Desktop: Grid */}
-              <div className="block md:grid md:grid-cols-2 gap-4 md:gap-6 space-y-4 md:space-y-0">
+              {/* Mobile: Zigzag, Desktop: Grid */}
+              <div className="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
                 {faqs.map((faq, index) => (
                   <Card 
                     key={index} 
-                    className={`border-border transition-all animate-fade-in
-                      ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
-                    `}
-                    style={{
-                      animationDelay: `${index * 100}ms`,
-                      maxWidth: '100%',
-                      marginLeft: index % 2 === 0 ? '0' : 'auto',
-                      marginRight: index % 2 === 0 ? 'auto' : '0',
-                    }}
+                    className="border-border transition-all animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <CardContent className="p-5 md:p-6">
+                    <CardContent className={`p-5 md:p-6 ${index % 2 === 0 ? 'text-left' : 'text-right'} md:text-left`}>
                       <h4 className="font-bold text-base md:text-lg mb-2 text-primary leading-snug">{faq.q}</h4>
                       <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{faq.a}</p>
                     </CardContent>
@@ -984,8 +949,8 @@ const Index = () => {
               </Card>
             </div>
 
-            {/* Location Cards - Mobile Alternating */}
-            <div className="mt-8 md:mt-12 block md:grid md:grid-cols-3 gap-4 md:gap-6 space-y-4 md:space-y-0">
+            {/* Location Cards - Zigzag Layout */}
+            <div className="mt-8 md:mt-12 space-y-6 md:grid md:grid-cols-3 md:gap-6 md:space-y-0">
               {[
                 {
                   icon: MapPin,
@@ -1005,22 +970,17 @@ const Index = () => {
               ].map((item, index) => (
                 <Card 
                   key={index}
-                  className={`border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group animate-fade-in
-                    ${index % 2 === 0 ? 'mr-0 md:mr-auto' : 'ml-auto md:ml-0'}
-                  `}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    maxWidth: index % 2 === 0 ? 'calc(100% - 2rem)' : 'calc(100% - 2rem)',
-                    marginLeft: index % 2 === 0 ? '0' : 'auto',
-                    marginRight: index % 2 === 0 ? 'auto' : '0',
-                  }}
+                  className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow hover:-translate-y-1 group animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <CardContent className="p-5 md:p-6 text-left md:text-center">
-                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center ${index % 2 === 0 ? '' : 'ml-0 md:mx-auto'} md:mx-auto mb-3 md:mb-4 group-hover:bg-primary/20 transition-colors duration-300`}>
+                  <CardContent className={`p-5 md:p-6 flex md:flex-col gap-4 md:gap-0 items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} md:flex-col`}>
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 md:mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                       <item.icon className="w-7 h-7 md:w-8 md:h-8 text-primary group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <h4 className="font-bold text-base md:text-lg mb-2 leading-snug">{item.title}</h4>
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <div className={`flex-1 ${index % 2 === 0 ? 'text-left' : 'text-right'} md:text-center`}>
+                      <h4 className="font-bold text-base md:text-lg mb-2 leading-snug">{item.title}</h4>
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
