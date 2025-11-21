@@ -140,7 +140,7 @@ const PromoCard = ({ promo }: { promo: any }) => {
 };
 
 export const PromoSection = () => {
-  const { data: promos, isLoading } = useQuery({
+  const { data: promos, isLoading, refetch } = useQuery({
     queryKey: ["active-promos"],
     queryFn: async () => {
       const now = new Date().toISOString();
@@ -153,9 +153,36 @@ export const PromoSection = () => {
         .order("end_date", { ascending: true });
 
       if (error) throw error;
+      console.log("🎁 Promos updated:", data?.length || 0, "active promos");
       return data;
     },
   });
+
+  // Subscribe to real-time promo updates
+  useEffect(() => {
+    const channel = supabase
+      .channel("promos-realtime-updates")
+      .on(
+        "postgres_changes",
+        {
+          event: "*", // Listen to INSERT, UPDATE, DELETE
+          schema: "public",
+          table: "promos",
+        },
+        (payload) => {
+          console.log("📡 Real-time promo change detected:", payload.eventType);
+          refetch(); // Refetch promos when any change occurs
+        }
+      )
+      .subscribe((status) => {
+        console.log("📡 Promos real-time subscription status:", status);
+      });
+
+    return () => {
+      console.log("📡 Unsubscribing from promos updates");
+      supabase.removeChannel(channel);
+    };
+  }, [refetch]);
 
   if (isLoading) {
     return (
