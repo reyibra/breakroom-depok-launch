@@ -10,7 +10,6 @@ import AdminLayout from "./components/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Reviews from "./pages/admin/Reviews";
 import News from "./pages/admin/News";
-import Events from "./pages/admin/Events";
 import Promos from "./pages/admin/Promos";
 
 const queryClient = new QueryClient();
@@ -28,7 +27,6 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="news" element={<News />} />
-            <Route path="events" element={<Events />} />
             <Route path="promos" element={<Promos />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

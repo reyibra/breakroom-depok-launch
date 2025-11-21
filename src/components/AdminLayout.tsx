@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   MessageSquare,
   Newspaper,
-  Calendar,
   Tag,
   LogOut,
   Menu,
@@ -118,11 +117,6 @@ const AdminLayout = () => {
       icon: Newspaper,
       label: "News",
       path: "/admin/news",
-    },
-    {
-      icon: Calendar,
-      label: "Events",
-      path: "/admin/events",
     },
     {
       icon: Tag,
