@@ -37,16 +37,24 @@ export const ReviewsSection = () => {
   const [currentLimit, setCurrentLimit] = useState(6);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const fetchReviews = async () => {
+  const fetchReviews = async (limit?: number) => {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from("reviews")
         .select("*")
-        .eq("is_approved", true) // Only show approved reviews
+        .eq("is_approved", true)
         .order("created_at", { ascending: false });
+      
+      // Add limit if specified (for initial load optimization)
+      if (limit) {
+        query = query.limit(limit);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
       setReviews(data || []);
+      console.log("✅ Reviews fetched:", data?.length || 0, "reviews");
     } catch (error) {
       console.error("Error fetching reviews:", error);
     } finally {
@@ -55,25 +63,45 @@ export const ReviewsSection = () => {
   };
 
   useEffect(() => {
-    fetchReviews();
+    // Initial fetch with smart limit (fetch more than displayed for filtering)
+    fetchReviews(50);
 
-    // Subscribe to real-time updates
+    // Only subscribe to INSERT and UPDATE for approved reviews
+    // This reduces unnecessary refetches from admin operations
     const channel = supabase
       .channel("reviews-changes")
       .on(
         "postgres_changes",
         {
-          event: "*",
+          event: "INSERT",
           schema: "public",
           table: "reviews",
+          filter: "is_approved=eq.true",
         },
         () => {
-          fetchReviews();
+          console.log("📡 New approved review added");
+          fetchReviews(50);
         }
       )
-      .subscribe();
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "reviews",
+          filter: "is_approved=eq.true",
+        },
+        () => {
+          console.log("📡 Review updated");
+          fetchReviews(50);
+        }
+      )
+      .subscribe((status) => {
+        console.log("📡 Reviews subscription status:", status);
+      });
 
     return () => {
+      console.log("📡 Unsubscribing from reviews");
       supabase.removeChannel(channel);
     };
   }, []);

@@ -56,27 +56,41 @@ export const NewsSection = () => {
 
     fetchNews();
 
-    // Subscribe to real-time updates for news changes
+    // Only subscribe to active news changes (exclude admin-only operations)
     const channel = supabase
       .channel("news-realtime-updates")
       .on(
         "postgres_changes",
         {
-          event: "*", // Listen to INSERT, UPDATE, DELETE
+          event: "INSERT",
           schema: "public",
           table: "news",
+          filter: "is_active=eq.true",
         },
-        (payload) => {
-          console.log("📡 Real-time news change detected:", payload.eventType);
-          fetchNews(); // Refetch news when any change occurs
+        () => {
+          console.log("📡 New active news added");
+          fetchNews();
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "news",
+          filter: "is_active=eq.true",
+        },
+        () => {
+          console.log("📡 News updated");
+          fetchNews();
         }
       )
       .subscribe((status) => {
-        console.log("📡 News real-time subscription status:", status);
+        console.log("📡 News subscription:", status);
       });
 
     return () => {
-      console.log("📡 Unsubscribing from news updates");
+      console.log("📡 Unsubscribing from news");
       supabase.removeChannel(channel);
     };
   }, [currentLimit]);
