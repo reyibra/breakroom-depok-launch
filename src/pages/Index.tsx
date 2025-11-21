@@ -275,12 +275,13 @@ const Index = () => {
 
         {/* Hero Section - Mobile Optimized */}
         <section id="hero" className="relative min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${heroImage})` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
-          </div>
+          <img 
+            src={heroImage}
+            alt="Breakroom Depok Hero"
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
           
           {/* Promo Badge - Center Top - Pill/Capsule Responsive */}
           {activePromos && activePromos.length > 0 && (
@@ -529,12 +530,13 @@ const Index = () => {
 
         {/* What is Breakroom Section */}
         <section id="tentang" className="relative py-12 md:py-20 px-4 overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${breakroomInterior})` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/60"></div>
-          </div>
+          <img
+            src={breakroomInterior}
+            alt="Breakroom Interior"
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/60"></div>
           
           <div className="container mx-auto max-w-6xl relative z-10">
             <div className="max-w-3xl">

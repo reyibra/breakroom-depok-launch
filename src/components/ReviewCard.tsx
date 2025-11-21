@@ -47,6 +47,7 @@ export const ReviewCard = ({
             <img
               src={imageUrl}
               alt={`Review by ${name}`}
+              loading="lazy"
               className="w-full h-48 object-cover"
             />
           </div>
