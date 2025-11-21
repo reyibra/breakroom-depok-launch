@@ -178,7 +178,7 @@ const Index = () => {
       <PromoBanner />
       <Navbar />
       
-      <main className="flex-grow">
+      <main className="flex-grow pt-[116px]">
         {/* Hero Section */}
         <section className="relative min-h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
           <div 

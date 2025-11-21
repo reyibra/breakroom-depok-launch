@@ -8,7 +8,7 @@ const PromoBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="relative bg-gradient-to-r from-caution via-primary to-caution overflow-hidden">
+    <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-caution via-primary to-caution overflow-hidden">
       {/* Animated shimmer effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-background/20 to-transparent animate-pulse"></div>
       
