@@ -431,226 +431,146 @@ const Index = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
           
-          {/* Promo Badge - Center Top - Pill/Capsule Responsive */}
-          {activePromos && activePromos.length > 0 && (
-            <div 
-              ref={carouselRef}
-              className="absolute top-16 md:top-24 left-1/2 -translate-x-1/2 z-30 w-[160px] md:w-auto md:max-w-3xl animate-fade-in"
-            >
-              <Carousel
-                opts={{ 
-                  loop: true,
-                  skipSnaps: false,
-                }}
-                plugins={[
-                  Autoplay({ 
-                    delay: 5000,
-                    stopOnInteraction: true,
-                    stopOnMouseEnter: true,
-                  })
-                ]}
-                className="w-full"
-              >
-                <CarouselContent>
-                  {activePromos.map((promo) => {
-                    const showCountdown = promoTimers[promo.id];
-                    
-                    return (
-                      <CarouselItem key={promo.id}>
-                        <div className="relative group">
-                          {/* Pill/Capsule Glass morphism badge */}
-                          <div className="bg-background/15 backdrop-blur-2xl border border-primary/50 rounded-full p-2.5 md:px-8 md:py-4 shadow-[0_8px_32px_rgba(255,102,0,0.4)] hover:shadow-[0_16px_48px_rgba(255,102,0,0.6)] transition-all duration-500 hover:scale-105 hover:border-primary/70">
-                            {/* Discount badge - corner */}
-                            {promo.discount_percentage && (
-                              <div className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 bg-gradient-to-br from-caution via-primary to-primary/90 text-background text-[10px] md:text-base font-black px-1.5 py-1 md:px-3.5 md:py-2 rounded-full shadow-lg animate-pulse">
-                                -{promo.discount_percentage}%
-                              </div>
-                            )}
-                            
-                            {/* Mobile: Compact Vertical | Desktop: Horizontal Layout */}
-                            <div className="flex flex-col md:flex-row md:items-center md:gap-6 space-y-1.5 md:space-y-0">
-                              {/* Left Section: Title & Code */}
-                              <div className="flex-1 space-y-1 md:space-y-2">
-                                {/* Title - Mobile: smaller */}
-                                <h4 className="text-[9px] md:text-sm font-bold text-foreground drop-shadow-sm line-clamp-1 leading-tight md:leading-normal">
-                                  {promo.title}
-                                </h4>
-                                
-                                {/* Promo Code - Mobile: more compact */}
-                                {promo.promo_code && (
-                                  <div className="bg-primary/25 backdrop-blur-sm rounded-full px-2 py-1 md:px-4 md:py-2 border border-dashed border-primary/60 hover:bg-primary/30 transition-colors inline-block">
-                                    <div className="flex items-center justify-center gap-1 md:gap-2">
-                                      <Tag className="w-2.5 h-2.5 md:w-4 md:h-4 text-primary" />
-                                      <span className="text-xs md:text-lg font-black font-mono text-primary tracking-wider drop-shadow-sm leading-none">
-                                        {promo.promo_code}
-                                      </span>
-                                    </div>
-                                  </div>
-                                )}
-                                
-                                {/* Mini Countdown - Mobile Only (Days remaining) */}
-                                {showCountdown && (
-                                  <div className="md:hidden flex items-center justify-center gap-1 bg-caution/20 backdrop-blur-sm rounded-full px-2 py-0.5 border border-caution/40">
-                                    <Clock className="w-2 h-2 text-caution animate-pulse" />
-                                    <span className="text-[8px] text-caution font-bold">
-                                      {showCountdown.days}H {showCountdown.hours}J tersisa
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                              
-                              {/* Middle Section: Countdown Timer - Desktop Only (Full) */}
-                              {showCountdown && (
-                                <div className="hidden md:block md:border-l md:border-primary/30 md:pl-6">
-                                  <div className="space-y-1.5">
-                                    <div className="flex items-center justify-center md:justify-start gap-1">
-                                      <Clock className="w-3 h-3 text-caution animate-pulse" />
-                                      <span className="text-[10px] text-caution font-semibold uppercase tracking-wide leading-relaxed">
-                                        Berakhir Dalam
-                                      </span>
-                                    </div>
-                                    <div className="grid grid-cols-4 gap-1.5">
-                                      {[
-                                        { value: showCountdown.days, label: 'Hari' },
-                                        { value: showCountdown.hours, label: 'Jam' },
-                                        { value: showCountdown.minutes, label: 'Menit' },
-                                        { value: showCountdown.seconds, label: 'Detik' },
-                                      ].map((item, index) => (
-                                        <div key={index} className="text-center bg-background/50 backdrop-blur-md rounded-lg p-2 border border-primary/20">
-                                          <div className="text-base font-black text-primary leading-tight">
-                                            {String(item.value).padStart(2, '0')}
-                                          </div>
-                                          <div className="text-[9px] text-muted-foreground uppercase font-semibold mt-1 leading-relaxed">
-                                            {item.label}
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
+          <div className="relative z-10 text-center px-4 md:px-6 max-w-5xl mx-auto space-y-6 md:space-y-8">
+            {/* Promo Badge - Integrated at top */}
+            {activePromos && activePromos.length > 0 && (
+              <div ref={carouselRef} className="w-full max-w-2xl mx-auto">
+                <Carousel
+                  opts={{ 
+                    loop: true,
+                    skipSnaps: false,
+                  }}
+                  plugins={[
+                    Autoplay({ 
+                      delay: 5000,
+                      stopOnInteraction: true,
+                      stopOnMouseEnter: true,
+                    })
+                  ]}
+                  className="w-full"
+                >
+                  <CarouselContent>
+                    {activePromos.map((promo) => {
+                      const showCountdown = promoTimers[promo.id];
+                      
+                      return (
+                        <CarouselItem key={promo.id}>
+                          <div className="relative group">
+                            {/* Simplified promo badge */}
+                            <div className="bg-background/10 backdrop-blur-sm border-2 border-primary/40 rounded-full p-3 md:p-4">
+                              {/* Discount badge - corner */}
+                              {promo.discount_percentage && (
+                                <div className="absolute -top-2 -right-2 bg-gradient-to-br from-caution to-primary text-background text-xs md:text-sm font-black px-2 py-1 md:px-3 md:py-1.5 rounded-full">
+                                  -{promo.discount_percentage}%
                                 </div>
                               )}
                               
-                              {/* Right Section: INFO Button - Compact mobile */}
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <button className="w-full md:w-auto bg-primary/30 hover:bg-primary/40 backdrop-blur-sm text-foreground text-[9px] md:text-xs font-bold py-1.5 px-3 md:py-2.5 md:px-6 rounded-full border border-primary/40 hover:border-primary/60 transition-all flex items-center justify-center gap-1 md:gap-2 hover:scale-105 leading-none">
-                                    <Info className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" />
-                                    <span>INFO</span>
-                                  </button>
-                                </DialogTrigger>
-                                <DialogContent className="max-w-md">
-                                  <DialogHeader>
-                                    <DialogTitle className="text-xl font-bold text-primary">
-                                      {promo.title}
-                                    </DialogTitle>
-                                  </DialogHeader>
-                                  <div className="space-y-4">
-                                    {promo.discount_percentage && (
-                                      <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
-                                        <p className="text-3xl font-black text-primary text-center">
-                                          Diskon {promo.discount_percentage}%
+                              <div className="flex flex-col md:flex-row md:items-center md:justify-center md:gap-4 space-y-2 md:space-y-0">
+                                {/* Promo Info */}
+                                <div className="flex items-center justify-center gap-2">
+                                  <Tag className="w-4 h-4 text-primary" />
+                                  {promo.promo_code && (
+                                    <span className="text-sm md:text-lg font-black font-mono text-primary">
+                                      {promo.promo_code}
+                                    </span>
+                                  )}
+                                </div>
+                                
+                                {/* Countdown - compact */}
+                                {showCountdown && (
+                                  <div className="flex items-center justify-center gap-1 text-xs md:text-sm text-muted-foreground">
+                                    <Clock className="w-3 h-3 text-caution" />
+                                    <span>
+                                      {showCountdown.days}d {showCountdown.hours}h tersisa
+                                    </span>
+                                  </div>
+                                )}
+                                
+                                {/* Info Button */}
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <button className="text-xs md:text-sm text-primary hover:text-primary/80 font-semibold flex items-center gap-1 justify-center">
+                                      <Info className="w-3 h-3" />
+                                      Detail
+                                    </button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-md">
+                                    <DialogHeader>
+                                      <DialogTitle className="text-xl font-bold text-primary">
+                                        {promo.title}
+                                      </DialogTitle>
+                                    </DialogHeader>
+                                    <div className="space-y-4">
+                                      {promo.discount_percentage && (
+                                        <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
+                                          <p className="text-3xl font-black text-primary text-center">
+                                            Diskon {promo.discount_percentage}%
+                                          </p>
+                                        </div>
+                                      )}
+                                      
+                                      {promo.promo_code && (
+                                        <div className="bg-accent/20 border border-dashed border-accent rounded-lg p-3">
+                                          <p className="text-xs text-muted-foreground text-center mb-1">Kode Promo:</p>
+                                          <p className="text-2xl font-black text-center font-mono tracking-wider text-foreground">
+                                            {promo.promo_code}
+                                          </p>
+                                        </div>
+                                      )}
+                                      
+                                      <div className="space-y-2">
+                                        <h4 className="font-semibold text-sm text-muted-foreground">Deskripsi:</h4>
+                                        <p className="text-foreground leading-relaxed">
+                                          {promo.description}
                                         </p>
                                       </div>
-                                    )}
-                                    
-                                    {promo.promo_code && (
-                                      <div className="bg-accent/20 border border-dashed border-accent rounded-lg p-3">
-                                        <p className="text-xs text-muted-foreground text-center mb-1">Kode Promo:</p>
-                                        <p className="text-2xl font-black text-center font-mono tracking-wider text-foreground">
-                                          {promo.promo_code}
-                                        </p>
-                                      </div>
-                                    )}
-                                    
-                                    {/* Show countdown in modal for mobile */}
-                                    {showCountdown && (
-                                      <div className="bg-caution/10 border border-caution/30 rounded-lg p-3">
-                                        <div className="space-y-2">
-                                          <div className="flex items-center justify-center gap-2">
-                                            <Clock className="w-4 h-4 text-caution animate-pulse" />
-                                            <span className="text-xs text-caution font-semibold uppercase">
-                                              Berakhir Dalam
-                                            </span>
-                                          </div>
-                                          <div className="grid grid-cols-4 gap-2">
-                                            {[
-                                              { value: showCountdown.days, label: 'Hari' },
-                                              { value: showCountdown.hours, label: 'Jam' },
-                                              { value: showCountdown.minutes, label: 'Menit' },
-                                              { value: showCountdown.seconds, label: 'Detik' },
-                                            ].map((item, index) => (
-                                              <div key={index} className="text-center bg-background/50 backdrop-blur-md rounded-lg p-2 border border-primary/20">
-                                                <div className="text-lg font-black text-primary">
-                                                  {String(item.value).padStart(2, '0')}
-                                                </div>
-                                                <div className="text-[10px] text-muted-foreground uppercase font-semibold">
-                                                  {item.label}
-                                                </div>
-                                              </div>
-                                            ))}
-                                          </div>
+                                      
+                                      <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t">
+                                        <div>
+                                          <p className="text-xs">Mulai:</p>
+                                          <p className="font-semibold">{new Date(promo.start_date).toLocaleDateString('id-ID')}</p>
+                                        </div>
+                                        <div className="text-right">
+                                          <p className="text-xs">Berakhir:</p>
+                                          <p className="font-semibold text-caution">{new Date(promo.end_date).toLocaleDateString('id-ID')}</p>
                                         </div>
                                       </div>
-                                    )}
-                                    
-                                    <div className="space-y-2">
-                                      <h4 className="font-semibold text-sm text-muted-foreground">Deskripsi:</h4>
-                                      <p className="text-foreground leading-relaxed">
-                                        {promo.description}
-                                      </p>
-                                    </div>
-                                    
-                                    <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t">
-                                      <div>
-                                        <p className="text-xs">Mulai:</p>
-                                        <p className="font-semibold">{new Date(promo.start_date).toLocaleDateString('id-ID')}</p>
-                                      </div>
-                                      <div className="text-right">
-                                        <p className="text-xs">Berakhir:</p>
-                                        <p className="font-semibold text-caution">{new Date(promo.end_date).toLocaleDateString('id-ID')}</p>
-                                      </div>
-                                    </div>
-                                    
-                                    <Button 
-                                      className="w-full" 
-                                      variant="hero"
-                                      asChild
-                                    >
-                                      <a 
-                                        href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${promo.promo_code ? ` dengan kode ${promo.promo_code}` : ` dengan promo ${promo.title}`}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                      
+                                      <Button 
+                                        className="w-full" 
+                                        variant="hero"
+                                        asChild
                                       >
-                                        <MessageCircle className="mr-2 h-4 w-4" />
-                                        Booking dengan Promo Ini
-                                      </a>
-                                    </Button>
-                                  </div>
-                                </DialogContent>
-                              </Dialog>
+                                        <a 
+                                          href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${promo.promo_code ? ` dengan kode ${promo.promo_code}` : ` dengan promo ${promo.title}`}`}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          <MessageCircle className="mr-2 h-4 w-4" />
+                                          Booking dengan Promo Ini
+                                        </a>
+                                      </Button>
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+                              </div>
                             </div>
                           </div>
-                          
-                          {/* Enhanced Glow effect - Pill shaped */}
-                          <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl -z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        </div>
-                      </CarouselItem>
-                    );
-                  })}
-                </CarouselContent>
-                
-                {/* Navigation Arrows - Only show if multiple promos */}
-                {activePromos.length > 1 && (
-                  <>
-                    <CarouselPrevious className="absolute -left-8 md:-left-14 top-1/2 -translate-y-1/2 h-6 w-6 md:h-10 md:w-10 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg rounded-full" />
-                    <CarouselNext className="absolute -right-8 md:-right-14 top-1/2 -translate-y-1/2 h-6 w-6 md:h-10 md:w-10 bg-background/20 backdrop-blur-2xl border-2 border-primary/40 hover:bg-primary/30 hover:border-primary/70 transition-all duration-300 shadow-lg rounded-full" />
-                  </>
-                )}
-              </Carousel>
-            </div>
-          )}
-          
-          <div className="relative z-10 text-center px-4 md:px-6 max-w-5xl mx-auto">
+                        </CarouselItem>
+                      );
+                    })}
+                  </CarouselContent>
+                  
+                  {/* Navigation Arrows - Only show if multiple promos */}
+                  {activePromos.length > 1 && (
+                    <>
+                      <CarouselPrevious className="h-8 w-8 bg-background/20 backdrop-blur-sm border border-primary/40" />
+                      <CarouselNext className="h-8 w-8 bg-background/20 backdrop-blur-sm border border-primary/40" />
+                    </>
+                  )}
+                </Carousel>
+              </div>
+            )}
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-3 md:mb-6 leading-tight">
               <span className="text-gradient">Luapkan,</span>{" "}
