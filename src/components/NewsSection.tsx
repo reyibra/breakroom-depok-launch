@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Calendar, Newspaper } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Calendar, Newspaper, X } from "lucide-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { Button } from "@/components/ui/button";
 
 interface News {
   id: string;
@@ -19,6 +21,8 @@ interface News {
 export const NewsSection = () => {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedNews, setSelectedNews] = useState<News | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -124,8 +128,12 @@ export const NewsSection = () => {
           {news.map((item, index) => (
             <Card
               key={item.id}
-              className="group overflow-hidden hover:shadow-glow transition-all duration-300 hover:-translate-y-1 md:hover:-translate-y-2 bg-card border-border animate-fade-in"
+              className="group overflow-hidden hover:shadow-glow transition-all duration-300 hover:-translate-y-1 md:hover:-translate-y-2 bg-card border-border animate-fade-in cursor-pointer"
               style={{ animationDelay: `${index * 100}ms` }}
+              onClick={() => {
+                setSelectedNews(item);
+                setDialogOpen(true);
+              }}
             >
               {/* Image */}
               {item.image_url && (
@@ -156,14 +164,62 @@ export const NewsSection = () => {
                   {item.title}
                 </h3>
 
-                {/* Content */}
+                {/* Content Preview */}
                 <p className="text-sm md:text-base text-muted-foreground line-clamp-3 leading-relaxed">
                   {item.content}
+                </p>
+                
+                {/* Read More Indicator */}
+                <p className="text-xs md:text-sm text-primary font-semibold mt-3 group-hover:underline">
+                  Baca Selengkapnya →
                 </p>
               </CardContent>
             </Card>
           ))}
         </div>
+
+        {/* Detail Dialog */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold pr-8">
+                {selectedNews?.title}
+              </DialogTitle>
+            </DialogHeader>
+            
+            {selectedNews && (
+              <div className="space-y-4">
+                {/* Date */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="w-4 h-4" />
+                  <span>
+                    {format(new Date(selectedNews.published_at), "dd MMMM yyyy", {
+                      locale: id,
+                    })}
+                  </span>
+                </div>
+
+                {/* Full Image */}
+                {selectedNews.image_url && (
+                  <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden">
+                    <img
+                      src={selectedNews.image_url}
+                      alt={selectedNews.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+
+                {/* Full Content */}
+                <div className="prose prose-sm md:prose-base max-w-none">
+                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                    {selectedNews.content}
+                  </p>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
