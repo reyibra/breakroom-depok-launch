@@ -100,6 +100,12 @@ const Footer = () => {
 
         <div className="border-t border-border mt-6 md:mt-8 pt-6 md:pt-8 text-center text-xs md:text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} Breakroom Depok. All rights reserved.</p>
+          <Link 
+            to="/auth" 
+            className="inline-block mt-2 text-xs text-muted-foreground/50 hover:text-primary transition-colors"
+          >
+            Admin Panel
+          </Link>
         </div>
       </div>
     </footer>
