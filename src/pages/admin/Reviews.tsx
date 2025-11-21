@@ -129,13 +129,42 @@ const Reviews = () => {
     return <div>Loading...</div>;
   }
 
+  const pendingCount = reviews.filter(review => !review.is_approved).length;
+  const approvedCount = reviews.filter(review => review.is_approved).length;
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Reviews Management</h1>
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-3xl font-bold">Reviews Management</h1>
+          {pendingCount > 0 && (
+            <Badge variant="destructive" className="text-base px-3 py-1 animate-pulse">
+              {pendingCount} Pending
+            </Badge>
+          )}
+        </div>
         <p className="text-muted-foreground">
           Kelola dan moderasi review dari customer
         </p>
+        
+        {/* Stats Summary */}
+        <div className="flex gap-4 mt-4">
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-sm">
+              Total: {reviews.length}
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge variant="default" className="text-sm">
+              Approved: {approvedCount}
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-sm">
+              Pending: {pendingCount}
+            </Badge>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4">
