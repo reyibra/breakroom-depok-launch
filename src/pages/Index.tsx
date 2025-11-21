@@ -326,9 +326,19 @@ const Index = () => {
                                     </div>
                                   </div>
                                 )}
+                                
+                                {/* Mini Countdown - Mobile Only (Days remaining) */}
+                                {showCountdown && (
+                                  <div className="md:hidden flex items-center justify-center gap-1 bg-caution/20 backdrop-blur-sm rounded-full px-2 py-0.5 border border-caution/40">
+                                    <Clock className="w-2 h-2 text-caution animate-pulse" />
+                                    <span className="text-[8px] text-caution font-bold">
+                                      {showCountdown.days}H {showCountdown.hours}J tersisa
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                               
-                              {/* Middle Section: Countdown Timer - Hide on mobile for space */}
+                              {/* Middle Section: Countdown Timer - Desktop Only (Full) */}
                               {showCountdown && (
                                 <div className="hidden md:block md:border-l md:border-primary/30 md:pl-6">
                                   <div className="space-y-1.5">
