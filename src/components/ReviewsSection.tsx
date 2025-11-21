@@ -40,6 +40,7 @@ export const ReviewsSection = () => {
       const { data, error } = await supabase
         .from("reviews")
         .select("*")
+        .eq("is_approved", true) // Only show approved reviews
         .order("created_at", { ascending: false });
 
       if (error) throw error;
