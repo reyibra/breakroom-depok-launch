@@ -188,7 +188,7 @@ const Index = () => {
           
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             {/* Promo Badge - Elegant and Integrated */}
-            <div className="inline-flex items-center gap-2 mb-3 md:mb-4 px-4 md:px-6 py-2 md:py-2.5 bg-gradient-to-r from-caution/20 via-primary/20 to-caution/20 backdrop-blur-sm border border-caution/40 rounded-full shadow-glow animate-fade-in">
+            <div className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 md:px-6 py-2 md:py-2.5 bg-gradient-to-r from-caution/20 via-primary/20 to-caution/20 backdrop-blur-sm border border-caution/40 rounded-full shadow-glow animate-fade-in">
               <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-caution animate-pulse" />
               <span className="text-caution font-bold text-xs md:text-sm uppercase tracking-wider">
                 PROMO SPESIAL
@@ -199,11 +199,6 @@ const Index = () => {
               </span>
             </div>
 
-            <div className="inline-block mb-4 md:mb-6 px-3 md:px-4 py-1.5 md:py-2 bg-caution/20 border border-caution rounded">
-              <span className="text-caution font-bold uppercase tracking-wider text-xs md:text-sm">
-                Stress-Release Room Indonesia
-              </span>
-            </div>
             <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6">
               <span className="text-gradient">Luapkan,</span>{" "}
               <span className="text-gradient">Lepaskan</span>{" "}
