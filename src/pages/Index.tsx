@@ -16,8 +16,10 @@ import safetyGear from "@/assets/safety-gear.jpg";
 import breakroomInterior from "@/assets/breakroom-interior.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { differenceInDays } from "date-fns";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 interface TimeLeft {
   days: number;
@@ -27,10 +29,14 @@ interface TimeLeft {
 }
 
 const Index = () => {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
+  const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, duration: 30 },
+    [Autoplay({ delay: 5000, stopOnInteraction: false })]
+  );
   
-  const { data: activePromo } = useQuery({
-    queryKey: ["active-promo"],
+  const { data: activePromos } = useQuery({
+    queryKey: ["active-promos-hero"],
     queryFn: async () => {
       const now = new Date().toISOString();
       const { data, error } = await supabase
@@ -39,42 +45,54 @@ const Index = () => {
         .eq("is_active", true)
         .lte("start_date", now)
         .gte("end_date", now)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data;
+      return data || [];
     },
   });
 
-  const showCountdown = activePromo ? differenceInDays(new Date(activePromo.end_date), new Date()) <= 7 : false;
-
   useEffect(() => {
-    if (!activePromo || !showCountdown) return;
+    if (!activePromos || activePromos.length === 0) return;
 
-    const calculateTimeLeft = () => {
-      const now = new Date();
-      const endDate = new Date(activePromo.end_date);
-      const difference = endDate.getTime() - now.getTime();
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        });
-      } else {
-        setTimeLeft(null);
-      }
+    const calculateAllTimers = () => {
+      const newTimers: Record<string, TimeLeft> = {};
+      
+      activePromos.forEach((promo) => {
+        const now = new Date();
+        const endDate = new Date(promo.end_date);
+        const daysUntilExpiry = differenceInDays(endDate, now);
+        
+        if (daysUntilExpiry <= 7 && daysUntilExpiry >= 0) {
+          const difference = endDate.getTime() - now.getTime();
+          
+          if (difference > 0) {
+            newTimers[promo.id] = {
+              days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+              hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+              minutes: Math.floor((difference / 1000 / 60) % 60),
+              seconds: Math.floor((difference / 1000) % 60),
+            };
+          }
+        }
+      });
+      
+      setPromoTimers(newTimers);
     };
 
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
+    calculateAllTimers();
+    const timer = setInterval(calculateAllTimers, 1000);
 
     return () => clearInterval(timer);
-  }, [activePromo, showCountdown]);
+  }, [activePromos]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
 
   const features = [
     {
@@ -275,83 +293,189 @@ const Index = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
           </div>
           
-          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-            {/* Promo Card - Minimalist Design */}
-            {activePromo && (
-              <div className="inline-block mb-6 md:mb-8 animate-fade-in">
-                <Card className="max-w-md mx-auto border-primary/30 bg-card/95 backdrop-blur-sm shadow-glow">
-                  <CardContent className="p-4 md:p-6 space-y-3">
-                    {/* Title */}
-                    <h3 className="text-lg md:text-xl font-bold text-foreground">
-                      {activePromo.title}
-                    </h3>
-
-                    {/* Promo Code & Discount */}
-                    {activePromo.promo_code && (
-                      <div className="flex items-center justify-center gap-2 px-3 py-2 bg-primary/10 rounded-lg border border-primary/20">
-                        <Tag className="w-4 h-4 text-primary" />
-                        <span className="font-mono font-bold text-primary tracking-wide">
-                          {activePromo.promo_code}
-                        </span>
-                        {activePromo.discount_percentage && (
-                          <Badge variant="secondary" className="ml-2">
-                            {activePromo.discount_percentage}% OFF
-                          </Badge>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Description */}
-                    <p className="text-sm text-muted-foreground">
-                      {activePromo.description}
-                    </p>
-
-                    {/* Countdown Timer */}
-                    {showCountdown && timeLeft && (
-                      <div className="pt-3 border-t border-border">
-                        <div className="flex items-center justify-center gap-2 mb-2">
-                          <Clock className="w-4 h-4 text-caution" />
-                          <span className="text-xs font-medium text-muted-foreground uppercase">
-                            Berakhir dalam
-                          </span>
-                        </div>
-                        <div className="flex gap-2 justify-center">
-                          {[
-                            { value: timeLeft.days, label: 'Hari' },
-                            { value: timeLeft.hours, label: 'Jam' },
-                            { value: timeLeft.minutes, label: 'Menit' },
-                            { value: timeLeft.seconds, label: 'Detik' },
-                          ].map((item, index) => (
-                            <div key={index} className="text-center">
-                              <div className="bg-muted rounded px-2 py-1.5 min-w-[3rem]">
-                                <div className="text-base md:text-lg font-bold text-foreground">
-                                  {String(item.value).padStart(2, '0')}
+          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            {/* Promo Carousel - Enhanced Design */}
+            {activePromos && activePromos.length > 0 && (
+              <div className="mb-6 md:mb-8 animate-fade-in">
+                <div className="relative">
+                  {/* Carousel Container */}
+                  <div className="overflow-hidden" ref={emblaRef}>
+                    <div className="flex">
+                      {activePromos.map((promo) => {
+                        const showCountdown = promoTimers[promo.id];
+                        
+                        return (
+                          <div key={promo.id} className="flex-[0_0_100%] min-w-0 px-2">
+                            <Card className="max-w-2xl mx-auto border-2 border-primary/40 bg-gradient-to-br from-card/95 via-card/90 to-primary/5 backdrop-blur-md shadow-[0_0_30px_rgba(255,102,0,0.3)] hover:shadow-[0_0_50px_rgba(255,102,0,0.5)] transition-all duration-300 overflow-hidden group">
+                              {/* Animated Background Effect */}
+                              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-caution/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                              
+                              {/* Discount Badge - Top Right */}
+                              {promo.discount_percentage && (
+                                <div className="absolute top-4 right-4 z-10">
+                                  <div className="relative">
+                                    <div className="bg-gradient-to-br from-caution via-primary to-caution p-4 rounded-2xl shadow-lg">
+                                      <div className="text-center">
+                                        <div className="text-3xl md:text-4xl font-black text-background leading-none">
+                                          {promo.discount_percentage}%
+                                        </div>
+                                        <div className="text-[10px] font-bold text-background/90 uppercase tracking-wider">
+                                          OFF
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="absolute inset-0 bg-caution/30 rounded-2xl blur-xl -z-10 animate-pulse"></div>
+                                  </div>
                                 </div>
-                                <div className="text-[9px] text-muted-foreground uppercase">
-                                  {item.label}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                              )}
 
-                    {/* Validity Date (when no countdown) */}
-                    {!showCountdown && (
-                      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-2 border-t border-border">
-                        <Clock className="w-3 h-3" />
-                        <span>
-                          Berlaku hingga {new Date(activePromo.end_date).toLocaleDateString('id-ID', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                              <CardContent className="p-6 md:p-8 space-y-4 relative">
+                                {/* Promo Image */}
+                                {promo.image_url && (
+                                  <div className="mb-6 rounded-xl overflow-hidden border-2 border-primary/20 shadow-md">
+                                    <img 
+                                      src={promo.image_url} 
+                                      alt={promo.title}
+                                      className="w-full h-40 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Title with Icon */}
+                                <div className="flex items-center justify-center gap-3 mb-4">
+                                  <Sparkles className="w-6 h-6 text-caution animate-pulse" />
+                                  <h3 className="text-2xl md:text-3xl font-black text-foreground group-hover:text-primary transition-colors">
+                                    {promo.title}
+                                  </h3>
+                                  <Sparkles className="w-6 h-6 text-caution animate-pulse" />
+                                </div>
+
+                                {/* Promo Code - Featured Display */}
+                                {promo.promo_code && (
+                                  <div className="relative">
+                                    <div className="bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 p-4 rounded-xl border-2 border-dashed border-primary/50 backdrop-blur-sm">
+                                      <div className="flex items-center justify-center gap-3">
+                                        <Tag className="w-5 h-5 md:w-6 md:h-6 text-primary animate-pulse" />
+                                        <div className="text-center">
+                                          <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">Gunakan Kode</p>
+                                          <p className="text-3xl md:text-4xl font-black font-mono text-primary tracking-widest">
+                                            {promo.promo_code}
+                                          </p>
+                                        </div>
+                                        <Tag className="w-5 h-5 md:w-6 md:h-6 text-primary animate-pulse" />
+                                      </div>
+                                    </div>
+                                    {/* Glow effect */}
+                                    <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg -z-10"></div>
+                                  </div>
+                                )}
+
+                                {/* Description */}
+                                <p className="text-sm md:text-base text-muted-foreground text-center leading-relaxed">
+                                  {promo.description}
+                                </p>
+
+                                {/* Countdown Timer */}
+                                {showCountdown && (
+                                  <div className="bg-gradient-to-r from-caution/10 via-caution/20 to-caution/10 p-4 rounded-xl border-2 border-caution/30">
+                                    <div className="flex items-center justify-center gap-2 mb-3">
+                                      <Clock className="w-5 h-5 text-caution animate-pulse" />
+                                      <span className="text-sm font-bold text-caution uppercase tracking-wider">
+                                        Promo Berakhir Dalam
+                                      </span>
+                                    </div>
+                                    <div className="grid grid-cols-4 gap-3">
+                                      {[
+                                        { value: showCountdown.days, label: 'Hari' },
+                                        { value: showCountdown.hours, label: 'Jam' },
+                                        { value: showCountdown.minutes, label: 'Menit' },
+                                        { value: showCountdown.seconds, label: 'Detik' },
+                                      ].map((item, index) => (
+                                        <div key={index} className="text-center">
+                                          <div className="bg-background/80 backdrop-blur-sm rounded-lg p-3 border-2 border-border shadow-md">
+                                            <div className="text-2xl md:text-3xl font-black text-primary">
+                                              {String(item.value).padStart(2, '0')}
+                                            </div>
+                                            <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">
+                                              {item.label}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Validity Date (when no countdown) */}
+                                {!showCountdown && (
+                                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground pt-2 border-t border-border/50">
+                                    <Clock className="w-4 h-4" />
+                                    <span>
+                                      Berlaku hingga {new Date(promo.end_date).toLocaleDateString('id-ID', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                      })}
+                                    </span>
+                                  </div>
+                                )}
+
+                                {/* CTA Button */}
+                                <Button 
+                                  variant="default" 
+                                  size="lg"
+                                  className="w-full mt-4 text-base font-bold shadow-glow hover:shadow-[0_0_40px_rgba(255,102,0,0.6)] transition-all"
+                                  asChild
+                                >
+                                  <a 
+                                    href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking%20dengan%20promo%20${encodeURIComponent(promo.promo_code || promo.title)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <MessageCircle className="mr-2 h-5 w-5" />
+                                    Gunakan Promo Sekarang
+                                    <Sparkles className="ml-2 h-5 w-5 animate-pulse" />
+                                  </a>
+                                </Button>
+                              </CardContent>
+                            </Card>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Navigation Buttons - Only show if more than 1 promo */}
+                  {activePromos.length > 1 && (
+                    <>
+                      <button
+                        onClick={scrollPrev}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-primary/90 hover:bg-primary text-primary-foreground rounded-full p-3 shadow-glow hover:shadow-[0_0_30px_rgba(255,102,0,0.6)] transition-all z-10"
+                        aria-label="Previous promo"
+                      >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={scrollNext}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-primary/90 hover:bg-primary text-primary-foreground rounded-full p-3 shadow-glow hover:shadow-[0_0_30px_rgba(255,102,0,0.6)] transition-all z-10"
+                        aria-label="Next promo"
+                      >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </>
+                  )}
+
+                  {/* Promo Counter Badge */}
+                  {activePromos.length > 1 && (
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-primary/90 text-primary-foreground px-4 py-1 rounded-full text-xs font-bold shadow-md">
+                      {activePromos.length} Promo Aktif
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
@@ -369,15 +493,15 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <Button variant="hero" size="lg" className="text-sm md:text-base relative overflow-hidden group" asChild>
                 <a 
-                  href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${activePromo ? (activePromo.promo_code ? ` dengan kode ${activePromo.promo_code}` : ` dengan promo ${activePromo.title}`) : ''}`} 
+                  href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${activePromos && activePromos[0] ? (activePromos[0].promo_code ? ` dengan kode ${activePromos[0].promo_code}` : ` dengan promo ${activePromos[0].title}`) : ''}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
                   <MessageCircle className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                   Booking Sekarang
-                  {activePromo?.discount_percentage && (
+                  {activePromos?.[0]?.discount_percentage && (
                     <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full animate-pulse">
-                      -{activePromo.discount_percentage}%
+                      -{activePromos[0].discount_percentage}%
                     </span>
                   )}
                 </a>
