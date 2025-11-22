@@ -7,13 +7,22 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { LogIn, UserPlus } from "lucide-react";
+import { LogIn, UserPlus, ShieldAlert } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const authSchema = z.object({
   email: z.string().trim().email({ message: "Email tidak valid" }),
   password: z.string().min(6, { message: "Password minimal 6 karakter" }),
 });
+
+const MAX_LOGIN_ATTEMPTS = 3;
+const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
+
+interface LoginAttempts {
+  count: number;
+  lockoutUntil: number | null;
+}
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -21,8 +30,47 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
+  const [loginAttempts, setLoginAttempts] = useState<LoginAttempts>({ count: 0, lockoutUntil: null });
+  const [remainingLockoutTime, setRemainingLockoutTime] = useState<number>(0);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Load login attempts from localStorage on mount
+  useEffect(() => {
+    const storedAttempts = localStorage.getItem("loginAttempts");
+    if (storedAttempts) {
+      const attempts: LoginAttempts = JSON.parse(storedAttempts);
+      
+      // Check if lockout has expired
+      if (attempts.lockoutUntil && Date.now() >= attempts.lockoutUntil) {
+        // Reset attempts if lockout expired
+        const resetAttempts = { count: 0, lockoutUntil: null };
+        setLoginAttempts(resetAttempts);
+        localStorage.setItem("loginAttempts", JSON.stringify(resetAttempts));
+      } else {
+        setLoginAttempts(attempts);
+      }
+    }
+  }, []);
+
+  // Update remaining lockout time every second
+  useEffect(() => {
+    if (loginAttempts.lockoutUntil) {
+      const interval = setInterval(() => {
+        const remaining = Math.max(0, loginAttempts.lockoutUntil! - Date.now());
+        setRemainingLockoutTime(remaining);
+        
+        // Clear lockout when time expires
+        if (remaining === 0) {
+          const resetAttempts = { count: 0, lockoutUntil: null };
+          setLoginAttempts(resetAttempts);
+          localStorage.setItem("loginAttempts", JSON.stringify(resetAttempts));
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [loginAttempts.lockoutUntil]);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -53,6 +101,17 @@ const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check if account is locked
+    if (loginAttempts.lockoutUntil && Date.now() < loginAttempts.lockoutUntil) {
+      const remainingMinutes = Math.ceil((loginAttempts.lockoutUntil - Date.now()) / 60000);
+      toast({
+        variant: "destructive",
+        title: "Akun Terkunci",
+        description: `Terlalu banyak percobaan login gagal. Coba lagi dalam ${remainingMinutes} menit.`,
+      });
+      return;
+    }
+    
     // Validate input
     const validation = authSchema.safeParse({ email, password });
     if (!validation.success) {
@@ -75,21 +134,50 @@ const Auth = () => {
         });
 
         if (error) {
-          if (error.message.includes("Invalid login credentials")) {
+          // Increment failed login attempts
+          const newCount = loginAttempts.count + 1;
+          
+          if (newCount >= MAX_LOGIN_ATTEMPTS) {
+            // Lock account for 15 minutes
+            const lockoutUntil = Date.now() + LOCKOUT_DURATION;
+            const newAttempts = { count: newCount, lockoutUntil };
+            setLoginAttempts(newAttempts);
+            localStorage.setItem("loginAttempts", JSON.stringify(newAttempts));
+            
             toast({
               variant: "destructive",
-              title: "Login Gagal",
-              description: "Email atau password salah",
+              title: "Akun Terkunci",
+              description: "Terlalu banyak percobaan login gagal. Akun dikunci selama 15 menit.",
             });
           } else {
-            toast({
-              variant: "destructive",
-              title: "Error",
-              description: error.message,
-            });
+            // Update attempt count
+            const newAttempts = { count: newCount, lockoutUntil: null };
+            setLoginAttempts(newAttempts);
+            localStorage.setItem("loginAttempts", JSON.stringify(newAttempts));
+            
+            const remainingAttempts = MAX_LOGIN_ATTEMPTS - newCount;
+            
+            if (error.message.includes("Invalid login credentials")) {
+              toast({
+                variant: "destructive",
+                title: "Login Gagal",
+                description: `Email atau password salah. ${remainingAttempts} percobaan tersisa.`,
+              });
+            } else {
+              toast({
+                variant: "destructive",
+                title: "Error",
+                description: error.message,
+              });
+            }
           }
           return;
         }
+
+        // Reset login attempts on successful login
+        const resetAttempts = { count: 0, lockoutUntil: null };
+        setLoginAttempts(resetAttempts);
+        localStorage.setItem("loginAttempts", JSON.stringify(resetAttempts));
 
         toast({
           title: "Login Berhasil",
@@ -154,6 +242,30 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Lockout Warning */}
+          {loginAttempts.lockoutUntil && Date.now() < loginAttempts.lockoutUntil && (
+            <Alert variant="destructive" className="mb-4">
+              <ShieldAlert className="h-4 w-4" />
+              <AlertTitle>Akun Terkunci</AlertTitle>
+              <AlertDescription>
+                Terlalu banyak percobaan login gagal. Coba lagi dalam{" "}
+                <strong>{Math.ceil(remainingLockoutTime / 60000)} menit</strong>.
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {/* Failed Attempts Warning */}
+          {isLogin && loginAttempts.count > 0 && loginAttempts.count < MAX_LOGIN_ATTEMPTS && !loginAttempts.lockoutUntil && (
+            <Alert className="mb-4 border-caution bg-caution/10">
+              <ShieldAlert className="h-4 w-4 text-caution" />
+              <AlertTitle className="text-caution">Peringatan Keamanan</AlertTitle>
+              <AlertDescription>
+                {loginAttempts.count} percobaan login gagal.{" "}
+                {MAX_LOGIN_ATTEMPTS - loginAttempts.count} percobaan tersisa sebelum akun dikunci.
+              </AlertDescription>
+            </Alert>
+          )}
+          
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -180,7 +292,11 @@ const Auth = () => {
                 minLength={6}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={loading || (loginAttempts.lockoutUntil !== null && Date.now() < loginAttempts.lockoutUntil)}
+            >
               {loading ? (
                 "Loading..."
               ) : isLogin ? (
