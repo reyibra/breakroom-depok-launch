@@ -37,24 +37,21 @@ export const ReviewsSection = () => {
   const [currentLimit, setCurrentLimit] = useState(6);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const fetchReviews = async (limit?: number) => {
+  const fetchReviews = async () => {
     try {
-      // Use reviews_public view which excludes admin_responder_id for security
-      let query = supabase
+      // Optimized: Only fetch displayed reviews + buffer for filtering
+      // Start with reasonable limit, expand as needed
+      const fetchLimit = Math.max(currentLimit * 2, 12);
+      
+      const { data, error } = await supabase
         .from("reviews_public")
         .select("*")
-        .order("created_at", { ascending: false });
-      
-      // Add limit if specified (for initial load optimization)
-      if (limit) {
-        query = query.limit(limit);
-      }
-
-      const { data, error } = await query;
+        .order("created_at", { ascending: false })
+        .limit(fetchLimit);
 
       if (error) throw error;
       setReviews(data || []);
-      console.log("✅ Reviews fetched:", data?.length || 0, "reviews");
+      console.log("✅ Reviews fetched:", data?.length || 0, "reviews (optimized fetch)");
     } catch (error) {
       console.error("Error fetching reviews:", error);
     } finally {
@@ -63,65 +60,29 @@ export const ReviewsSection = () => {
   };
 
   useEffect(() => {
-    // Initial fetch with smart limit (fetch more than displayed for filtering)
-    fetchReviews(50);
+    fetchReviews();
+  }, [currentLimit]);
 
-    // Subscribe to changes on reviews table (not the view) for real-time updates
-    // We still listen to the base table but fetch from the secure view
+  useEffect(() => {
+    // Consolidated realtime subscription
     const channel = supabase
-      .channel("reviews-changes")
+      .channel("reviews-updates")
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
           table: "reviews",
           filter: "is_approved=eq.true",
         },
-        () => {
-          console.log("📡 New approved review added");
-          fetchReviews(50);
-        }
+        () => fetchReviews()
       )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "reviews",
-          filter: "is_approved=eq.true",
-        },
-        () => {
-          console.log("📡 Review updated");
-          fetchReviews(50);
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "reviews",
-        },
-        () => {
-          console.log("📡 Review deleted");
-          fetchReviews(50);
-        }
-      )
-      .subscribe((status, err) => {
-        if (err) {
-          console.error("❌ Reviews subscription error:", err);
-          fetchReviews(50);
-        } else {
-          console.log("📡 Reviews subscription status:", status);
-        }
-      });
+      .subscribe();
 
     return () => {
-      console.log("📡 Unsubscribing from reviews");
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [currentLimit]);
 
   useEffect(() => {
     let filtered = [...reviews];

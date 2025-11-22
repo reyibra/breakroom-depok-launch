@@ -87,59 +87,23 @@ export const PromoSection = () => {
     },
   });
 
-  // Subscribe to real-time promo updates (only for active promos)
+  // Consolidated realtime subscription
   useEffect(() => {
     const channel = supabase
-      .channel("promos-realtime-updates")
+      .channel("promos-updates")
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
           table: "promos",
           filter: "is_active=eq.true",
         },
-        () => {
-          console.log("📡 New active promo added");
-          refetch();
-        }
+        () => refetch()
       )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "promos",
-          filter: "is_active=eq.true",
-        },
-        () => {
-          console.log("📡 Promo updated");
-          refetch();
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "promos",
-        },
-        () => {
-          console.log("📡 Promo deleted");
-          refetch();
-        }
-      )
-      .subscribe((status, err) => {
-        if (err) {
-          console.error("❌ Promos subscription error:", err);
-          refetch();
-        } else {
-          console.log("📡 Promos subscription:", status);
-        }
-      });
+      .subscribe();
 
     return () => {
-      console.log("📡 Unsubscribing from promos");
       supabase.removeChannel(channel);
     };
   }, [refetch]);
