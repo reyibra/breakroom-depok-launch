@@ -320,11 +320,11 @@ const News = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold mb-2">News Management</h1>
-          <p className="text-muted-foreground">Kelola berita dan update terbaru</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-1 md:mb-2">News Management</h1>
+          <p className="text-sm md:text-base text-muted-foreground">Kelola berita dan update terbaru</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
@@ -336,31 +336,33 @@ const News = () => {
                 setImagePreview("");
                 setTempImageUrl("");
               }}
+              className="w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Tambah News
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{editingNews ? "Edit News" : "Tambah News"}</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-lg md:text-xl">{editingNews ? "Edit News" : "Tambah News"}</DialogTitle>
+              <DialogDescription className="text-sm">
                 {editingNews ? "Update informasi news" : "Buat news baru"}
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
               <div>
-                <Label htmlFor="title">Judul</Label>
+                <Label htmlFor="title" className="text-sm">Judul</Label>
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
                   maxLength={200}
+                  className="text-sm"
                 />
               </div>
               <div>
-                <Label htmlFor="content">Konten</Label>
+                <Label htmlFor="content" className="text-sm">Konten</Label>
                 <Textarea
                   id="content"
                   value={formData.content}
@@ -368,10 +370,11 @@ const News = () => {
                   required
                   rows={6}
                   maxLength={5000}
+                  className="text-sm"
                 />
               </div>
               <div>
-                <Label htmlFor="image">Gambar (opsional)</Label>
+                <Label htmlFor="image" className="text-sm">Gambar (opsional)</Label>
                 <div className="space-y-3">
                   {imagePreview ? (
                     <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted border">
@@ -391,11 +394,11 @@ const News = () => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary transition-colors">
-                      <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                    <div className="border-2 border-dashed rounded-lg p-4 md:p-6 text-center hover:border-primary transition-colors">
+                      <Upload className="w-6 h-6 md:w-8 md:h-8 mx-auto mb-2 text-muted-foreground" />
                       <Label
                         htmlFor="image"
-                        className="cursor-pointer text-sm text-muted-foreground hover:text-primary"
+                        className="cursor-pointer text-xs md:text-sm text-muted-foreground hover:text-primary"
                       >
                         Klik untuk upload gambar atau drag & drop
                         <br />
@@ -412,12 +415,12 @@ const News = () => {
                   )}
                 </div>
               </div>
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={handlePreview}>
+              <DialogFooter className="flex-col sm:flex-row gap-2">
+                <Button type="button" variant="outline" onClick={handlePreview} className="w-full sm:w-auto">
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
                 </Button>
-                <Button type="submit" disabled={uploading}>
+                <Button type="submit" disabled={uploading} className="w-full sm:w-auto">
                   {uploading ? "Mengupload..." : editingNews ? "Update" : "Tambah"}
                 </Button>
               </DialogFooter>
@@ -488,67 +491,70 @@ const News = () => {
         aspectRatio={16 / 9}
       />
 
-      <div className="grid gap-4">
+      <div className="grid gap-3 md:gap-4">
         {news.map((item) => (
           <Card key={item.id}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-lg">{item.title}</CardTitle>
-                  <p className="text-sm text-muted-foreground mt-1">
+            <CardHeader className="pb-3 md:pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-base md:text-lg">{item.title}</CardTitle>
+                  <p className="text-xs md:text-sm text-muted-foreground mt-1">
                     {new Date(item.published_at).toLocaleDateString("id-ID")}
                   </p>
                 </div>
-                <Badge variant={item.is_active ? "default" : "secondary"}>
+                <Badge variant={item.is_active ? "default" : "secondary"} className="text-xs w-fit">
                   {item.is_active ? "Active" : "Inactive"}
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm mb-4 line-clamp-2">{item.content}</p>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline" onClick={() => handlePreviewExisting(item)}>
-                  <Eye className="w-4 h-4 mr-1" />
+            <CardContent className="space-y-3">
+              <p className="text-xs md:text-sm line-clamp-2">{item.content}</p>
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={() => handlePreviewExisting(item)} className="text-xs h-8">
+                  <Eye className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                   Preview
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => handleEdit(item)}>
-                  <Edit className="w-4 h-4 mr-1" />
+                <Button size="sm" variant="outline" onClick={() => handleEdit(item)} className="text-xs h-8">
+                  <Edit className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                   Edit
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => handleToggleActive(item.id, item.is_active)}
+                  className="text-xs h-8"
                 >
                   {item.is_active ? (
                     <>
-                      <EyeOff className="w-4 h-4 mr-1" />
-                      Nonaktifkan
+                      <EyeOff className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      <span className="hidden sm:inline">Nonaktifkan</span>
+                      <span className="sm:hidden">Off</span>
                     </>
                   ) : (
                     <>
-                      <Eye className="w-4 h-4 mr-1" />
-                      Aktifkan
+                      <Eye className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      <span className="hidden sm:inline">Aktifkan</span>
+                      <span className="sm:hidden">On</span>
                     </>
                   )}
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button size="sm" variant="destructive">
-                      <Trash2 className="w-4 h-4 mr-1" />
+                    <Button size="sm" variant="destructive" className="text-xs h-8">
+                      <Trash2 className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       Delete
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="max-w-[90vw] sm:max-w-lg">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Hapus News?</AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogTitle className="text-base md:text-lg">Hapus News?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-xs md:text-sm">
                         News ini akan dihapus permanen.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Batal</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleDelete(item.id)}>
+                    <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                      <AlertDialogCancel className="w-full sm:w-auto">Batal</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(item.id)} className="w-full sm:w-auto">
                         Hapus
                       </AlertDialogAction>
                     </AlertDialogFooter>

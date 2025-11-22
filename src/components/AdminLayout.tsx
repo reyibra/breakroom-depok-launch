@@ -189,23 +189,23 @@ const AdminLayout = () => {
       </aside>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-40 flex items-center px-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-card border-b border-border z-40 flex items-center px-3">
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Menu className="w-6 h-6" />
+            <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Menu className="w-5 h-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-64">
+          <SheetContent side="left" className="p-0 w-72">
             <SidebarContent />
           </SheetContent>
         </Sheet>
-        <h1 className="ml-4 font-bold text-lg">Breakroom Admin</h1>
+        <h1 className="ml-3 font-bold text-base">Breakroom Admin</h1>
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto mt-16 md:mt-0">
-        <div className="p-6 md:p-8">
+      <main className="flex-1 overflow-auto mt-14 md:mt-0">
+        <div className="p-4 md:p-6 lg:p-8">
           <Outlet />
         </div>
       </main>
