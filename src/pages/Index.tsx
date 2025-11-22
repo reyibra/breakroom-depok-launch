@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { lazy, Suspense, useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play, Sparkles, Tag, Info } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,17 +11,24 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import { NewsSection } from "@/components/NewsSection";
 import VideoPlayer from "@/components/VideoPlayer";
-import heroImage from "@/assets/hero-breakroom-main.jpg";
 import roomClassic from "@/assets/room-classic.jpg";
 import roomPremium from "@/assets/room-premium.jpg";
 import safetyGear from "@/assets/safety-gear.jpg";
 import breakroomInterior from "@/assets/breakroom-interior.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useState, useRef, useEffect } from "react";
 import { differenceInDays } from "date-fns";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+
+// Lazy load Hero Section for better code splitting
+const HeroSection = lazy(() => import("@/components/homepage/HeroSection").then(m => ({ default: m.HeroSection })));
+
+// Section loading fallback
+const SectionLoader = () => (
+  <div className="py-20 flex items-center justify-center">
+    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 interface TimeLeft {
   days: number;
@@ -421,204 +429,10 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-grow">
-        {/* Hero Section - Mobile Optimized */}
-        <section id="hero" className="relative min-h-[90vh] md:h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0">
-          <img 
-            src={heroImage}
-            alt="Breakroom Depok Hero"
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
-          
-          <div className="relative z-10 text-center px-4 md:px-6 max-w-5xl mx-auto space-y-6 md:space-y-8">
-            {/* Promo Badge - Integrated at top */}
-            {activePromos && activePromos.length > 0 && (
-              <div ref={carouselRef} className="w-full max-w-2xl mx-auto">
-                <Carousel
-                  opts={{ 
-                    loop: true,
-                    skipSnaps: false,
-                  }}
-                  plugins={[
-                    Autoplay({ 
-                      delay: 5000,
-                      stopOnInteraction: true,
-                      stopOnMouseEnter: true,
-                    })
-                  ]}
-                  className="w-full"
-                >
-                  <CarouselContent>
-                    {activePromos.map((promo) => {
-                      const showCountdown = promoTimers[promo.id];
-                      
-                      return (
-                        <CarouselItem key={promo.id}>
-                          <div className="relative group">
-                            {/* Simplified promo badge */}
-                            <div className="bg-background/10 backdrop-blur-sm border-2 border-primary/40 rounded-full p-3 md:p-4">
-                              {/* Discount badge - corner */}
-                              {promo.discount_percentage && (
-                                <div className="absolute -top-2 -right-2 bg-gradient-to-br from-caution to-primary text-background text-xs md:text-sm font-black px-2 py-1 md:px-3 md:py-1.5 rounded-full">
-                                  -{promo.discount_percentage}%
-                                </div>
-                              )}
-                              
-                              <div className="flex flex-col md:flex-row md:items-center md:justify-center md:gap-4 space-y-2 md:space-y-0">
-                                {/* Promo Info */}
-                                <div className="flex items-center justify-center gap-2">
-                                  <Tag className="w-4 h-4 text-primary" />
-                                  {promo.promo_code && (
-                                    <span className="text-sm md:text-lg font-black font-mono text-primary">
-                                      {promo.promo_code}
-                                    </span>
-                                  )}
-                                </div>
-                                
-                                {/* Countdown - compact */}
-                                {showCountdown && (
-                                  <div className="flex items-center justify-center gap-1 text-xs md:text-sm text-muted-foreground">
-                                    <Clock className="w-3 h-3 text-caution" />
-                                    <span>
-                                      {showCountdown.days}d {showCountdown.hours}h tersisa
-                                    </span>
-                                  </div>
-                                )}
-                                
-                                {/* Info Button */}
-                                <Dialog>
-                                  <DialogTrigger asChild>
-                                    <button className="text-xs md:text-sm text-primary hover:text-primary/80 font-semibold flex items-center gap-1 justify-center">
-                                      <Info className="w-3 h-3" />
-                                      Detail
-                                    </button>
-                                  </DialogTrigger>
-                                  <DialogContent className="max-w-md">
-                                    <DialogHeader>
-                                      <DialogTitle className="text-xl font-bold text-primary">
-                                        {promo.title}
-                                      </DialogTitle>
-                                    </DialogHeader>
-                                    <div className="space-y-4">
-                                      {promo.discount_percentage && (
-                                        <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
-                                          <p className="text-3xl font-black text-primary text-center">
-                                            Diskon {promo.discount_percentage}%
-                                          </p>
-                                        </div>
-                                      )}
-                                      
-                                      {promo.promo_code && (
-                                        <div className="bg-accent/20 border border-dashed border-accent rounded-lg p-3">
-                                          <p className="text-xs text-muted-foreground text-center mb-1">Kode Promo:</p>
-                                          <p className="text-2xl font-black text-center font-mono tracking-wider text-foreground">
-                                            {promo.promo_code}
-                                          </p>
-                                        </div>
-                                      )}
-                                      
-                                      <div className="space-y-2">
-                                        <h4 className="font-semibold text-sm text-muted-foreground">Deskripsi:</h4>
-                                        <p className="text-foreground leading-relaxed">
-                                          {promo.description}
-                                        </p>
-                                      </div>
-                                      
-                                      <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t">
-                                        <div>
-                                          <p className="text-xs">Mulai:</p>
-                                          <p className="font-semibold">{new Date(promo.start_date).toLocaleDateString('id-ID')}</p>
-                                        </div>
-                                        <div className="text-right">
-                                          <p className="text-xs">Berakhir:</p>
-                                          <p className="font-semibold text-caution">{new Date(promo.end_date).toLocaleDateString('id-ID')}</p>
-                                        </div>
-                                      </div>
-                                      
-                                      <Button 
-                                        className="w-full" 
-                                        variant="hero"
-                                        asChild
-                                      >
-                                        <a 
-                                          href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${promo.promo_code ? ` dengan kode ${promo.promo_code}` : ` dengan promo ${promo.title}`}`}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          <MessageCircle className="mr-2 h-4 w-4" />
-                                          Booking dengan Promo Ini
-                                        </a>
-                                      </Button>
-                                    </div>
-                                  </DialogContent>
-                                </Dialog>
-                              </div>
-                            </div>
-                          </div>
-                        </CarouselItem>
-                      );
-                    })}
-                  </CarouselContent>
-                  
-                  {/* Navigation Arrows - Only show if multiple promos */}
-                  {activePromos.length > 1 && (
-                    <>
-                      <CarouselPrevious className="h-8 w-8 bg-background/20 backdrop-blur-sm border border-primary/40" />
-                      <CarouselNext className="h-8 w-8 bg-background/20 backdrop-blur-sm border border-primary/40" />
-                    </>
-                  )}
-                </Carousel>
-              </div>
-            )}
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-3 md:mb-6 leading-tight">
-              <span className="text-gradient">Luapkan,</span>{" "}
-              <span className="text-gradient">Lepaskan</span>{" "}
-              & <span className="text-gradient">Lupakan</span>
-            </h1>
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-foreground leading-snug">
-              Penatmu di Breakroom Depok
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-6 max-w-2xl mx-auto leading-relaxed px-2">
-              Tempat aman untuk melepaskan stress dengan cara yang berbeda. Hancurkan, teriak, dan rasakan kebebasan.
-            </p>
-            
-            {/* Price Badge - Integrated in Hero */}
-            <div className="mb-6 md:mb-8 flex justify-center">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 backdrop-blur-sm border-2 border-primary/40 rounded-full px-4 py-2 md:px-6 md:py-3">
-                <Tag className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-xs md:text-sm uppercase tracking-wider text-muted-foreground font-semibold">
-                    Mulai Dari
-                  </span>
-                  <span className="text-2xl md:text-3xl font-black text-primary leading-none">
-                    65K
-                  </span>
-                </div>
-                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-              </div>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-2">
-              <Button variant="hero" size="lg" className="w-full sm:w-auto min-h-[48px] text-sm sm:text-base relative overflow-hidden group" asChild>
-                <a 
-                  href={`https://wa.me/6282312504723?text=Halo!%20Saya%20ingin%20booking${activePromos && activePromos[0] ? (activePromos[0].promo_code ? ` dengan kode ${activePromos[0].promo_code}` : ` dengan promo ${activePromos[0].title}`) : ''}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Booking Sekarang
-                </a>
-              </Button>
-              <Button variant="outline" size="lg" className="w-full sm:w-auto min-h-[48px] text-sm sm:text-base" asChild>
-                <a href="#konsultasi">Lihat Layanan</a>
-              </Button>
-            </div>
-          </div>
-
-          <div className="absolute bottom-0 left-0 right-0 h-20 md:h-32 bg-gradient-to-t from-background to-transparent"></div>
-        </section>
+        {/* Hero Section - Lazy Loaded */}
+        <Suspense fallback={<SectionLoader />}>
+          <HeroSection activePromos={activePromos} />
+        </Suspense>
 
         {/* What is Breakroom Section */}
         <section id="tentang" className="relative py-12 md:py-20 px-4 overflow-hidden">

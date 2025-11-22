@@ -3,15 +3,28 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Auth from "./pages/Auth";
-import AdminLayout from "./components/AdminLayout";
-import Dashboard from "./pages/admin/Dashboard";
-import Reviews from "./pages/admin/Reviews";
-import News from "./pages/admin/News";
-import Promos from "./pages/admin/Promos";
+
+// Lazy load pages for code splitting
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Auth = lazy(() => import("./pages/Auth"));
+const AdminLayout = lazy(() => import("./components/AdminLayout"));
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const Reviews = lazy(() => import("./pages/admin/Reviews"));
+const News = lazy(() => import("./pages/admin/News"));
+const Promos = lazy(() => import("./pages/admin/Promos"));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="text-center space-y-4">
+      <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+      <p className="text-muted-foreground">Loading...</p>
+    </div>
+  </div>
+);
 
 // Optimized React Query configuration for production
 const queryClient = new QueryClient({
@@ -50,18 +63,20 @@ const App = () => (
           }}
         >
           <ErrorBoundary fallbackMessage="This page encountered an error. Try going back or reloading.">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="reviews" element={<Reviews />} />
-                <Route path="news" element={<News />} />
-                <Route path="promos" element={<Promos />} />
-              </Route>
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="reviews" element={<Reviews />} />
+                  <Route path="news" element={<News />} />
+                  <Route path="promos" element={<Promos />} />
+                </Route>
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </ErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
