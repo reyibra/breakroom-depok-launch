@@ -27,71 +27,54 @@ export const NewsSection = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentLimit, setCurrentLimit] = useState(3);
 
+  const fetchNews = async () => {
+    try {
+      // Fetch current limit + 1 to check if there's more
+      const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .eq("is_active", true)
+        .order("published_at", { ascending: false })
+        .limit(currentLimit + 1);
+
+      if (error) throw error;
+      
+      // If we got more than currentLimit, there's more to load
+      setHasMore((data?.length || 0) > currentLimit);
+      
+      // Only show currentLimit items
+      const displayedNews = data?.slice(0, currentLimit) || [];
+      setNews(displayedNews);
+      console.log("📰 News loaded:", displayedNews.length, "displayed,", (data?.length || 0), "total available");
+    } catch (error) {
+      console.error("Error fetching news:", error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        // Fetch current limit + 1 to check if there's more
-        const { data, error } = await supabase
-          .from("news")
-          .select("*")
-          .eq("is_active", true)
-          .order("published_at", { ascending: false })
-          .limit(currentLimit + 1);
-
-        if (error) throw error;
-        
-        // If we got more than currentLimit, there's more to load
-        setHasMore((data?.length || 0) > currentLimit);
-        
-        // Only show currentLimit items
-        const displayedNews = data?.slice(0, currentLimit) || [];
-        setNews(displayedNews);
-        console.log("📰 News loaded:", displayedNews.length, "displayed,", (data?.length || 0), "total available");
-      } catch (error) {
-        console.error("Error fetching news:", error);
-      } finally {
-        setLoading(false);
-        setLoadingMore(false);
-      }
-    };
-
     fetchNews();
+  }, [currentLimit]);
 
-    // Only subscribe to active news changes (exclude admin-only operations)
+  // Use centralized realtime subscription (no individual channel)
+  useEffect(() => {
     const channel = supabase
-      .channel("news-realtime-updates")
+      .channel("news-updates")
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
           table: "news",
           filter: "is_active=eq.true",
         },
-        () => {
-          console.log("📡 New active news added");
-          fetchNews();
-        }
+        () => fetchNews()
       )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "news",
-          filter: "is_active=eq.true",
-        },
-        () => {
-          console.log("📡 News updated");
-          fetchNews();
-        }
-      )
-      .subscribe((status) => {
-        console.log("📡 News subscription:", status);
-      });
+      .subscribe();
 
     return () => {
-      console.log("📡 Unsubscribing from news");
       supabase.removeChannel(channel);
     };
   }, [currentLimit]);
@@ -223,9 +206,12 @@ export const NewsSection = () => {
           </div>
         )}
 
-        {/* Detail Dialog */}
+        {/* Detail Dialog - Fixed Accessibility */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogContent 
+            className="max-w-3xl max-h-[90vh] overflow-y-auto"
+            aria-describedby="news-detail-description"
+          >
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold pr-8">
                 {selectedNews?.title}
@@ -233,7 +219,7 @@ export const NewsSection = () => {
             </DialogHeader>
             
             {selectedNews && (
-              <div className="space-y-4">
+              <div className="space-y-4" id="news-detail-description">
                 {/* Date */}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="w-4 h-4" />
