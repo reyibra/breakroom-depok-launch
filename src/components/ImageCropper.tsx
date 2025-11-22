@@ -122,7 +122,7 @@ export const ImageCropper = ({
       onCropComplete(croppedImage);
       onClose();
     } catch (error) {
-      console.error("Error cropping image:", error);
+      // Error tracking available when Sentry configured
     } finally {
       setProcessing(false);
     }

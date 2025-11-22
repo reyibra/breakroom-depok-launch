@@ -53,7 +53,7 @@ const Dashboard = () => {
         promos: { total: totalPromos || 0, active: activePromos || 0 },
       });
     } catch (error) {
-      console.error("Error fetching stats:", error);
+      // Error tracking available when Sentry configured
     } finally {
       setLoading(false);
     }

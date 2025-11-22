@@ -28,10 +28,7 @@ export const useRealtimeSubscription = (configs: RealtimeConfig[]) => {
           table,
           ...(filter && { filter }),
         },
-        () => {
-          console.log(`📡 [${table}] New item inserted`);
-          onUpdate();
-        }
+        onUpdate
       );
 
       // Listen to UPDATE events
@@ -43,10 +40,7 @@ export const useRealtimeSubscription = (configs: RealtimeConfig[]) => {
           table,
           ...(filter && { filter }),
         },
-        () => {
-          console.log(`📡 [${table}] Item updated`);
-          onUpdate();
-        }
+        onUpdate
       );
 
       // Listen to DELETE events
@@ -57,25 +51,15 @@ export const useRealtimeSubscription = (configs: RealtimeConfig[]) => {
           schema: 'public',
           table,
         },
-        () => {
-          console.log(`📡 [${table}] Item deleted`);
-          onUpdate();
-        }
+        onUpdate
       );
     });
 
     // Subscribe once for all tables
-    channel.subscribe((status, err) => {
-      if (err) {
-        console.error('❌ Unified subscription error:', err);
-      } else {
-        console.log('📡 Unified subscription status:', status);
-      }
-    });
+    channel.subscribe();
 
     // Cleanup: remove the single channel
     return () => {
-      console.log('📡 Unsubscribing from unified channel');
       supabase.removeChannel(channel);
     };
   }, [configs]);

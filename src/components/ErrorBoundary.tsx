@@ -35,8 +35,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log error to console for debugging
-    console.error('🚨 Error Boundary Caught:', error, errorInfo);
+    // Error tracking can be added here when Sentry is configured
     
     this.setState({
       error,

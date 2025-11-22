@@ -57,8 +57,6 @@ const Reviews = () => {
           table: "reviews",
         },
         (payload) => {
-          console.log("🔔 New review submitted:", payload);
-          
           // Show notification for new pending reviews
           if (payload.new && !payload.new.is_approved) {
             toast({
@@ -72,12 +70,9 @@ const Reviews = () => {
           fetchReviews();
         }
       )
-      .subscribe((status) => {
-        console.log("🔔 Real-time notifications status:", status);
-      });
+      .subscribe();
 
     return () => {
-      console.log("🔔 Unsubscribing from review notifications");
       supabase.removeChannel(channel);
     };
   }, []);

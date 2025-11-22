@@ -39,12 +39,6 @@ export const useInitialData = () => {
           .limit(50),
       ]);
 
-      console.log("📦 Batched data loaded:", {
-        promos: promosResult.data?.length || 0,
-        news: newsResult.data?.length || 0,
-        reviews: reviewsResult.data?.length || 0,
-      });
-
       return {
         promos: promosResult.data || [],
         news: newsResult.data || [],

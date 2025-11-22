@@ -45,9 +45,8 @@ export const NewsSection = () => {
       // Only show currentLimit items
       const displayedNews = data?.slice(0, currentLimit) || [];
       setNews(displayedNews);
-      console.log("📰 News loaded:", displayedNews.length, "displayed,", (data?.length || 0), "total available");
     } catch (error) {
-      console.error("Error fetching news:", error);
+      // Error tracking available when Sentry configured
     } finally {
       setLoading(false);
       setLoadingMore(false);

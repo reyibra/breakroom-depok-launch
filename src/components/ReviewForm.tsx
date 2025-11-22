@@ -84,7 +84,7 @@ export const ReviewForm = ({ onSuccess }: ReviewFormProps) => {
       form.reset();
       onSuccess?.();
     } catch (error) {
-      console.error("Error submitting review:", error);
+      // Error tracking available when Sentry configured
       toast({
         title: "Gagal Mengirim Review",
         description: "Terjadi kesalahan. Silakan coba lagi.",
