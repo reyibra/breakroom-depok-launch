@@ -127,53 +127,53 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        // Login
-        const { error } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password,
+        // Call edge function for IP-based rate limiting
+        const { data, error } = await supabase.functions.invoke('auth-login', {
+          body: { email: email.trim(), password }
         });
 
-        if (error) {
-          // Increment failed login attempts
-          const newCount = loginAttempts.count + 1;
+        if (error || data?.error) {
+          const errorData = data || {};
           
-          if (newCount >= MAX_LOGIN_ATTEMPTS) {
-            // Lock account for 15 minutes
-            const lockoutUntil = Date.now() + LOCKOUT_DURATION;
-            const newAttempts = { count: newCount, lockoutUntil };
+          if (errorData.locked) {
+            // IP is locked by server
+            const lockoutUntil = Date.now() + ((errorData.remainingMinutes || 15) * 60 * 1000);
+            const newAttempts = { count: MAX_LOGIN_ATTEMPTS, lockoutUntil };
             setLoginAttempts(newAttempts);
             localStorage.setItem("loginAttempts", JSON.stringify(newAttempts));
             
             toast({
               variant: "destructive",
-              title: "Akun Terkunci",
-              description: "Terlalu banyak percobaan login gagal. Akun dikunci selama 15 menit.",
+              title: "IP Address Terkunci",
+              description: errorData.error || "Terlalu banyak percobaan login gagal dari IP ini.",
             });
-          } else {
-            // Update attempt count
-            const newAttempts = { count: newCount, lockoutUntil: null };
+          } else if (errorData.remainingAttempts !== undefined) {
+            // Show remaining attempts
+            const remaining = errorData.remainingAttempts;
+            const newAttempts = { count: MAX_LOGIN_ATTEMPTS - remaining, lockoutUntil: null };
             setLoginAttempts(newAttempts);
             localStorage.setItem("loginAttempts", JSON.stringify(newAttempts));
             
-            const remainingAttempts = MAX_LOGIN_ATTEMPTS - newCount;
-            
-            if (error.message.includes("Invalid login credentials")) {
-              toast({
-                variant: "destructive",
-                title: "Login Gagal",
-                description: `Email atau password salah. ${remainingAttempts} percobaan tersisa.`,
-              });
-            } else {
-              toast({
-                variant: "destructive",
-                title: "Error",
-                description: error.message,
-              });
-            }
+            toast({
+              variant: "destructive",
+              title: "Login Gagal",
+              description: `Email atau password salah. ${remaining} percobaan tersisa sebelum IP dikunci.`,
+            });
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: errorData.error || error?.message || "Login gagal",
+            });
           }
           return;
         }
 
+        // Login successful - set session from edge function response
+        if (data?.session) {
+          await supabase.auth.setSession(data.session);
+        }
+        
         // Reset login attempts on successful login
         const resetAttempts = { count: 0, lockoutUntil: null };
         setLoginAttempts(resetAttempts);
