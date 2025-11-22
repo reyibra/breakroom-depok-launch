@@ -179,6 +179,36 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          action: string
+          attempts: number
+          created_at: string
+          id: string
+          identifier: string
+          last_attempt: string
+          window_start: string
+        }
+        Insert: {
+          action: string
+          attempts?: number
+          created_at?: string
+          id?: string
+          identifier: string
+          last_attempt?: string
+          window_start?: string
+        }
+        Update: {
+          action?: string
+          attempts?: number
+          created_at?: string
+          id?: string
+          identifier?: string
+          last_attempt?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           admin_responder_id: string | null
@@ -285,6 +315,7 @@ export type Database = {
       }
     }
     Functions: {
+      cleanup_old_rate_limits: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
