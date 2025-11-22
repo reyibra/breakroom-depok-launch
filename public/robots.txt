@@ -1,14 +1,28 @@
+# Breakroom Depok - Robots.txt
+# Allow search engines to crawl public pages
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /auth/
+
+# Sitemap location
+Sitemap: https://breakroom-depok-launch.app/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Specific bot rules
 User-agent: Googlebot
 Allow: /
+Disallow: /admin/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin/
 
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
 Allow: /

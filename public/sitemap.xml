@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://breakroom-depok-launch.app/</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://breakroom-depok-launch.app/og-image.jpg</image:loc>
+      <image:title>Breakroom Depok - Stress Release Room</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Auth Page -->
+  <url>
+    <loc>https://breakroom-depok-launch.app/auth</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Admin Dashboard (NoIndex via robots meta) -->
+  <url>
+    <loc>https://breakroom-depok-launch.app/admin</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.1</priority>
+  </url>
+
+</urlset>
