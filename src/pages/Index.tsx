@@ -1,10 +1,9 @@
-import { lazy, Suspense, useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
-import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play, Sparkles, Tag, Info } from "lucide-react";
+import { Zap, Shield, Clock, Users, Heart, AlertTriangle, FileCheck, Instagram, MessageCircle, MapPin, Check, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -17,31 +16,13 @@ import safetyGear from "@/assets/safety-gear.jpg";
 import breakroomInterior from "@/assets/breakroom-interior.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { differenceInDays } from "date-fns";
-import Autoplay from "embla-carousel-autoplay";
 
-// Lazy load Hero Section for better code splitting
-const HeroSection = lazy(() => import("@/components/homepage/HeroSection").then(m => ({ default: m.HeroSection })));
+// Direct import Hero Section for instant load (critical above-the-fold content)
+import { HeroSection } from "@/components/homepage/HeroSection";
 
-// Section loading fallback
-const SectionLoader = () => (
-  <div className="py-20 flex items-center justify-center">
-    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-  </div>
-);
-
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
 
 const Index = () => {
-  const [promoTimers, setPromoTimers] = useState<Record<string, TimeLeft>>({});
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [isCarouselInView, setIsCarouselInView] = useState(true);
   
   const { data: activePromos } = useQuery({
     queryKey: ["active-promos-hero"],
@@ -68,63 +49,6 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
-
-  // Optimize carousel: observe when in viewport
-  useEffect(() => {
-    const carouselElement = carouselRef.current;
-    if (!carouselElement) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsCarouselInView(entry.isIntersecting);
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    observer.observe(carouselElement);
-
-    return () => {
-      if (observer) {
-        observer.disconnect();
-      }
-    };
-  }, [activePromos]);
-
-  useEffect(() => {
-    if (!activePromos || activePromos.length === 0) return;
-
-    const calculateAllTimers = () => {
-      const newTimers: Record<string, TimeLeft> = {};
-      
-      activePromos.forEach((promo) => {
-        const now = new Date();
-        const endDate = new Date(promo.end_date);
-        const daysUntilExpiry = differenceInDays(endDate, now);
-        
-        if (daysUntilExpiry <= 7 && daysUntilExpiry >= 0) {
-          const difference = endDate.getTime() - now.getTime();
-          
-          if (difference > 0) {
-            newTimers[promo.id] = {
-              days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-              hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-              minutes: Math.floor((difference / 1000 / 60) % 60),
-              seconds: Math.floor((difference / 1000) % 60),
-            };
-          }
-        }
-      });
-      
-      setPromoTimers(newTimers);
-    };
-
-    calculateAllTimers();
-    const timer = setInterval(calculateAllTimers, 1000);
-
-    return () => clearInterval(timer);
-  }, [activePromos]);
 
   const features = [
     {
@@ -429,10 +353,8 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-grow">
-        {/* Hero Section - Lazy Loaded */}
-        <Suspense fallback={<SectionLoader />}>
-          <HeroSection activePromos={activePromos} />
-        </Suspense>
+        {/* Hero Section - Instant Load for Better Conversion */}
+        <HeroSection activePromos={activePromos} />
 
         {/* What is Breakroom Section */}
         <section id="tentang" className="relative py-12 md:py-20 px-4 overflow-hidden">
