@@ -373,63 +373,57 @@ const Reviews = () => {
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
-        <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-3xl font-bold">Reviews Management</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+          <h1 className="text-2xl md:text-3xl font-bold">Reviews Management</h1>
           {pendingCount > 0 && (
-            <Badge variant="destructive" className="text-base px-3 py-1 animate-pulse">
+            <Badge variant="destructive" className="text-sm md:text-base px-2 md:px-3 py-1 animate-pulse w-fit">
               {pendingCount} Pending
             </Badge>
           )}
         </div>
-        <p className="text-muted-foreground">
+        <p className="text-sm md:text-base text-muted-foreground">
           Kelola dan moderasi review dari customer
         </p>
         
         {/* Stats Summary */}
-        <div className="flex gap-4 mt-4">
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-sm">
-              Total: {reviews.length}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="default" className="text-sm">
-              Approved: {approvedCount}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="text-sm">
-              Pending: {pendingCount}
-            </Badge>
-          </div>
+        <div className="flex flex-wrap gap-2 md:gap-4 mt-3 md:mt-4">
+          <Badge variant="outline" className="text-xs md:text-sm">
+            Total: {reviews.length}
+          </Badge>
+          <Badge variant="default" className="text-xs md:text-sm">
+            Approved: {approvedCount}
+          </Badge>
+          <Badge variant="secondary" className="text-xs md:text-sm">
+            Pending: {pendingCount}
+          </Badge>
         </div>
       </div>
 
       {/* Analytics - Rating Distribution */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Distribusi Rating</CardTitle>
+        <CardHeader className="pb-3 md:pb-6">
+          <CardTitle className="text-base md:text-lg">Distribusi Rating</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
+          <div className="space-y-2 md:space-y-3">
             {ratingDistribution.map(({ rating, count }) => (
-              <div key={rating} className="flex items-center gap-3">
-                <div className="flex items-center gap-1 w-20">
+              <div key={rating} className="flex items-center gap-2 md:gap-3">
+                <div className="flex items-center gap-0.5 md:gap-1 w-16 md:w-20">
                   {Array.from({ length: rating }).map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
                 <div className="flex-1">
-                  <div className="h-6 bg-muted rounded-full overflow-hidden">
+                  <div className="h-5 md:h-6 bg-muted rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-primary transition-all duration-300"
                       style={{ width: `${reviews.length > 0 ? (count / reviews.length) * 100 : 0}%` }}
                     />
                   </div>
                 </div>
-                <span className="text-sm font-medium w-12 text-right">{count}</span>
+                <span className="text-xs md:text-sm font-medium w-8 md:w-12 text-right">{count}</span>
               </div>
             ))}
           </div>
@@ -439,45 +433,46 @@ const Reviews = () => {
       {/* Bulk Actions */}
       {selectedReviews.size > 0 && (
         <Card className="border-primary">
-          <CardContent className="pt-6">
-            <div className="flex flex-wrap items-center gap-3">
+          <CardContent className="pt-4 md:pt-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <span className="text-sm font-medium">
                 {selectedReviews.size} review dipilih
               </span>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   size="sm"
                   onClick={handleBulkApprove}
-                  className="bg-green-600 hover:bg-green-700"
+                  className="bg-green-600 hover:bg-green-700 text-xs md:text-sm h-8 md:h-9"
                 >
-                  <Check className="w-4 h-4 mr-1" />
-                  Approve Semua
+                  <Check className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                  Approve
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleBulkReject}
+                  className="text-xs md:text-sm h-8 md:h-9"
                 >
-                  <X className="w-4 h-4 mr-1" />
-                  Reject Semua
+                  <X className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                  Reject
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button size="sm" variant="destructive">
-                      <Trash2 className="w-4 h-4 mr-1" />
-                      Hapus Semua
+                    <Button size="sm" variant="destructive" className="text-xs md:text-sm h-8 md:h-9">
+                      <Trash2 className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      Hapus
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="max-w-[90vw] sm:max-w-lg">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Hapus {selectedReviews.size} Review?</AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogTitle className="text-lg md:text-xl">Hapus {selectedReviews.size} Review?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-sm">
                         Review yang dipilih akan dihapus permanen dan tidak bisa dikembalikan.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Batal</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleBulkDelete}>
+                    <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                      <AlertDialogCancel className="w-full sm:w-auto">Batal</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleBulkDelete} className="w-full sm:w-auto">
                         Hapus
                       </AlertDialogAction>
                     </AlertDialogFooter>
@@ -487,6 +482,7 @@ const Reviews = () => {
                   size="sm"
                   variant="ghost"
                   onClick={() => setSelectedReviews(new Set())}
+                  className="text-xs md:text-sm h-8 md:h-9"
                 >
                   Batal
                 </Button>
@@ -565,7 +561,7 @@ const Reviews = () => {
       </Card>
 
       {/* Reviews List */}
-      <div className="space-y-4">
+      <div className="space-y-3 md:space-y-4">
         {/* Select All Header */}
         {sortedReviews.length > 0 && (
           <div className="flex items-center gap-3 px-1">
@@ -576,64 +572,65 @@ const Reviews = () => {
             />
             <label
               htmlFor="select-all"
-              className="text-sm font-medium cursor-pointer select-none"
+              className="text-xs md:text-sm font-medium cursor-pointer select-none"
             >
               Pilih Semua ({sortedReviews.length})
             </label>
           </div>
         )}
 
-        <div className="grid gap-4">
+        <div className="grid gap-3 md:gap-4">
           {sortedReviews.length === 0 ? (
             <Card>
-              <CardContent className="pt-6 text-center text-muted-foreground">
+              <CardContent className="pt-6 text-center text-muted-foreground text-sm">
                 Tidak ada review yang sesuai dengan filter
               </CardContent>
             </Card>
           ) : (
             sortedReviews.map((review) => (
             <Card key={review.id} className={selectedReviews.has(review.id) ? "border-primary" : ""}>
-              <CardHeader>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3 flex-1">
+              <CardHeader className="pb-3 md:pb-6">
+                <div className="flex items-start justify-between gap-2 md:gap-3">
+                  <div className="flex items-start gap-2 md:gap-3 flex-1 min-w-0">
                     <Checkbox
                       checked={selectedReviews.has(review.id)}
                       onCheckedChange={() => toggleSelectReview(review.id)}
                       id={`review-${review.id}`}
+                      className="mt-1"
                     />
-                    <div>
-                      <CardTitle className="text-lg">{review.name}</CardTitle>
+                    <div className="min-w-0 flex-1">
+                      <CardTitle className="text-base md:text-lg truncate">{review.name}</CardTitle>
                       {review.role && (
-                        <p className="text-sm text-muted-foreground">{review.role}</p>
+                        <p className="text-xs md:text-sm text-muted-foreground truncate">{review.role}</p>
                       )}
                     </div>
                   </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant={review.is_approved ? "default" : "secondary"}>
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 shrink-0">
+                  <Badge variant={review.is_approved ? "default" : "secondary"} className="text-xs">
                     {review.is_approved ? "Approved" : "Pending"}
                   </Badge>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5">
                     {Array.from({ length: review.rating }).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      <Star key={i} className="w-3 h-3 md:w-4 md:h-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm mb-4">{review.review_text}</p>
+            <CardContent className="space-y-4">
+              <p className="text-xs md:text-sm">{review.review_text}</p>
               
               {/* Admin Response Section */}
               <div className="mt-4 pt-4 border-t border-border">
                 <div className="flex items-center gap-2 mb-3">
-                  <MessageSquare className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium">Admin Response</span>
+                  <MessageSquare className="w-3 h-3 md:w-4 md:h-4 text-primary" />
+                  <span className="text-xs md:text-sm font-medium">Admin Response</span>
                 </div>
                 
                 {review.admin_response ? (
-                  <div className="bg-muted/50 rounded-lg p-3 mb-3">
-                    <p className="text-sm mb-2">{review.admin_response}</p>
-                    <div className="flex items-center justify-between">
+                  <div className="bg-muted/50 rounded-lg p-2 md:p-3 mb-3">
+                    <p className="text-xs md:text-sm mb-2">{review.admin_response}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <p className="text-xs text-muted-foreground">
                         {review.admin_response_date && 
                           `Dibalas pada ${format(new Date(review.admin_response_date), "dd MMM yyyy, HH:mm")}`
@@ -643,10 +640,10 @@ const Reviews = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => handleDeleteResponse(review.id)}
-                        className="h-7 px-2 text-xs"
+                        className="h-7 px-2 text-xs w-full sm:w-auto"
                       >
                         <X className="w-3 h-3 mr-1" />
-                        Hapus Response
+                        Hapus
                       </Button>
                     </div>
                   </div>
@@ -656,29 +653,29 @@ const Reviews = () => {
                       placeholder="Tulis response untuk review ini..."
                       value={responseText[review.id] || ""}
                       onChange={(e) => setResponseText({ ...responseText, [review.id]: e.target.value })}
-                      className="min-h-[80px] resize-none"
+                      className="min-h-[60px] md:min-h-[80px] resize-none text-xs md:text-sm"
                     />
                     <Button
                       size="sm"
                       onClick={() => handleSaveResponse(review.id)}
                       disabled={savingResponse[review.id] || !responseText[review.id]?.trim()}
-                      className="w-full sm:w-auto"
+                      className="w-full text-xs md:text-sm h-8 md:h-9"
                     >
-                      <Send className="w-4 h-4 mr-1" />
+                      <Send className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       {savingResponse[review.id] ? "Menyimpan..." : "Kirim Response"}
                     </Button>
                   </div>
                 )}
               </div>
               
-              <div className="flex gap-2 mt-4">
+              <div className="flex flex-wrap gap-2 mt-4">
                 {!review.is_approved && (
                   <Button
                     size="sm"
                     onClick={() => handleApprove(review.id)}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-green-600 hover:bg-green-700 text-xs md:text-sm h-8 md:h-9 flex-1 sm:flex-none"
                   >
-                    <Check className="w-4 h-4 mr-1" />
+                    <Check className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                     Approve
                   </Button>
                 )}
@@ -687,28 +684,29 @@ const Reviews = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleReject(review.id)}
+                    className="text-xs md:text-sm h-8 md:h-9 flex-1 sm:flex-none"
                   >
-                    <X className="w-4 h-4 mr-1" />
+                    <X className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                     Reject
                   </Button>
                 )}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button size="sm" variant="destructive">
-                      <Trash2 className="w-4 h-4 mr-1" />
+                    <Button size="sm" variant="destructive" className="text-xs md:text-sm h-8 md:h-9 flex-1 sm:flex-none">
+                      <Trash2 className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       Delete
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="max-w-[90vw] sm:max-w-lg">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Hapus Review?</AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogTitle className="text-base md:text-lg">Hapus Review?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-xs md:text-sm">
                         Review ini akan dihapus permanen dan tidak bisa dikembalikan.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Batal</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleDelete(review.id)}>
+                    <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                      <AlertDialogCancel className="w-full sm:w-auto">Batal</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(review.id)} className="w-full sm:w-auto">
                         Hapus
                       </AlertDialogAction>
                     </AlertDialogFooter>
