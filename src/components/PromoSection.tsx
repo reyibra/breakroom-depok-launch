@@ -82,7 +82,6 @@ export const PromoSection = () => {
         .order("end_date", { ascending: true });
 
       if (error) throw error;
-      console.log("🎁 Promos updated:", data?.length || 0, "active promos");
       return data;
     },
   });

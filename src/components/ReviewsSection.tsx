@@ -51,9 +51,8 @@ export const ReviewsSection = () => {
 
       if (error) throw error;
       setReviews(data || []);
-      console.log("✅ Reviews fetched:", data?.length || 0, "reviews (optimized fetch)");
     } catch (error) {
-      console.error("Error fetching reviews:", error);
+      // Error tracking can be added here when Sentry is configured
     } finally {
       setIsLoading(false);
     }

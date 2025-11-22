@@ -163,7 +163,7 @@ const News = () => {
 
       return publicUrl;
     } catch (error) {
-      console.error('Upload error:', error);
+      // Error tracking available when Sentry configured
       toast({
         variant: "destructive",
         title: "Error",
